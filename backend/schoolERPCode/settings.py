@@ -40,14 +40,17 @@ SHARED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'phonenumber_field',
 )
 
 TENANT_APPS = (
     'accounts',
+    'allocation',
     'announcements',
-    'attendance',
-    'assignments',
     'assessments',
+    'assignments',
+    'attachments',
+    'attendance',
 )
     
 

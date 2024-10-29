@@ -1,3 +1,14 @@
 from django.contrib import admin
+from .models import Assessment, StudentAssessment
 
-# Register your models here.
+@admin.register(Assessment)
+class AssessmentAdmin(admin.ModelAdmin):
+    list_display = ('title', 'subject', 'datetime', 'venue', 'is_active')
+    search_fields = ('title', 'description', 'venue')
+    list_filter = ('is_active', 'datetime', 'subject')
+
+@admin.register(StudentAssessment)
+class StudentAssessmentAdmin(admin.ModelAdmin):
+    list_display = ('student', 'assessment', 'marks', 'status')
+    search_fields = ('student__user__username', 'assessment__title')
+    list_filter = ('status',)
