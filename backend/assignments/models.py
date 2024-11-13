@@ -13,7 +13,7 @@ class Assignment(models.Model):
         return self.title
     
 class StudentAssignment(models.Model):
-    student = models.ForeignKey('accounts.Student', on_delete=models.CASCADE, related_name='assignments')
+    student = models.ForeignKey('accounts.Account', on_delete=models.CASCADE, related_name='assignments')
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name='students')
     status = models.CharField(max_length=50)
     submission_datetime = models.DateTimeField()

@@ -1,49 +1,51 @@
+# accounts/models.py
+
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Permission, Group
 from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.translation import gettext_lazy as _
 
-# Create your models here.
+class AccountManager(BaseUserManager):
+    def create_user(self, username, password=None, **extra_fields):
+        if not username:
+            raise ValueError(_('The Username must be set'))
+        user = self.model(username=username, **extra_fields)
+        user.set_password(password)  # Hashes the password
+        user.save()
+        return user
 
-class Staff(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    is_active = models.BooleanField(default=True)
-    email = models.EmailField(max_length=500)
-    username = models.CharField(max_length=100)
-    password = models.CharField(max_length=200)
-    address = models.CharField(max_length=1000)
-    phone = PhoneNumberField(_("Phone number"), blank=True)
-    whatsapp = PhoneNumberField(_("Whatsapp number"), blank=True)
-    role = models.CharField(max_length=50)
+class Account(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(_('Username'), max_length=100, unique=True)
+    first_name = models.CharField(_('First Name'), max_length=100)
+    last_name = models.CharField(_('Last Name'), max_length=100)
+    is_active = models.BooleanField(_('Active'), default=True)
+    email = models.EmailField(_('Email'), blank=True)
+    address = models.CharField(_('Address'), max_length=1000)
+    phone = PhoneNumberField(_('Phone number'), blank=True)
+    whatsapp = PhoneNumberField(_('WhatsApp number'), blank=True)
+    
+    is_approved = models.BooleanField(default=False) # For teachers
+    standard = models.IntegerField(null=True) # For students
+    
+    groups = models.ManyToManyField(
+        Group,
+        related_name="accounts",  
+        blank=True,
+        help_text="The groups this user belongs to.",
+    )
+    
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name="accounts",  
+        blank=True,
+        help_text="Specific permissions for this user.",
+    )
 
-    def __str__(self):
-        return self.username
-    
-class Teacher(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    is_active = models.BooleanField(default=True)
-    email = models.EmailField(max_length=100)
-    username = models.CharField(max_length=50)
-    password = models.CharField(max_length=50)
-    address = models.CharField(max_length=1000)
-    phone = PhoneNumberField(_("Phone number"), blank=True)
-    whatsapp = PhoneNumberField(_("Whatsapp number"), blank=True)
-    
-    def __str__(self):
-        return self.username
-    
-class Student(models.Model): 
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    is_active = models.BooleanField(default=True)
-    email = models.EmailField(max_length=100)
-    username = models.CharField(max_length=50)
-    password = models.CharField(max_length=50)
-    address = models.CharField(max_length=1000)
-    phone = PhoneNumberField(_("Phone number"), blank=True)
-    whatsapp = PhoneNumberField(_("Whatsapp number"), blank=True)
-    standard = models.CharField(max_length=50)
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['first_name', 'email']
+
+    objects = AccountManager()
 
     def __str__(self):
         return self.username
+
