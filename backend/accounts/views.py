@@ -1,9 +1,9 @@
 # accounts/views.py
 
 from rest_framework import viewsets
-from rest_framework.permissions import DjangoModelPermissions
 from .models import Account
-from .serializers import AccountSerializer, CustomTokenObtainPairSerializer
+from rest_framework.permissions import DjangoModelPermissions
+from .serializers import AccountSerializer, CustomTokenObtainPairSerializer, CustomTokenRefreshSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
@@ -18,12 +18,13 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer 
     
     def post(self, request, *args, **kwargs):
+        print(request.data)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         tokens = serializer.validated_data
 
         # Create a response object without including tokens in response data
-        response = Response({"message": "Login successful"})
+        response = Response({"message": "Login successful", "user_id": tokens['user_id'], "username": tokens['username']})
 
         # Set the tokens as HttpOnly cookies
         response.set_cookie(
@@ -31,7 +32,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             value=tokens['access'],
             httponly=True,
             secure=False,  
-            samesite='Lax',  
+            samesite='None',  
             max_age=60 * 15  
         )
         response.set_cookie(
@@ -39,13 +40,15 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             value=tokens['refresh'],
             httponly=True,
             secure=False,  
-            samesite='Lax',
+            samesite='None',
             max_age=60 * 60 * 24  
         )
 
         return response
 
 class CustomTokenRefreshView(TokenRefreshView):
+    serializer_class = CustomTokenRefreshSerializer
+    
     def post(self, request, *args, **kwargs):
         # Extract the refresh token from cookies
         refresh_token = request.COOKIES.get('refresh_token')
@@ -67,7 +70,7 @@ class CustomTokenRefreshView(TokenRefreshView):
             value=access_token,
             httponly=True,
             secure=False,  
-            samesite='Lax',
+            samesite='None',
             max_age=60 * 15  
         )
         return response

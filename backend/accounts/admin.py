@@ -16,7 +16,7 @@ class AccountAdmin(BaseUserAdmin):
             'fields': ('first_name', 'last_name', 'email', 'address', 'phone', 'whatsapp', 'standard'),
         }),
         (_('Permissions'), {
-            'fields': ('is_active', 'is_approved', 'groups', 'user_permissions'),  
+            'fields': ('is_active', 'is_approved', 'is_staff', 'groups', 'user_permissions'),  
         }),
     )
 
