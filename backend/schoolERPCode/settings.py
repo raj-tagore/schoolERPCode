@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-wpfdhp!&ksa8u7kivqw9+8wtn&kanz(*+-)r@gv@p4ypzh#_v-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -41,6 +41,7 @@ SHARED_APPS = (
     'rest_framework',
     'corsheaders',
     'phonenumber_field',
+    'django_extensions',
 )
 
 TENANT_APPS = (
@@ -178,3 +179,15 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+# Redirect HTTP to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# Ensure cookies are sent over HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True

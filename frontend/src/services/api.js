@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const api = axios.create({
-  baseURL: 'http://school1.localhost:8000/',
+  baseURL: 'https://school1.localhost:8000/',
   headers: {
     'Content-Type': 'application/json',
   },

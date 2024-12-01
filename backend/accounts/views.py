@@ -18,7 +18,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer 
     
     def post(self, request, *args, **kwargs):
-        print(request.data)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         tokens = serializer.validated_data
@@ -31,7 +30,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             key='access_token',
             value=tokens['access'],
             httponly=True,
-            secure=False,  
+            secure=True,  
             samesite='None',  
             max_age=60 * 15  
         )
@@ -39,7 +38,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             key='refresh_token',
             value=tokens['refresh'],
             httponly=True,
-            secure=False,  
+            secure=True,  
             samesite='None',
             max_age=60 * 60 * 24  
         )
@@ -69,7 +68,7 @@ class CustomTokenRefreshView(TokenRefreshView):
             key='access_token',
             value=access_token,
             httponly=True,
-            secure=False,  
+            secure=True,  
             samesite='None',
             max_age=60 * 15  
         )
