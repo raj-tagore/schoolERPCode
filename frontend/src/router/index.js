@@ -37,7 +37,7 @@ const router = createRouter({
 // Navigation guard to protect routes
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem('access');
     if (!token) {
       next({ name: 'Login' });
     } else {

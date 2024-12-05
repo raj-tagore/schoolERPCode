@@ -22,12 +22,16 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         serializer.is_valid(raise_exception=True)
         tokens = serializer.validated_data
 
-        # Create a response object without including tokens in response data
-        response = Response({"message": "Login successful", "user_id": tokens['user_id'], "username": tokens['username']})
+        # Send tokens in response body and set as cookies
+        response = Response({"message": "Login successful", 
+                             "user_id": tokens['user_id'], 
+                             "username": tokens['username'],
+                             "type": tokens['type'],
+                             "access": tokens['access'],
+                             "refresh": tokens['refresh']})
 
-        # Set the tokens as HttpOnly cookies
         response.set_cookie(
-            key='access_token',
+            key='access',
             value=tokens['access'],
             httponly=True,
             secure=True,  
@@ -35,7 +39,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             max_age=60 * 15  
         )
         response.set_cookie(
-            key='refresh_token',
+            key='refresh',
             value=tokens['refresh'],
             httponly=True,
             secure=True,  
@@ -49,27 +53,34 @@ class CustomTokenRefreshView(TokenRefreshView):
     serializer_class = CustomTokenRefreshSerializer
     
     def post(self, request, *args, **kwargs):
-        # Extract the refresh token from cookies
-        refresh_token = request.COOKIES.get('refresh_token')
-        if not refresh_token:
+
+        # Extract the refresh token from cookies or auth header
+        refresh = request.COOKIES.get('refresh')
+        if not refresh:
+            refresh = request.data['refresh']
+        if not refresh:
             return Response({"error": "Refresh token not found in cookies"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Manually set the refresh token in request.data to pass it to the serializer
-        request.data['refresh'] = refresh_token
+        request.data['refresh'] = refresh
         serializer = self.get_serializer(data=request.data)
         
         # Validate and create a new access token
         serializer.is_valid(raise_exception=True)
-        access_token = serializer.validated_data['access']
+        access = serializer.validated_data['access']
 
-        # Set the new access token as an HttpOnly cookie
-        response = Response({"message": "Token refreshed successfully"})
+        # Set the new access token as an HttpOnly cookie, and send it back
+        response = Response({"message": "Token refreshed successfully",
+                             "access": access})
+        
         response.set_cookie(
-            key='access_token',
-            value=access_token,
+            key='access',
+            value=access,
             httponly=True,
             secure=True,  
             samesite='None',
             max_age=60 * 15  
         )
+
         return response
+    
