@@ -13,6 +13,7 @@ export default {
 computed: {
     ...mapGetters(['getUser']),
     user() {
+			console.log(this.getUser);
     return this.getUser;
     },
 },
@@ -21,7 +22,7 @@ methods: {
     async logout() {
     try {
         await this.logout();
-        this.$router.push({ name: 'Login' });
+        await this.$router.push({ name: 'Login' });
     } catch (err) {
         console.error(err);
     }

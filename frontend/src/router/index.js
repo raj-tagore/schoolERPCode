@@ -3,6 +3,7 @@ import HomePage from '../components/HomePage.vue';
 import LoginPage from '../components/LoginPage.vue';
 import Register from '../components/RegisterPage.vue';
 import Dashboard from '../components/DashboardPage.vue';
+import store from '@/store';
 
 const routes = [
   {
@@ -37,7 +38,8 @@ const router = createRouter({
 // Navigation guard to protect routes
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    const token = localStorage.getItem('access');
+    const token = store.getters.access;
+		console.log("token", token);
     if (!token) {
       next({ name: 'Login' });
     } else {

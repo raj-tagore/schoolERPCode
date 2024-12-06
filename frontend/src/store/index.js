@@ -44,9 +44,15 @@ export default createStore({
         // set user
         const user_id = response.data.user_id;
         const user_type = response.data.type;
-        const user_response = await api.get(`api/accounts/${user_id}/`);
+
+		let user_fetch_url = `api/accounts/${user_id}/`;
+		if (user_type == "internal") {
+			user_fetch_url = `api/accounts/users/${user_id}/`;
+		}
+        const user_response = await api.get(user_fetch_url);
         const user = user_response.data;
         commit('SET_USER', user, user_type);
+
 
       } catch (error) {
         console.error('Login failed: ', error);

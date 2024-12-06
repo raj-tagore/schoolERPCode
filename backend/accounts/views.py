@@ -3,17 +3,19 @@
 from rest_framework import viewsets
 from .models import Account
 from rest_framework.permissions import DjangoModelPermissions
-from .serializers import AccountSerializer, CustomTokenObtainPairSerializer, CustomTokenRefreshSerializer
+from .serializers import AccountSerializer, CustomTokenObtainPairSerializer, CustomTokenRefreshSerializer, UserSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import status
+from django.contrib.auth.models import User
 
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     permission_classes = [DjangoModelPermissions]   
     
+
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer 
     
@@ -83,4 +85,10 @@ class CustomTokenRefreshView(TokenRefreshView):
         )
 
         return response
-    
+
+# Employee users
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [DjangoModelPermissions]   
