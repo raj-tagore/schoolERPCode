@@ -32,23 +32,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                              "access": tokens['access'],
                              "refresh": tokens['refresh']})
 
-        response.set_cookie(
-            key='access',
-            value=tokens['access'],
-            httponly=True,
-            secure=True,  
-            samesite='None',  
-            max_age=60 * 15  
-        )
-        response.set_cookie(
-            key='refresh',
-            value=tokens['refresh'],
-            httponly=True,
-            secure=True,  
-            samesite='None',
-            max_age=60 * 60 * 24  
-        )
-
         return response
 
 class CustomTokenRefreshView(TokenRefreshView):
@@ -74,15 +57,6 @@ class CustomTokenRefreshView(TokenRefreshView):
         # Set the new access token as an HttpOnly cookie, and send it back
         response = Response({"message": "Token refreshed successfully",
                              "access": access})
-        
-        response.set_cookie(
-            key='access',
-            value=access,
-            httponly=True,
-            secure=True,  
-            samesite='None',
-            max_age=60 * 15  
-        )
 
         return response
 

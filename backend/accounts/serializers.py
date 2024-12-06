@@ -39,7 +39,6 @@ class AccountSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-
 class UserSerializer(serializers.ModelSerializer): 
     class Meta:
         model = User
@@ -52,25 +51,6 @@ class UserSerializer(serializers.ModelSerializer):
             'groups': {'required': False},
             'user_permissions': {'required': False},
         }
-
-    def create(self, validated_data):
-        # Override create to handle password hashing
-        account = User(**validated_data)
-        password = validated_data.pop('password', None)
-        if password:
-            account.set_password(password)
-        account.save()
-        return account
-
-    def update(self, instance, validated_data):
-        # Override update to handle password hashing if password is updated
-        password = validated_data.pop('password', None)
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        if password:
-            instance.set_password(password)
-        instance.save()
-        return instance
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     
