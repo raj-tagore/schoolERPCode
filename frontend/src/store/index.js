@@ -13,18 +13,19 @@ export default createStore({
   
   // synchronous functions to modify state
   mutations: {
-    SET_USER(state, user, type) {
-      state.user = user;
-      state.user_type = type;
+    SET_USER(state, userinfo) {
+      state.user = userinfo.user;
+      state.user_type = userinfo.type;
     },
-    SET_TOKENS(state, access, refresh) {
-      state.access = access;
-      state.refresh = refresh;
-      Cookies.set('access', access);
-      Cookies.set('refresh', refresh);
+    SET_TOKENS(state, tokens) {
+      state.access = tokens.access;
+      state.refresh = tokens.refresh;
+      Cookies.set('access', tokens.access);
+      Cookies.set('refresh', tokens.refresh);
     },
     CLEAR_AUTH(state) {
       state.user = null;
+      state.user_type = null;
       state.access = null;
       state.refresh = null;
       Cookies.remove('access');
@@ -39,7 +40,7 @@ export default createStore({
         const response = await api.post('token/', credentials);
 
         // set tokens
-        commit('SET_TOKENS', response.data.access, response.data.refresh);
+        commit('SET_TOKENS', {access:response.data.access, refresh:response.data.refresh});
         
         // set user
         const user_id = response.data.user_id;
@@ -49,8 +50,7 @@ export default createStore({
           user_fetch_url = `api/accounts/users/${user_id}/`;
         }
         const user_response = await api.get(user_fetch_url);
-        const user = user_response.data;
-        commit('SET_USER', user, user_type);
+        commit('SET_USER', {user:user_response.data, type:user_type});
 
       } catch (error) {
         console.error('Login failed: ', error);
