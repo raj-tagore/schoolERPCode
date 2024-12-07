@@ -2,8 +2,10 @@
 <div>
     <h2>Dashboard</h2>
     <p>Welcome, {{ user.username }}!</p>
-    <button @click="logoutHandler">Logout</button>
-	<a href="/register">Create User</a>
+    <div class="grid">
+        <button @click="logoutHandler">Logout</button>
+        <button href="/register">Create User</button>
+    </div>
 </div>
 </template>
 
