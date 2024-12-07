@@ -3,6 +3,7 @@
     <h2>Dashboard</h2>
     <p>Welcome, {{ user.username }}!</p>
     <button @click="logoutHandler">Logout</button>
+	<a href="/register">Create User</a>
 </div>
 </template>
 

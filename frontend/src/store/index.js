@@ -56,6 +56,18 @@ export default createStore({
         console.error('Login failed: ', error);
       }
     },
+
+    async register(_, profile) {
+      try {
+        const resp = await api.post('api/accounts/', profile);
+		if (!resp.ok) {
+			console.log(resp);
+			throw "Error while registering";
+		}
+      } catch (error) {
+        console.error('Login failed: ', error);
+      }
+    },
     logout({ commit }) {
       commit('CLEAR_AUTH');
     },

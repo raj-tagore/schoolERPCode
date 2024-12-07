@@ -14,7 +14,8 @@ api.interceptors.request.use(
   (config) => {
     const access = store.getters.access;
     if (access) {
-      config.headers['authorization'] = 'Bearer ' + access;
+      config.headers['Authorization'] = 'Bearer ' + access;
+      console.log(config);
     }
     return config;
   },
