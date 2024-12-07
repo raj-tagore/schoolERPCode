@@ -1,7 +1,13 @@
+<style lang="scss">
+@import "@/assets/scss/main.scss";
+</style>
+
 <template>
-  <div id="app">
-    <router-view></router-view>
-  </div>
+  <main class="container">
+    <div id="app">
+      <router-view></router-view>
+    </div>
+  </main>
 </template>
 
 
