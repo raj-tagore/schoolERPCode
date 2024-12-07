@@ -19,7 +19,7 @@ computed: {
 },
 methods: {
     ...mapActions(['logout']),
-    async logout() {
+    async logoutHandler() {
     try {
         await this.logout();
         await this.$router.push({ name: 'Login' });

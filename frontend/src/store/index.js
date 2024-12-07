@@ -59,8 +59,8 @@ export default createStore({
     logout({ commit }) {
       commit('CLEAR_AUTH');
     },
-    refreshTokens({ commit }, access, refresh) {
-      commit('SET_TOKENS', access, refresh);
+    refreshTokens({ commit }, tokens) {
+      commit('SET_TOKENS', tokens);
     }
   },
 

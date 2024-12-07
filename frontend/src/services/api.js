@@ -41,7 +41,7 @@ api.interceptors.response.use(
         // refresh token is available
         try {
           const response = await axios.post('token/refresh', {refresh: refresh,});
-          store.dispatch('refreshTokens', response.data.access, response.data.refresh);
+          store.dispatch('refreshTokens', {access: response.data.access, refresh: response.data.refresh});
           original_request.headers['Authorization'] = 'Bearer ' + response.data.access;
           return api(original_request);
         } catch (refresh_error) {
