@@ -2,7 +2,7 @@
 <div>
     <h2>Dashboard</h2>
     <p>Welcome, {{ user.username }}!</p>
-    <button @click="logout">Logout</button>
+    <button @click="logoutHandler">Logout</button>
 </div>
 </template>
 
