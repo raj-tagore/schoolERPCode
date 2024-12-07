@@ -58,7 +58,6 @@ export default createStore({
     },
     logout({ commit }) {
       commit('CLEAR_AUTH');
-      window.location.href = '/login';
     },
     refreshTokens({ commit }, access, refresh) {
       commit('SET_TOKENS', access, refresh);
