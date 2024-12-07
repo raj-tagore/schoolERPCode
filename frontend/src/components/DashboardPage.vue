@@ -4,10 +4,16 @@
 		<p>Welcome, {{ user.username }}!</p>
 	</hgroup>
 	<div class="grid">
-		<button @click="logoutHandler">Logout</button>
+		<button class="extra_padding" @click="logoutHandler">Logout</button>
 		<a href="/register">Create User</a>
 	</div>
 </template>
+
+<style>
+.extra_padding {
+	padding: 10px;
+}
+</style>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
