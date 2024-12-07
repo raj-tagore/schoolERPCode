@@ -1,10 +1,12 @@
 <template>
-<div>
-    <h2>Dashboard</h2>
-    <p>Welcome, {{ user.username }}!</p>
-    <button @click="logoutHandler">Logout</button>
-	<a href="/register">Create User</a>
-</div>
+	<hgroup>
+		<h1>Dashboard</h1>
+		<p>Welcome, {{ user.username }}!</p>
+	</hgroup>
+	<div class="grid">
+		<button @click="logoutHandler">Logout</button>
+		<a href="/register">Create User</a>
+	</div>
 </template>
 
 <script>
