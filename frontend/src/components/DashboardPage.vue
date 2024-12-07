@@ -21,8 +21,8 @@ methods: {
     ...mapActions(['logout']),
     async logoutHandler() {
     try {
-        await this.logout();
         await this.$router.push({ name: 'Login' });
+        await this.logout();
     } catch (err) {
         console.error(err);
     }
