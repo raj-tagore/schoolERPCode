@@ -84,5 +84,7 @@ export default createStore({
     access: state => state.access,
     refresh: state => state.refresh,
   },
-  plugins: [createPersistedState()],
+  plugins: [createPersistedState({
+    paths: ['access', 'refresh']
+  })],
 })
