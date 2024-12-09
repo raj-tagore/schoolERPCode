@@ -2,19 +2,18 @@ from rest_framework.permissions import BasePermission
 
 class AccountObjectPermissions(BasePermission):
     def has_object_permission(self, request, view, obj):
-        print("Checking Permissions")
         user = request.user
 
-        if user.groups.filter(name='Admin').exists() or user.is_staff:
+        # If Admin or is_staff
+        if user.groups.filter(name='Admin').exists():
             return True
-        print("Not Admin")
 
+        # If Staff
         if user.groups.filter(name='Staff').exists() and not obj.groups.filter(name='Admin').exists():
             return True
-        print("Not Staff")
 
         if user.groups.filter(name='Teacher').exists():
-            print("Is Teacher")
+            # Is Teacher
             leading_classes = user.classrooms_leading.all()
             assisting_classes = user.classrooms_assisting.all()
             obj_classes = obj.classrooms.all()
@@ -24,6 +23,6 @@ class AccountObjectPermissions(BasePermission):
                 or assisting_classes.intersection(obj_classes).exists()
             )
 
-        print("Not Teacher")
+        # Not teacher
         return user.username == obj.username
 
