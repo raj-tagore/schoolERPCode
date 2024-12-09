@@ -1,6 +1,6 @@
-from rest_framework.permissions import DjangoModelPermissions
+from rest_framework.permissions import BasePermission
 
-class AccountViewSetPermissions(DjangoModelPermissions):
+class AccountObjectPermissions(BasePermission):
     def has_object_permission(self, request, view, obj):
         print("Checking Permissions")
         user = request.user
