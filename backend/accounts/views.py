@@ -9,11 +9,12 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
+from .permisssions import AccountViewSetPermissions
 
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
-    permission_classes = [DjangoModelPermissions]   
+    permission_classes = [AccountViewSetPermissions]
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
