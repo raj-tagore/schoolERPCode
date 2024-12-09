@@ -23,6 +23,7 @@ from accounts.views import CustomTokenObtainPairView, CustomTokenRefreshView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/', include('accounts.urls')),
+    path('api/announcements/', include('announcements.urls')),
     path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
 ]
