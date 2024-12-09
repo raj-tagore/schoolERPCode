@@ -5,7 +5,7 @@ class AccountObjectPermissions(BasePermission):
         user = request.user
 
         # If Admin or is_staff
-        if user.groups.filter(name='Admin').exists():
+        if user.groups.filter(name='Admin').exists() or request.user.is_staff:
             return True
 
         # If Staff
