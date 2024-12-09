@@ -3,7 +3,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Permission, Group
 from phonenumber_field.modelfields import PhoneNumberField
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _mod
 
 class AccountManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
@@ -15,20 +15,20 @@ class AccountManager(BaseUserManager):
         return user
 
 class Account(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(_('Username'), max_length=100, unique=True)
-    first_name = models.CharField(_('First Name'), max_length=100, blank=True)
-    last_name = models.CharField(_('Last Name'), max_length=100, blank=True)
-    is_active = models.BooleanField(_('Active'), default=True)
-    email = models.EmailField(_('Email'), blank=True)
-    address = models.CharField(_('Address'), max_length=1000, blank=True)
-    phone = PhoneNumberField(_('Phone number'), blank=True)
-    whatsapp = PhoneNumberField(_('WhatsApp number'), blank=True)
+    username = models.CharField('Username', max_length=100, unique=True)
+    first_name = models.CharField('First Name', max_length=100, blank=True)
+    last_name = models.CharField('Last Name', max_length=100, blank=True)
+    is_active = models.BooleanField('Active', default=True)
+    email = models.EmailField('Email', blank=True)
+    address = models.CharField('Address', max_length=1000, blank=True)
+    phone = PhoneNumberField('Phone number', blank=True)
+    whatsapp = PhoneNumberField('WhatsApp number', blank=True)
     
     is_approved = models.BooleanField(default=False) # For teachers
     is_staff = models.BooleanField(
-        _('staff status'),
+        'staff status',
         default=False,
-        help_text=_('Designates whether the user is a staff member.'),
+        help_text='Designates whether the user is a staff member.',
     )
     standard = models.IntegerField(null=True) # For students
     
@@ -46,7 +46,6 @@ class Account(AbstractBaseUser, PermissionsMixin):
         help_text="Specific permissions for this user.",
     )
 
-    USERNAME_FIELD = 'username'
 
     objects = AccountManager()
 
