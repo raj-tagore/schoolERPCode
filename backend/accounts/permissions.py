@@ -4,11 +4,11 @@ class AccountObjectPermissions(BasePermission):
     def has_object_permission(self, request, view, obj):
         user = request.user
 
-        # If Admin or is_staff
-        if user.groups.filter(name='Admin').exists():
+        # If Admin or is_staff (denotes internal staff)
+        if user.groups.filter(name='Admin').exists() or user.is_staff:
             return True
-
-        # If Staff
+        
+        # If Staff (external staff)
         if user.groups.filter(name='Staff').exists() and not obj.groups.filter(name='Admin').exists():
             return True
 

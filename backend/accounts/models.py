@@ -23,6 +23,8 @@ class Account(AbstractBaseUser, PermissionsMixin):
     address = models.CharField('Address', max_length=1000, blank=True)
     phone = PhoneNumberField('Phone number', blank=True)
     whatsapp = PhoneNumberField('WhatsApp number', blank=True)
+
+    USERNAME_FIELD = 'username'
     
     is_approved = models.BooleanField(default=False) # For teachers
     is_staff = models.BooleanField(
