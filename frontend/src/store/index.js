@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import api from '../services/api';
+import api from '@/services/api';
 import Cookies from 'js-cookie';
 import createPersistedState from 'vuex-persistedstate';
 
@@ -10,8 +10,6 @@ export default createStore({
     access: null,
     refresh: null,
   },
-  
-  // synchronous functions to modify state
   mutations: {
     SET_USER(state, userinfo) {
       state.user = userinfo.user;
@@ -32,41 +30,26 @@ export default createStore({
       Cookies.remove('refresh');
     }
   },
-
-  // async functions to do mutations
   actions: {
     async login({ commit }, credentials) {
-      try {
-        const response = await api.post('token/', credentials);
+      const response = await api.post('token/', credentials);
+      commit('SET_TOKENS', { access: response.data.access, refresh: response.data.refresh });
 
-        // set tokens
-        commit('SET_TOKENS', {access:response.data.access, refresh:response.data.refresh});
-        
-        // set user
-        const user_id = response.data.user_id;
-        const user_type = response.data.type;
-        let user_fetch_url = `api/accounts/${user_id}/`;
-        if (user_type == "internal") {
-          user_fetch_url = `api/accounts/users/${user_id}/`;
-        }
-        const user_response = await api.get(user_fetch_url);
-        commit('SET_USER', {user:user_response.data, type:user_type});
-
-      } catch (error) {
-        console.error('Login failed: ', error);
+      const user_id = response.data.user_id;
+      const user_type = response.data.type;
+      let user_fetch_url = `api/accounts/${user_id}/`;
+      if (user_type == "internal") {
+        user_fetch_url = `api/accounts/users/${user_id}/`;
       }
+      const user_response = await api.get(user_fetch_url);
+      commit('SET_USER', { user: user_response.data, type: user_type });
     },
-
     async register(_, profile) {
-      try {
-        const resp = await api.post('api/accounts/', profile);
-		if (!resp.ok) {
-			console.log(resp);
-			throw "Error while registering";
-		}
-      } catch (error) {
-        console.error('Login failed: ', error);
+      const resp = await api.post('api/accounts/', profile);
+      if (!resp || resp.status !== 201) {
+        throw new Error("Registration failed");
       }
+      return true;
     },
     logout({ commit }) {
       commit('CLEAR_AUTH');
@@ -75,8 +58,6 @@ export default createStore({
       commit('SET_TOKENS', tokens);
     }
   },
-
-  // computations on state
   getters: {
     isAuth: state => !!state.access,
     getUser: state => state.user,
@@ -87,4 +68,4 @@ export default createStore({
   plugins: [createPersistedState({
     paths: ['access', 'refresh']
   })],
-})
+});

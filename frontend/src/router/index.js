@@ -1,34 +1,58 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomePage from '../components/HomePage.vue';
-import LoginPage from '../components/LoginPage.vue';
-import Register from '../components/RegisterPage.vue';
-import Dashboard from '../components/DashboardPage.vue';
 import store from '@/store';
+
+// Layouts
+import DashboardLayout from '@/layouts/DashboardLayout.vue';
+import EmptyLayout from '@/layouts/EmptyLayout.vue';
+
+// Pages
+import HomePage from '@/components/HomePage.vue';
+import LoginPage from '@/components/LoginPage.vue';
+import RegisterPage from '@/components/RegisterPage.vue';
+import DashboardPage from '@/components/DashboardPage.vue';
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: HomePage,
+    // No meta required, no layout special requirements
   },
   {
     path: '/login',
-    name: 'Login',
-    component: LoginPage,
+    component: EmptyLayout,
+    children: [
+      {
+        path: '',
+        name: 'Login',
+        component: LoginPage,
+      },
+    ],
   },
   {
     path: '/register',
-    name: 'Register',
-    component: Register,
-    meta: { requiresAuth: true },
+    component: EmptyLayout,
+    children: [
+      {
+        path: '',
+        name: 'Register',
+        component: RegisterPage,
+        meta: { requiresAuth: true },
+      },
+    ],
   },
   {
     path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard,
-    meta: { requiresAuth: true },
-  },
-  // Add more routes as needed
+    component: DashboardLayout,
+    children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        component: DashboardPage,
+        meta: { requiresAuth: true },
+      },
+    ],
+  }
 ];
 
 const router = createRouter({
@@ -36,18 +60,15 @@ const router = createRouter({
   routes,
 });
 
-// Navigation guard to protect routes
+// Navigation guard
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     const token = store.getters.access;
     if (!token) {
-      next({ name: 'Login' });
-    } else {
-      next();
+      return next({ name: 'Login' });
     }
-  } else {
-    next();
   }
+  next();
 });
 
 export default router;
