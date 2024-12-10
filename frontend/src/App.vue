@@ -1,7 +1,3 @@
-<style lang="scss">
-@import "@/assets/scss/main.scss";
-</style>
-
 <template>
   <header>
     <div class="container">
@@ -102,8 +98,13 @@ header > .container {
 </style>
 
 <script>
+
 export default {
   name: 'App',
+
+  data: () => ({
+    //
+  }),
 }
 </script>
 <script setup>
