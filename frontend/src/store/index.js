@@ -5,7 +5,7 @@ import createPersistedState from 'vuex-persistedstate';
 
 export default createStore({
   state: {
-    user: null,
+    user: "guest",
     user_type: null,
     access: null,
     refresh: null,
@@ -22,7 +22,7 @@ export default createStore({
       Cookies.set('refresh', tokens.refresh);
     },
     CLEAR_AUTH(state) {
-      state.user = null;
+      state.user = "guest";
       state.user_type = null;
       state.access = null;
       state.refresh = null;
