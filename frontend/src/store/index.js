@@ -74,6 +74,6 @@ export default createStore({
     refresh: state => state.refresh,
   },
   plugins: [createPersistedState({
-    paths: ['access', 'refresh']
+    paths: ['access', 'refresh', 'user', 'user_type'],
   })],
 });

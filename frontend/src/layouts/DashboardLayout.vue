@@ -2,11 +2,22 @@
   <v-app>
     <v-navigation-drawer app v-model="drawer" color="grey lighten-4">
       <v-list dense>
+        <v-list-item>
+          <h3>
+						{{ user.first_name }} {{ user.last_name}}
+          </h3>
+          <span>
+            {{userType}}
+          </span>
+        </v-list-item>
         <v-list-item to="/dashboard">
           <v-list-item-title>Dashboard</v-list-item-title>
         </v-list-item>
         <v-list-item to="/register">
           <v-list-item-title>Create User</v-list-item-title>
+        </v-list-item>
+        <v-list-item to="/announcement/create">
+          <v-list-item-title>Create Announcements</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -30,7 +41,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -43,6 +54,15 @@ export default {
     logoutHandler() {
       this.$router.push({ name: 'Login' });
       this.logout();
+    },
+  },
+  computed: {
+    ...mapGetters(['getUser', 'getUserType']),
+    user() {
+      return this.getUser;
+    },
+    userType() {
+      return this.getUserType;
     },
   },
 };

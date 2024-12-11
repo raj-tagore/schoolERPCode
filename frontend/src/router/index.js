@@ -55,7 +55,7 @@ const routes = [
     ],
   },
   {
-    path: '/create/announcement',
+    path: '/announcement/create',
     component: DashboardLayout,
     children: [
       {
