@@ -23,7 +23,7 @@
         <v-list-item to="/register">
           <v-list-item-title>Create User</v-list-item-title>
         </v-list-item>
-        <v-list-item to="/announcement/create">
+        <v-list-item to="/announcement">
           <v-list-item-title>Create Announcements</v-list-item-title>
         </v-list-item>
       </v-list>

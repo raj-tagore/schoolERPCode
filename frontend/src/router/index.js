@@ -12,6 +12,15 @@ import RegisterPage from '@/components/RegisterPage.vue';
 import DashboardPage from '@/components/DashboardPage.vue';
 import Announcement from '@/components/AnnouncementPage.vue';
 import CreateAnnouncement from '@/components/CreateAnnouncementPage.vue';
+import Classroom from '@/components/ClassroomPage.vue';
+import CreateClassroom from '@/components/CreateClassroomPage.vue';
+import Subject from '@/components/SubjectPage.vue';
+import CreateSubject from '@/components/CreateSubjectPage.vue';
+import Assessment from '@/components/AssessmentPage.vue';
+import CreateAssessment from '@/components/CreateAssessmentPage.vue';
+import Assignment from '@/components/AssignmentPage.vue';
+import CreateAssignment from '@/components/CreateAssignmentPage.vue';
+import Attendance from '@/components/AssignmentPage.vue';
 
 const routes = [
   {
@@ -71,6 +80,90 @@ const routes = [
         component: CreateAnnouncement,
         meta: { requiresAuth: true },
       }
+    ],
+  },
+  {
+    path: '/classroom',
+    component: DashboardLayout,
+    children: [
+      {
+        path: '',
+        name: 'Classroom',
+        component: Classroom,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'create',
+        name: 'CreateClassroom',
+        component: CreateClassroom,
+        meta: { requiresAuth: true },
+      }
+    ],
+  },
+  {
+    path: '/subject',
+    component: DashboardLayout,
+    children: [
+      {
+        path: '',
+        name: 'Subject',
+        component: Subject,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'create',
+        name: 'CreateSubject',
+        component: CreateSubject,
+        meta: { requiresAuth: true },
+      }
+    ],
+  },
+  {
+    path: '/assessment',
+    component: DashboardLayout,
+    children: [
+      {
+        path: '',
+        name: 'Assessment',
+        component: Assessment,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'create',
+        name: 'CreateAssessment',
+        component: CreateAssessment,
+        meta: { requiresAuth: true },
+      }
+    ],
+  },
+  {
+    path: '/assignment',
+    component: DashboardLayout,
+    children: [
+      {
+        path: '',
+        name: 'Assignment',
+        component: Assignment,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'create',
+        name: 'CreateAssignment',
+        component: CreateAssignment,
+        meta: { requiresAuth: true },
+      }
+    ],
+  },
+  {
+    path: '/attendance',
+    component: DashboardLayout,
+    children: [
+      {
+        path: '',
+        name: 'Attendance',
+        component: Attendance,
+        meta: { requiresAuth: true },
+      },
     ],
   }
 
