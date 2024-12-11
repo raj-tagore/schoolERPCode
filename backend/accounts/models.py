@@ -32,7 +32,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
         default=False,
         help_text='Designates whether the user is a staff member.',
     )
-    standard = models.IntegerField(null=True) # For students
+    standard = models.IntegerField(null=True, blank=True) # For students
     
     groups = models.ManyToManyField(
         Group,
