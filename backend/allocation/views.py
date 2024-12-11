@@ -7,13 +7,11 @@ from accounts.authentication import CookieJWTAuthentication
 class ClassroomViewSet(viewsets.ModelViewSet):
     queryset = Classroom.objects.all()
     serializer_class = ClassroomSerializer
-    authentication_classes = [CookieJWTAuthentication]
-    permission_classes = [IsAuthenticated, DjangoModelPermissions]
+    permission_classes = [DjangoModelPermissions]
     
 class SubjectViewSet(viewsets.ModelViewSet):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
-    authentication_classes = [CookieJWTAuthentication]
-    permission_classes = [IsAuthenticated, DjangoModelPermissions]
+    permission_classes = [DjangoModelPermissions]
 
 

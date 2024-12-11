@@ -9,16 +9,16 @@ class ClassroomSerializer(serializers.ModelSerializer):
     # Fields for write operations
     students = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Account.objects.filter(group='Student'),
+        queryset=Account.objects.filter(groups__name='Student'),
         required=False
     )
     class_teacher = serializers.PrimaryKeyRelatedField(
-        queryset=Account.objects.filter(group='Teacher'),
+        queryset=Account.objects.filter(groups__name='Teacher'),
         required=False
     )
     other_teachers = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Account.objects.filter(group='Teacher'),
+        queryset=Account.objects.filter(groups__name='Teacher'),
         required=False
     )
 
@@ -52,7 +52,7 @@ class ClassroomSerializer(serializers.ModelSerializer):
             instance.students.set(students)
         if other_teachers is not None:
             instance.other_teachers.set(other_teachers)
-        return instance
+        return instance 
 
 class SubjectSerializer(serializers.ModelSerializer):
     classroom = serializers.PrimaryKeyRelatedField(
@@ -60,17 +60,17 @@ class SubjectSerializer(serializers.ModelSerializer):
         required=False
     )
     main_teacher = serializers.PrimaryKeyRelatedField(
-        queryset=Account.objects.filter(group='Teacher'),
+        queryset=Account.objects.filter(groups__name='Teacher'),
         required=False
     )
     other_teachers = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Account.objects.filter(group='Teacher'),
+        queryset=Account.objects.filter(groups__name='Teacher'),
         required=False
     )
     additional_students = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Account.objects.filter(group='Student'),
+        queryset=Account.objects.filter(groups__name='Student'),
         required=False
     )
 

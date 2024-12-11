@@ -5,7 +5,6 @@ from .models import Account
 from rest_framework.permissions import DjangoModelPermissions
 from .serializers import AccountSerializer, CustomTokenObtainPairSerializer, CustomTokenRefreshSerializer, UserSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
