@@ -56,6 +56,14 @@ export default createStore({
     },
     refreshTokens({ commit }, tokens) {
       commit('SET_TOKENS', tokens);
+    },
+    async createAnnouncement(_, announcement) {
+      console.log(announcement)
+      const resp = await api.post('api/announcements/', announcement);
+      if (!resp || !resp.ok) {
+        throw new Error("Failed to create announcement");
+      }
+      return true;
     }
   },
   getters: {
