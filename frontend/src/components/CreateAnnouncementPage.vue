@@ -10,12 +10,17 @@
 					<v-text-field v-model="description" label="Description" required outlined></v-text-field>
 					<v-date-input v-model="release_date" label="Release Date" required outlined></v-date-input>
 					<v-date-input v-model="expiry_date" label="Expiry Date" required outlined></v-date-input>
+					<v-select v-model="priority" :item-props="itemProps" label="Priority" :items="['low', 'medium', 'high']" required outlined></v-select>
 					<v-btn color="primary" type="submit" class="mt-4">Create Announcement</v-btn>
 				</v-form>
 			</v-container>
 		</v-main>
 	</v-app>
 </template>
+
+<script setup>
+const itemProps = (item) => ({title: item.charAt(0).toUpperCase() + item.slice(1) + " Priority"})
+</script>
 
 <script>
 import { mapActions } from 'vuex';
@@ -27,6 +32,7 @@ export default {
 			description: '',
 			release_date: Date.now(),
 			expiry_date: new Date(Date.now() + (24 * 60 * 60 * 1000)),
+			priority: 'low',
 		};
 	},
 	methods: {
