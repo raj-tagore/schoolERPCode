@@ -22,25 +22,17 @@
         <v-list-item to="/register">
           <v-list-item-title>Create User</v-list-item-title>
         </v-list-item>
-
-        <!-- Announcements Toggle -->
-        <v-list-item @click="announcementsOpen = !announcementsOpen" class="cursor-pointer">
-          <v-list-item-title>Announcements</v-list-item-title>
-          <v-spacer></v-spacer>
-          <v-icon>{{ announcementsOpen ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-        </v-list-item>
-
-        <!-- Nested Items (Shown/Hidden with v-expand-transition) -->
-        <v-expand-transition>
-          <div v-if="announcementsOpen" style="padding-left: 24px;">
-            <v-list-item to="/announcement">
+        <ExpandableListItem title="Announcements">
+          <v-list dense>
+            <v-list-item to="/announcements">
               <v-list-item-title>View Announcements</v-list-item-title>
             </v-list-item>
-            <v-list-item to="/announcement/create">
+            <v-list-item to="/announcements/create">
               <v-list-item-title>Create Announcement</v-list-item-title>
             </v-list-item>
-          </div>
-        </v-expand-transition>
+          </v-list>
+        </ExpandableListItem>
+
 
       </v-list>
     </v-navigation-drawer>
@@ -67,6 +59,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
+import ExpandableListItem from '@/components/c-expandable-list-item.vue';
+
 export default {
   data() {
     return {
@@ -89,6 +83,9 @@ export default {
     userType() {
       return this.getUserType;
     },
+  },
+  components: {
+	ExpandableListItem,
   },
 };
 </script>
