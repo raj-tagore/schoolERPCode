@@ -24,10 +24,10 @@
         </v-list-item>
         <ExpandableListItem title="Announcements">
           <v-list dense>
-            <v-list-item to="/announcements">
+            <v-list-item to="/announcement">
               <v-list-item-title>View Announcements</v-list-item-title>
             </v-list-item>
-            <v-list-item to="/announcements/create">
+            <v-list-item to="/announcement/create">
               <v-list-item-title>Create Announcement</v-list-item-title>
             </v-list-item>
           </v-list>
