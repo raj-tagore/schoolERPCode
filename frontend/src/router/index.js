@@ -10,6 +10,7 @@ import HomePage from '@/components/HomePage.vue';
 import LoginPage from '@/components/LoginPage.vue';
 import RegisterPage from '@/components/RegisterPage.vue';
 import DashboardPage from '@/components/DashboardPage.vue';
+import Announcement from '@/components/AnnouncementPage.vue';
 import CreateAnnouncement from '@/components/CreateAnnouncementPage.vue';
 
 const routes = [
@@ -55,17 +56,24 @@ const routes = [
     ],
   },
   {
-    path: '/announcement/create',
+    path: '/announcement',
     component: DashboardLayout,
     children: [
       {
         path: '',
+        name: 'Announcement',
+        component: Announcement,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'create',
         name: 'CreateAnnouncement',
         component: CreateAnnouncement,
         meta: { requiresAuth: true },
-      },
+      }
     ],
   }
+
 ];
 
 const router = createRouter({
