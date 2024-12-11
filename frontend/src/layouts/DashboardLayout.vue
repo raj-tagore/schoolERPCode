@@ -4,12 +4,19 @@
       <v-list dense>
         <v-list-item>
           <h3>
-						{{ user.first_name }} {{ user.last_name}}
+            {{ user.first_name }} {{ user.last_name}}
           </h3>
+          <h4>
+            {{ user.username }}
+          </h4>
           <span>
             {{userType}}
           </span>
         </v-list-item>
+        <v-divider
+          :thickness="10"
+          class="border-opacity-100"
+        ></v-divider>
         <v-list-item to="/dashboard">
           <v-list-item-title>Dashboard</v-list-item-title>
         </v-list-item>
