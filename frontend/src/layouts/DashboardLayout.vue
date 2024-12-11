@@ -23,11 +23,14 @@
         <v-list-item to="/register">
           <v-list-item-title>Create User</v-list-item-title>
         </v-list-item>
-        <v-list-item to="/announcement">
-          <v-list-item-title>Create Announcements</v-list-item-title>
-        </v-list-item>
+
+          <v-list-item to="/announcement">
+            <v-list-item-title>Announcements</v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/announcement/create">
+            <v-list-item-title>Create Announcement</v-list-item-title>
+          </v-list-item>
       </v-list>
-    </v-navigation-drawer>
 
     <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
