@@ -26,12 +26,10 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'username'
     
-    is_approved = models.BooleanField(default=False) # For teachers
-    is_staff = models.BooleanField(
-        'staff status',
-        default=False,
-        help_text='Designates whether the user is a staff member.',
-    )
+    is_approved = models.BooleanField(default=False) 
+    is_superuser = models.BooleanField(default=False) 
+    is_staff = models.BooleanField('staff status', default=False)
+    
     standard = models.IntegerField(null=True, blank=True) # For students
     
     groups = models.ManyToManyField(

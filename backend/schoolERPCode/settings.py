@@ -52,6 +52,7 @@ TENANT_APPS = (
     'assignments',
     'attachments',
     'attendance',
+    'guardian',
 )
     
 
@@ -158,8 +159,10 @@ DATABASE_ROUTERS = (
 AUTHENTICATION_BACKENDS = [
     'accounts.backends.AccountsAuthBackend',     
     'django.contrib.auth.backends.ModelBackend',  
+    'guardian.backends.ObjectPermissionBackend',
 ]
 
+GUARDIAN_CHECK_PERMISSIONS_IGNORING_OBJECTS = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

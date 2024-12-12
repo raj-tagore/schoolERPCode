@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h1>
-			Announcement Page
+			Classroom
 		</h1>
 	</div>
 	<span>
