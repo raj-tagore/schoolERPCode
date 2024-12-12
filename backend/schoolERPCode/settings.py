@@ -156,12 +156,13 @@ DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
 
-AUTHENTICATION_BACKENDS = [
-    'accounts.backends.AccountsAuthBackend',     
-    'django.contrib.auth.backends.ModelBackend',  
+AUTHENTICATION_BACKENDS = [      
+    'accounts.backends.CustomUserBackend',
+    'django.contrib.auth.backends.ModelBackend',
     'guardian.backends.ObjectPermissionBackend',
 ]
 
+AUTH_USER_MODEL = 'accounts.Account'
 GUARDIAN_CHECK_PERMISSIONS_IGNORING_OBJECTS = True
 
 REST_FRAMEWORK = {
@@ -170,8 +171,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.DjangoModelPermissions',
+        'rest_framework.permissions.DjangoObjectPermissions',
     ),
 }
 

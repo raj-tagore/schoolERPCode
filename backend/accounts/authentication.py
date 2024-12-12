@@ -1,6 +1,6 @@
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import AuthenticationFailed, InvalidToken
-from django.contrib.auth.models import User
+from tenants.models import CustomUser
 from accounts.models import Account
 
 class CookieJWTAuthentication(JWTAuthentication):
@@ -10,7 +10,7 @@ class CookieJWTAuthentication(JWTAuthentication):
         # Get user type
         type = validated_token.get('type')
         if type == 'internal':
-            user_model = User
+            user_model = CustomUser
         elif type == 'external':
             user_model = Account
         else:

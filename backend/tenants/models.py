@@ -1,5 +1,9 @@
 from django.db import models
 from django_tenants.models import TenantMixin, DomainMixin
+from django.contrib.auth.models import AbstractUser
+
+class CustomUser(AbstractUser):
+    pass
 
 # Create your models here.
 class School(TenantMixin):

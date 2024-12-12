@@ -1,19 +1,19 @@
-from django.contrib.auth.backends import ModelBackend
-from .models import Account  
-from django.db.utils import ProgrammingError
+from django.contrib.auth.backends import BaseBackend
+from tenants.models import CustomUser 
 
-class AccountsAuthBackend(ModelBackend):
+# custom backend to enable logging in to admin using CustomUser
+class CustomUserBackend(BaseBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
-            user = Account.objects.get(username=username)  
-            if user.check_password(password):  
+            # Authenticate using CustomUser
+            user = CustomUser.objects.get(username=username)
+            if user.check_password(password):  # Ensure passwords are hashed and checked properly
                 return user
-        except Account.DoesNotExist:
+        except CustomUser.DoesNotExist:
             return None
-        except ProgrammingError as e:
-            print("Database error in CustomModelBackend:", e)
+
+    def get_user(self, user_id):
+        try:
+            return CustomUser.objects.get(pk=user_id)
+        except CustomUser.DoesNotExist:
             return None
-        except Exception as e:
-            print("Unexpected error in CustomModelBackend:", e)
-            return None
-        return None 

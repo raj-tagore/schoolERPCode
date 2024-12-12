@@ -8,5 +8,4 @@ from rest_framework.permissions import DjangoModelPermissions
 class AnnouncementViewSet(viewsets.ModelViewSet):
     queryset = Announcement.objects.all()
     serializer_class = AnnouncementSerializer
-    permission_classes = [DjangoModelPermissions]
 

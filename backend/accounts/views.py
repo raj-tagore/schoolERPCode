@@ -2,19 +2,19 @@
 
 from rest_framework import viewsets
 from .models import Account
-from rest_framework.permissions import DjangoModelPermissions
-from .serializers import AccountSerializer, CustomTokenObtainPairSerializer, CustomTokenRefreshSerializer, UserSerializer
+from tenants.models import CustomUser
+from .serializers import AccountSerializer, CustomUserSerializer, CustomTokenObtainPairSerializer, CustomTokenRefreshSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth.models import User
-from .permissions import AccountObjectPermissions
 
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
-    permission_classes = [AccountObjectPermissions, DjangoModelPermissions]
 
+class CustomUserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer 
@@ -54,15 +54,8 @@ class CustomTokenRefreshView(TokenRefreshView):
         serializer.is_valid(raise_exception=True)
         access = serializer.validated_data['access']
 
-        # Set the new access token as an HttpOnly cookie, and send it back
+        # Set the new access token and send it back
         response = Response({"message": "Token refreshed successfully",
                              "access": access})
 
-        return response
-
-# Employee users
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [DjangoModelPermissions]   
+        return response 
