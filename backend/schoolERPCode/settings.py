@@ -166,7 +166,6 @@ AUTH_USER_MODEL = 'tenants.CustomUser'
 ANONYMOUS_USER_ID = -1
 GUARDIAN_CHECK_PERMISSIONS_IGNORING_OBJECTS = True
 GUARDIAN_MONKEY_PATCH = False
-GUARDIAN_USER_OBJ_PERMS_MODEL = 'accounts.Account'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -175,7 +174,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.DjangoModelPermissions',
+        'rest_framework.permissions.DjangoObjectPermissions',
     ),
 }
 
