@@ -163,6 +163,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AUTH_USER_MODEL = 'accounts.Account'
+
+ANONYMOUS_USER_ID = -1
 GUARDIAN_CHECK_PERMISSIONS_IGNORING_OBJECTS = True
 
 REST_FRAMEWORK = {
@@ -171,7 +173,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.DjangoObjectPermissions',
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.DjangoModelPermissions',
     ),
 }
 
