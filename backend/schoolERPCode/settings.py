@@ -156,16 +156,17 @@ DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
 
-AUTHENTICATION_BACKENDS = [      
+AUTHENTICATION_BACKENDS = [ 
     'accounts.backends.CustomUserBackend',
     'django.contrib.auth.backends.ModelBackend',
     'guardian.backends.ObjectPermissionBackend',
 ]
 
-AUTH_USER_MODEL = 'accounts.Account'
-
+AUTH_USER_MODEL = 'tenants.CustomUser'
 ANONYMOUS_USER_ID = -1
 GUARDIAN_CHECK_PERMISSIONS_IGNORING_OBJECTS = True
+GUARDIAN_MONKEY_PATCH = False
+GUARDIAN_USER_OBJ_PERMS_MODEL = 'accounts.Account'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
