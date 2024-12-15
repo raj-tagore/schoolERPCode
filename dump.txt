@@ -3,3 +3,10 @@
 python manage.py runserver_plus --cert-file ../../ssl/wildcard.local.crt --key-file ../../ssl/wildcard.local.key --verbosity 2
 
 python manage.py runserver_plus --cert-file ../../ssl/localhost.crt --key-file ../../ssl/localhost.key --verbosity 2
+
+
+# Remove migrations
+
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+
+python manage.py migrate --fake zero

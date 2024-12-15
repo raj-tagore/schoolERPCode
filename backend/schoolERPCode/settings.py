@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 SHARED_APPS = (
     'django_tenants',
     'tenants',
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,12 +41,10 @@ SHARED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'phonenumber_field',
     'django_extensions',
 )
 
 TENANT_APPS = (
-    'accounts',
     'allocation',
     'announcements',
     'assessments',
@@ -157,26 +156,35 @@ DATABASE_ROUTERS = (
 )
 
 AUTHENTICATION_BACKENDS = [ 
-    'accounts.backends.CustomUserBackend',
+    'accounts.backends.TenantAwareAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
     'guardian.backends.ObjectPermissionBackend',
 ]
 
-AUTH_USER_MODEL = 'tenants.CustomUser'
+AUTH_USER_MODEL = 'accounts.Account'
 ANONYMOUS_USER_ID = -1
 GUARDIAN_CHECK_PERMISSIONS_IGNORING_OBJECTS = True
-GUARDIAN_MONKEY_PATCH = False
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'accounts.authentication.CookieJWTAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.DjangoObjectPermissions',
+        'rest_framework.permissions.DjangoModelPermissions',
     ),
 }
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
 
 # To allow vue frontend to make api requests
 CORS_ALLOWED_ORIGINS = [

@@ -1,22 +1,18 @@
 from django.contrib.auth.backends import BaseBackend
-from .models import Account 
-from django.db import ProgrammingError
+from .models import Account
+from django.core.exceptions import PermissionDenied
+from django.http import Http404
+from rest_framework.exceptions import AuthenticationFailed
 
-# custom backend to enable logging in to admin using Account
-class CustomUserBackend(BaseBackend):
-    def authenticate(self, request, username=None, password=None, **kwargs):
-        try:
-            # Authenticate using Account
-            user = Account.objects.get(username=username)
-            if user.check_password(password):  # Ensure passwords are hashed and checked properly
-                return user
-        except Account.DoesNotExist:
-            return None
-        except ProgrammingError:
-            return None
+class TenantAwareAuthBackend(BaseBackend):
+    def authenticate(self, request, username = ..., password = ..., **kwargs):
 
-    def get_user(self, user_id):
-        try:
-            return Account.objects.get(pk=user_id)
-        except Account.DoesNotExist:
-            return None
+        tenant = getattr(request, 'tenant', None)
+        if not tenant:
+            raise Http404('tenant not given')
+        user = Account.objects.get(username=username)
+        if user.check_password(password):
+            if user.school == tenant or str(user.school) == 'public':
+                return None
+            raise PermissionDenied('User and School mismatch')
+        raise AuthenticationFailed('Wrong Credentials')

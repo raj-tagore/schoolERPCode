@@ -1,15 +1,15 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from accounts.views import AccountViewSet, CustomUserViewSet
+from .views import AccountViewSet, GetProfile
 
 router = DefaultRouter()
 router.register(r'', AccountViewSet)
-router.register(r'users', CustomUserViewSet)
 
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('all/', include(router.urls)),
+    path('self/', GetProfile.as_view())
 ]
 
     

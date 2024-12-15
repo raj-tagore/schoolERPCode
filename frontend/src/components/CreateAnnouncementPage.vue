@@ -23,7 +23,8 @@ const itemProps = (item) => ({title: item.charAt(0).toUpperCase() + item.slice(1
 </script>
 
 <script>
-import { mapActions } from 'vuex';
+
+import api from '@/services/api';
 
 export default {
 	data() {
@@ -36,7 +37,14 @@ export default {
 		};
 	},
 	methods: {
-		...mapActions(['createAnnouncement']),
+		async createAnnouncement(_, announcement) {
+			console.log(announcement)
+			const resp = await api.post('api/announcements/', announcement);
+			if (!resp || !resp.ok) {
+				throw new Error("Failed to create announcement");
+			}
+			return true;
+			},
 		async createAnnouncementHandler() {
 			try {
 				const result = await this.createAnnouncement({

@@ -6,14 +6,12 @@ import createPersistedState from 'vuex-persistedstate';
 export default createStore({
   state: {
     user: "guest",
-    user_type: null,
     access: null,
     refresh: null,
   },
   mutations: {
     SET_USER(state, userinfo) {
       state.user = userinfo.user;
-      state.user_type = userinfo.type;
     },
     SET_TOKENS(state, tokens) {
       state.access = tokens.access;
@@ -23,7 +21,6 @@ export default createStore({
     },
     CLEAR_AUTH(state) {
       state.user = "guest";
-      state.user_type = null;
       state.access = null;
       state.refresh = null;
       Cookies.remove('access');
@@ -35,14 +32,8 @@ export default createStore({
       const response = await api.post('token/', credentials);
       commit('SET_TOKENS', { access: response.data.access, refresh: response.data.refresh });
 
-      const user_id = response.data.user_id;
-      const user_type = response.data.type;
-      let user_fetch_url = `api/accounts/${user_id}/`;
-      if (user_type == "internal") {
-        user_fetch_url = `api/accounts/users/${user_id}/`;
-      }
-      const user_response = await api.get(user_fetch_url);
-      commit('SET_USER', { user: user_response.data, type: user_type });
+      const user_response = await api.get('/api/accounts/self/');
+      commit('SET_USER', { user: user_response.data});
     },
     async register(_, profile) {
       const resp = await api.post('api/accounts/', profile);
@@ -57,23 +48,14 @@ export default createStore({
     refreshTokens({ commit }, tokens) {
       commit('SET_TOKENS', tokens);
     },
-    async createAnnouncement(_, announcement) {
-      console.log(announcement)
-      const resp = await api.post('api/announcements/', announcement);
-      if (!resp || !resp.ok) {
-        throw new Error("Failed to create announcement");
-      }
-      return true;
-    }
   },
   getters: {
     isAuth: state => !!state.access,
     getUser: state => state.user,
-    getUserType: state => state.user_type,
     access: state => state.access,
     refresh: state => state.refresh,
   },
   plugins: [createPersistedState({
-    paths: ['access', 'refresh', 'user', 'user_type'],
+    paths: ['access', 'refresh', 'user'],
   })],
 });
