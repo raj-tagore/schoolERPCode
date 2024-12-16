@@ -15,7 +15,6 @@ class BasicClassroomSerializer(serializers.ModelSerializer):
             "is_active",
             "standard",
             "class_teacher",
-            "class_teacher_details",
         ]
 
 
