@@ -1,6 +1,4 @@
-# API Reference
-
-## Accounts
+# Accounts - /api/accounts/
 
 ```
 id, fname, lname, dob, address,
@@ -10,33 +8,27 @@ created_at, updated_at
 groups, is_active, is_staff, is_superuser 
 ```
 
-### /api/accounts/all
-GET -> get all accounts
-filters applicable
+### /all
+GET (filtered)
 
-### /api/accounts/id
-GET ->  get account details
-POST -> create
-PATCH/PUT -> update
-DELETE -> delete
+### /id
+CRUD (permissions)
 
-### /api/accounts/self
-GET -> self info
-PUT/PATCH, DELETE
+### /self
+CRUD
 
-### /api/accounts/read
-unrestricted access for all users
-GET -> basic acc info
+### /create
+Account creation
 
 ### /api/token
 POST -> login:
-request: username, password
-response: access, refresh
+request: {username, password}
+response: {access, refresh}
 
 ### /api/token/refresh
 POST
-request: refresh
-response: access
+request: {refresh}
+response: {access}
 
 ## Announcements
 
@@ -48,8 +40,31 @@ classrooms, subjects, additional_students, user_permissions
 ```
 
 ### /api/announcements/all
-GET -> get all announcements
-filters applicable
+GET (filtered)
 
 ### /api/announcements/id
-GET, POST, PATCH/PUT, DELETE
+CRUD
+
+# Allocation - /api/allocation/
+
+## Classrooms - /classrooms
+
+### /all
+GET (filtered) (limited info)
+
+### /id
+CRUD (permissions)
+
+### /create
+
+## Subjects - /subjects
+
+Same as above
+
+# Assessments
+
+Same as above
+
+# Assignments
+
+Same as above
