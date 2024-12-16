@@ -12,13 +12,15 @@ class Announcement(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
     is_active = models.BooleanField(default=True)
-    signed_by = models.ForeignKey('accounts.Account', on_delete=models.SET_NULL, null=True)
+    created_by = models.ForeignKey('accounts.Account', on_delete=models.SET_NULL, null=True, related_name='announcements_created')
+    signed_by = models.ForeignKey('accounts.Account', on_delete=models.SET_NULL, null=True, related_name='announcements_signed')
     created_at = models.DateTimeField(auto_now_add=True)
-    release_date = models.DateTimeField()
-    expiry_date = models.DateTimeField()
+    release_at = models.DateTimeField()
+    expiry_at = models.DateTimeField()
     priority = models.CharField(max_length=10, blank=True, choices=PRIORITY_CHOICES, null=True)
     
     classrooms = models.ManyToManyField('allocation.Classroom', blank=True, related_name='announcements')
     subjects = models.ManyToManyField('allocation.Subject', blank=True, related_name='announcements')
 
+    attachments = models.ManyToManyField('attachments.Attachment', blank=True, related_name='announcements')
     

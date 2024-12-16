@@ -16,4 +16,11 @@ class AccountSerializer(serializers.ModelSerializer):
             'user_permissions': {'required': False},
         }
 
+class AccountReadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = [
+            'id', 'username', 'first_name', 'last_name', 'email', 'phone', 'whatsapp',
+            'classrooms', 'subjects'
+        ]
 

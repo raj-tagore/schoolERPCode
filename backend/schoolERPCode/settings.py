@@ -51,7 +51,6 @@ TENANT_APPS = (
     'assignments',
     'attachments',
     'attendance',
-    'guardian',
 )
     
 
@@ -158,7 +157,6 @@ DATABASE_ROUTERS = (
 AUTHENTICATION_BACKENDS = [ 
     'accounts.backends.TenantAwareAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'guardian.backends.ObjectPermissionBackend',
 ]
 
 AUTH_USER_MODEL = 'accounts.Account'

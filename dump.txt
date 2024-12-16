@@ -10,3 +10,4 @@ python manage.py runserver_plus --cert-file ../../ssl/localhost.crt --key-file .
 find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
 
 python manage.py migrate --fake zero
+

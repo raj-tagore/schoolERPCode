@@ -1,14 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from announcements.views import AnnouncementViewSet
-
-router = DefaultRouter()
-router.register(r'', AnnouncementViewSet)
-
+from .views import AllAnnouncements, AnyAnnouncement, CreateAnnouncement
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('all/', AllAnnouncements.as_view()),
+    path('<int:id>/', AnyAnnouncement.as_view()),
+    path('create/', CreateAnnouncement.as_view()),
 ]
 
     

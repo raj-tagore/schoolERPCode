@@ -1,15 +1,14 @@
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import AccountViewSet, GetProfile
-
-router = DefaultRouter()
-router.register(r'', AccountViewSet)
+from .views import AllAccounts, SelfAccount, ReadAccount, CreateAccount, AnyAccount
 
 
 urlpatterns = [
-    path('all/', include(router.urls)),
-    path('self/', GetProfile.as_view())
+    path('all/', AllAccounts.as_view()),
+    path('<int:id>/', AnyAccount.as_view()),
+    path('self/', SelfAccount.as_view()),
+    path('read/', ReadAccount.as_view()),
+    path('create/', CreateAccount.as_view()),
 ]
 
     
