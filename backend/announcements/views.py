@@ -25,7 +25,7 @@ class AllAnnouncements(ListAPIView):
         if id:
             queryset = queryset.filter(id=id)
         if title:
-            queryset = queryset.filter(fname__icontains=title)
+            queryset = queryset.filter(title__icontains=title)
         if classroom:
             queryset = queryset.filter(classrooms__id=classroom)
         if subject:
