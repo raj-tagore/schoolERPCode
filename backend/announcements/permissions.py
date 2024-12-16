@@ -24,6 +24,8 @@ class AnnouncementPermissions(BasePermission):
             if subjects.filter(main_teacher=request.user).exists() or \
                subjects.filter(other_teachers=request.user).exists():
                 return True
+            if obj.students.filter(id=request.user.id).exists() and request.method in SAFE_METHODS:
+                return True
             return False
         
         return False

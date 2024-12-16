@@ -1,20 +1,18 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import AllClassroom, AnyClassroom, CreateClassroom, AllSubjects, AnySubjects, CreateSubject
-
-classroom_router = DefaultRouter()
-
-classroom_router.register('all/', AllClassrooms)
-classroom_router.register('<int:id>/', AnyClassroom)
-classroom_router.register('create/', CreateClassroom)
-
-subject_router = DefaultRouter()
-
-subject_router.register('all/', AllSubjects)
-subject_router.register('<int:id>/', AnySubject)
-subject_router.register('create/', CreateSubject)
+from django.urls import path
+from .views import (
+    AllClassrooms,
+    AnyClassroom,
+    CreateClassroom,
+    AllSubjects,
+    AnySubject,
+    CreateSubject,
+)
 
 urlpatterns = [
-    path('classroom', include(classroom_router.urls)),
-    path('subject', include(subject_router.urls))
+    path("classroom/all/", AllClassrooms.as_view()),
+    path("classroom/<int:id>/", AnyClassroom.as_view()),
+    path("classroom/create/", CreateClassroom.as_view()),
+    path("subject/all", AllSubjects.as_view()),
+    path("subject/<int:id>/", AnySubject.as_view()),
+    path("subject/create/", CreateSubject.as_view()),
 ]
