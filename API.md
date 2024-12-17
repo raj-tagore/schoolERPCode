@@ -61,10 +61,13 @@ CRUD (permissions)
 
 Same as above
 
-# Assessments
+# Assignments (and Assessments)
 
-Same as above
+### /all, /id, 
 
-# Assignments
+### /create
+Create AssignmentSubmission instances for all Students.
 
-Same as above
+# AssignmentSubmissions
+
+### /all, /id
