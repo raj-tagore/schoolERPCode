@@ -29,7 +29,7 @@ export default createStore({
   },
   actions: {
     async login({ commit }, credentials) {
-      const response = await api.post('token/', credentials);
+      const response = await api.post('api/token/', credentials);
       commit('SET_TOKENS', { access: response.data.access, refresh: response.data.refresh });
 
       const user_response = await api.get('/api/accounts/self/');

@@ -7,9 +7,9 @@ import EmptyLayout from '@/layouts/EmptyLayout.vue';
 
 // Pages
 import HomePage from '@/components/HomePage.vue';
-import LoginPage from '@/components/LoginPage.vue';
+import LoginPage from '@/views/LoginPage.vue';
 import RegisterPage from '@/components/RegisterPage.vue';
-import DashboardPage from '@/components/DashboardPage.vue';
+import DashboardPage from '@/views/DashboardPage.vue';
 import Announcement from '@/components/AnnouncementPage.vue';
 import CreateAnnouncement from '@/components/CreateAnnouncementPage.vue';
 import Classroom from '@/components/ClassroomPage.vue';

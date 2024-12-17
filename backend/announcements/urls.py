@@ -1,3 +1,4 @@
+from unfold.admin import ModelAdmin
 from django.contrib import admin
 from django.urls import path, include
 from .views import AllAnnouncements, AnyAnnouncement, CreateAnnouncement

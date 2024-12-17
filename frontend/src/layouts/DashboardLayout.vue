@@ -18,10 +18,6 @@
           <v-list-item-title>Dashboard</v-list-item-title>
         </v-list-item>
 
-        <!-- Create User -->
-        <v-list-item to="/register">
-          <v-list-item-title>Create User</v-list-item-title>
-        </v-list-item>
         <ExpandableListItem title="Announcements">
           <v-list dense>
             <v-list-item to="/announcement">
