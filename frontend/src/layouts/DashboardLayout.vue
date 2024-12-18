@@ -7,7 +7,7 @@
           <div>
             <h3>{{ user.first_name }} {{ user.last_name }}</h3>
             <h4>{{ user.username }}</h4>
-            <span>{{ userType }}</span>
+            <span>User Role to be here</span>
           </div>
         </v-list-item>
 

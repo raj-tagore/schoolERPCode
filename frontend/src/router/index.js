@@ -6,13 +6,13 @@ import DashboardLayout from '@/layouts/DashboardLayout.vue';
 import EmptyLayout from '@/layouts/EmptyLayout.vue';
 
 // Pages
-import HomePage from '@/components/HomePage.vue';
-import LoginPage from '@/components/LoginPage.vue';
+import HomePage from '@/views/HomePage.vue';
+import LoginPage from '@/views/LoginPage.vue';
 import RegisterPage from '@/components/RegisterPage.vue';
-import DashboardPage from '@/components/DashboardPage.vue';
+import DashboardPage from '@/views/DashboardPage.vue';
 import Announcement from '@/components/AnnouncementPage.vue';
 import CreateAnnouncement from '@/components/CreateAnnouncementPage.vue';
-import Classroom from '@/components/ClassroomPage.vue';
+import Classroom from '@/views/AllClassroomsPage.vue';
 import CreateClassroom from '@/components/CreateClassroomPage.vue';
 import Subject from '@/components/SubjectPage.vue';
 import CreateSubject from '@/components/CreateSubjectPage.vue';

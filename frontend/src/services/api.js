@@ -31,7 +31,7 @@ api.interceptors.response.use(
       const refresh = store.getters.refresh;
       if (refresh) {
         try {
-          const response = await axios.post('http://school1.localhost:8000/token/refresh/', { refresh: refresh });
+          const response = await axios.post('http://school1.localhost:8000/api/token/refresh/', { refresh: refresh });
           store.dispatch('refreshTokens', {access: response.data.access, refresh: response.data.refresh});
           original_request.headers['Authorization'] = 'Bearer ' + response.data.access;
           return api(original_request);
