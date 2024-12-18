@@ -44,43 +44,37 @@
 
     <v-main>
       <v-container class="mt-5">
-        <!-- Renders the page component inside the main layout -->
         <router-view></router-view>
       </v-container>
     </v-main>
   </v-app>
 </template>
 
-<script>
-import { mapActions, mapGetters } from 'vuex';
+<script setup>
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth' // Pinia store
+import ExpandableListItem from '@/components/c-expandable-list-item.vue'
 
-import ExpandableListItem from '@/components/c-expandable-list-item.vue';
+const drawer = ref(false)
 
-export default {
-  data() {
-    return {
-      drawer: false,
-      announcementsOpen: false,
-    };
-  },
-  methods: {
-    ...mapActions(['logout']),
-    logoutHandler() {
-      this.$router.push({ name: 'Login' });
-      this.logout();
-    },
-  },
-  computed: {
-    ...mapGetters(['getUser', 'getUserType']),
-    user() {
-      return this.getUser;
-    },
-    userType() {
-      return this.getUserType;
-    },
-  },
-  components: {
-	ExpandableListItem,
-  },
-};
+const router = useRouter()
+const authStore = useAuthStore()
+
+const user = computed(() => authStore.user)
+
+// Actions
+function logoutHandler() {
+  router.push({ name: 'Login' })
+  authStore.logout()
+}
 </script>
+
+<script>
+// For Options API style components, remove this block entirely since we are using the <script setup> syntax above.
+// This block is intentionally left empty as all logic is now in <script setup>.
+</script>
+
+<style>
+/* Add any custom styles if necessary */
+</style>

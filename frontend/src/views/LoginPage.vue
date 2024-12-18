@@ -13,32 +13,24 @@
   </v-app>
 </template>
 
-<script>
-import { mapActions } from 'vuex';
-import LoginForm from '@/components/LoginForm.vue';
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+import LoginForm from '@/components/LoginForm.vue'
 
-export default {
-  name: 'LoginPage',
-  components: {
-    LoginForm,
-  },
-  data() {
-    return {
-      error: '',
-    };
-  },
-  methods: {
-    ...mapActions(['login']),
-    async handleLogin({ username, password }) {
-      try {
-        await this.login({ username, password });
-        this.$router.push({ name: 'Dashboard' });
-      } catch (err) {
-        this.error = 'Login failed. Please check your credentials.';
-      }
-    },
-  },
-};
+const error = ref('')
+const router = useRouter()
+const authStore = useAuthStore()
+
+async function handleLogin({ username, password }) {
+  try {
+    await authStore.login({ username, password })
+    router.push({ name: 'Dashboard' })
+  } catch (err) {
+    error.value = 'Login failed. Please check your credentials.'
+  }
+}
 </script>
 
 <style scoped>

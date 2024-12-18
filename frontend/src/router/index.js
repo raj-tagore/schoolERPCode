@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import store from '@/store';
+import { useAuthStore } from '@/stores/auth'
 
 // Layouts
 import DashboardLayout from '@/layouts/DashboardLayout.vue';
@@ -50,7 +50,8 @@ const router = createRouter({
 // Navigation guard
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    const token = store.getters.access;
+    const authStore = useAuthStore();
+    const token = authStore.getAccess;
     if (!token) {
       return next({ name: 'Login' });
     }

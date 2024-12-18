@@ -1,5 +1,5 @@
 import axios from 'axios';
-import store from '@/store';
+import { useAuthStore } from '@/stores/auth'
 
 const api = axios.create({
   baseURL: 'http://school1.localhost:8000/',
@@ -11,7 +11,8 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const access = store.getters.access;
+    const authStore = useAuthStore();
+    const access = authStore.getAccess;
     if (access) {
       config.headers['Authorization'] = 'Bearer ' + access;
     }
@@ -25,23 +26,24 @@ api.interceptors.response.use(
     return response;
   },
   async (error) => {
+    const authStore = useAuthStore();
     const original_request = error.config;
     if (error.response && error.response.status === 401 && !original_request._retry) {
       original_request._retry = true;
-      const refresh = store.getters.refresh;
+      const refresh = authStore.getRefresh;
       if (refresh) {
         try {
           const response = await axios.post('http://school1.localhost:8000/api/token/refresh/', { refresh: refresh });
-          store.dispatch('refreshTokens', {access: response.data.access, refresh: response.data.refresh});
+          authStore.refreshTokens({access: response.data.access, refresh: response.data.refresh});
           original_request.headers['Authorization'] = 'Bearer ' + response.data.access;
           return api(original_request);
         } catch (refresh_error) {
           console.error('Token refresh failed ', refresh_error);
-          store.dispatch('logout');
+          authStore.logout();
           window.location.href = '/login';
         }
       } else {
-        store.dispatch('logout');
+        authStore.logout();
       }
     }
     return Promise.reject(error);
