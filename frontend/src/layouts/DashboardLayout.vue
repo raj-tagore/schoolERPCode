@@ -17,21 +17,7 @@
         <v-list-item to="/dashboard">
           <v-list-item-title>Dashboard</v-list-item-title>
         </v-list-item>
-
-        <!-- Create User -->
-        <v-list-item to="/register">
-          <v-list-item-title>Create User</v-list-item-title>
-        </v-list-item>
-        <ExpandableListItem title="Announcements">
-          <v-list dense>
-            <v-list-item to="/announcement">
-              <v-list-item-title>View Announcements</v-list-item-title>
-            </v-list-item>
-            <v-list-item to="/announcement/create">
-              <v-list-item-title>Create Announcement</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </ExpandableListItem>
+        
         <ExpandableListItem title="Classrooms">
           <v-list dense>
             <v-list-item to="/classrooms">
@@ -42,37 +28,6 @@
             </v-list-item>
           </v-list>
         </ExpandableListItem>
-        <ExpandableListItem title="Subjects">
-          <v-list dense>
-            <v-list-item to="/subject">
-              <v-list-item-title>View Subjects</v-list-item-title>
-            </v-list-item>
-            <v-list-item to="/subject/create">
-              <v-list-item-title>Create Subject</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </ExpandableListItem>
-        <ExpandableListItem title="Assessments">
-          <v-list dense>
-            <v-list-item to="/assessment">
-              <v-list-item-title>View Assessments</v-list-item-title>
-            </v-list-item>
-            <v-list-item to="/assessment/create">
-              <v-list-item-title>Create Assessment</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </ExpandableListItem>
-        <ExpandableListItem title="Assignments">
-          <v-list dense>
-            <v-list-item to="/assignment">
-              <v-list-item-title>View Assignments</v-list-item-title>
-            </v-list-item>
-            <v-list-item to="/assignment/create">
-              <v-list-item-title>Create Assignment</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </ExpandableListItem>
-
 
       </v-list>
     </v-navigation-drawer>
