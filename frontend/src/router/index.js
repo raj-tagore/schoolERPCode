@@ -9,9 +9,6 @@ import EmptyLayout from '@/layouts/EmptyLayout.vue';
 import HomePage from '@/views/HomePage.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import DashboardPage from '@/views/DashboardPage.vue';
-import AllClassroomsPage from '@/views/AllClassroomsPage.vue';
-import SingleClassroomPage from '@/views/SingleClassroomPage.vue';
-import CreateClassroomPage from '@/views/CreateClassroomPage.vue';
 
 const routes = [
   {
@@ -41,30 +38,6 @@ const routes = [
         component: DashboardPage,
         meta: { requiresAuth: true },
       },
-    ],
-  },
-  {
-    path: '/classrooms',
-    component: DashboardLayout,
-    children: [
-      {
-        path: '',
-        name: 'AllClassrooms',
-        component: AllClassroomsPage,
-        meta: { requiresAuth: true },
-      },
-      {
-        path: 'create',
-        name: 'CreateClassroom',
-        component: CreateClassroomPage,
-        meta: { requiresAuth: true },
-      },
-      {
-        path: ':id',
-        name: 'SingleClassroom',
-        component: SingleClassroomPage,
-        meta: { requiresAuth: true },
-      }
     ],
   },
 ];
