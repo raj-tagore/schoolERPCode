@@ -34,10 +34,10 @@
         </ExpandableListItem>
         <ExpandableListItem title="Classrooms">
           <v-list dense>
-            <v-list-item to="/classroom">
+            <v-list-item to="/classrooms">
               <v-list-item-title>View Classrooms</v-list-item-title>
             </v-list-item>
-            <v-list-item to="/classroom/create">
+            <v-list-item to="/classrooms/create">
               <v-list-item-title>Create Classroom</v-list-item-title>
             </v-list-item>
           </v-list>

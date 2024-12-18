@@ -35,11 +35,11 @@ class ClassroomSerializer(serializers.ModelSerializer):
     )
 
     # Fields for read operations
-    students_details = AccountSerializer(source="students", many=True, read_only=True)
-    class_teacher_details = AccountSerializer(source="class_teacher", read_only=True)
-    other_teachers_details = AccountSerializer(
-        source="other_teachers", many=True, read_only=True
-    )
+    # students_details = AccountSerializer(source="students", many=True, read_only=True)
+    # class_teacher_details = AccountSerializer(source="class_teacher", read_only=True)
+    # other_teachers_details = AccountSerializer(
+    #     source="other_teachers", many=True, read_only=True
+    # )
 
     class Meta:
         model = Classroom
@@ -49,11 +49,8 @@ class ClassroomSerializer(serializers.ModelSerializer):
             "is_active",
             "standard",
             "students",
-            "students_details",
             "class_teacher",
-            "class_teacher_details",
             "other_teachers",
-            "other_teachers_details",
         ]
 
     def create(self, validated_data):
@@ -94,14 +91,14 @@ class SubjectSerializer(serializers.ModelSerializer):
     )
 
     # Fields for read operations
-    classroom_details = ClassroomSerializer(source="classroom", read_only=True)
-    main_teacher_details = AccountSerializer(source="main_teacher", read_only=True)
-    other_teachers_details = AccountSerializer(
-        source="other_teachers", many=True, read_only=True
-    )
-    additional_students_details = AccountSerializer(
-        source="additional_students", many=True, read_only=True
-    )
+    # classroom_details = ClassroomSerializer(source="classroom", read_only=True)
+    # main_teacher_details = AccountSerializer(source="main_teacher", read_only=True)
+    # other_teachers_details = AccountSerializer(
+    #     source="other_teachers", many=True, read_only=True
+    # )
+    # additional_students_details = AccountSerializer(
+    #     source="additional_students", many=True, read_only=True
+    # )
 
     class Meta:
         model = Subject
@@ -111,13 +108,9 @@ class SubjectSerializer(serializers.ModelSerializer):
             "is_active",
             "description",
             "classroom",
-            "classroom_details",
             "main_teacher",
-            "main_teacher_details",
             "other_teachers",
-            "other_teachers_details",
             "additional_students",
-            "additional_students_details",
         ]
 
     def create(self, validated_data):

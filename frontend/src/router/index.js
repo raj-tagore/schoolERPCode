@@ -12,7 +12,8 @@ import RegisterPage from '@/components/RegisterPage.vue';
 import DashboardPage from '@/views/DashboardPage.vue';
 import Announcement from '@/components/AnnouncementPage.vue';
 import CreateAnnouncement from '@/components/CreateAnnouncementPage.vue';
-import Classroom from '@/views/AllClassroomsPage.vue';
+import AllClassroomsPage from '@/views/AllClassroomsPage.vue';
+import SingleClassroomPage from '@/views/SingleClassroomPage.vue';
 import CreateClassroom from '@/components/CreateClassroomPage.vue';
 import Subject from '@/components/SubjectPage.vue';
 import CreateSubject from '@/components/CreateSubjectPage.vue';
@@ -83,19 +84,25 @@ const routes = [
     ],
   },
   {
-    path: '/classroom',
+    path: '/classrooms',
     component: DashboardLayout,
     children: [
       {
         path: '',
-        name: 'Classroom',
-        component: Classroom,
+        name: 'AllClassrooms',
+        component: AllClassroomsPage,
         meta: { requiresAuth: true },
       },
       {
         path: 'create',
         name: 'CreateClassroom',
         component: CreateClassroom,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: ':id',
+        name: 'SingleClassroom',
+        component: SingleClassroomPage,
         meta: { requiresAuth: true },
       }
     ],
