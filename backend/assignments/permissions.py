@@ -1,7 +1,7 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
-class ClassroomPermissions(BasePermission):
+class AssignmentPermissions(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.user.is_superuser:
             return True
@@ -26,7 +26,7 @@ class ClassroomPermissions(BasePermission):
         return False
 
 
-class SubjectPermissions(BasePermission):
+class MarkAssignmentPermissions(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.user.is_superuser:
             return True

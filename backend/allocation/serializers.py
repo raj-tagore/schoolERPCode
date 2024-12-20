@@ -3,7 +3,6 @@
 from rest_framework import serializers
 from .models import Classroom, Subject
 from accounts.models import Account
-from accounts.serializers import AccountSerializer
 
 
 class BasicClassroomSerializer(serializers.ModelSerializer):
