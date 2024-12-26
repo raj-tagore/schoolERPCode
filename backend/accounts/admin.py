@@ -5,7 +5,7 @@ from .models import Account
 
 @admin.register(Account)
 class AccountAdmin(UserAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name', 'school')
+    list_display = ('username', 'first_name', 'last_name', 'school')
     
     # Fields for the Account detail view
     fieldsets = UserAdmin.fieldsets + (

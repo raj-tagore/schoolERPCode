@@ -20,6 +20,7 @@ class AllAccounts(ListAPIView):
         lname = request.query_params.get('lname')
         classroom = request.query_params.get('classroom') 
         subject = request.query_params.get('subject') 
+        group = request.query_params.get('group')
 
         if id:
             queryset = queryset.filter(id=id)
@@ -31,6 +32,8 @@ class AllAccounts(ListAPIView):
             queryset = queryset.filter(classrooms__id=classroom)
         if subject:
             queryset = queryset.filter(subjects__id=subject)
+        if group:
+            queryset = queryset.filter(groups__id=group)
 
         return queryset
 
