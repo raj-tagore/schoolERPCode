@@ -35,7 +35,6 @@ class Student(models.Model):
         Account, on_delete=models.CASCADE, related_name="student_info", null=False
     )
 
-    roll_no = models.IntegerField("Roll Number", null=False)
 
     classroom = models.ForeignKey(
         "allocation.Classroom",
@@ -57,8 +56,6 @@ class Student(models.Model):
         null=True,
         related_name="students_guardian2",
     )
-
-    address = models.CharField("Address", max_length=1000, blank=False)
 
     address_proof = models.FileField(
         "Address Proof", upload_to="student_address_proofs", blank=False

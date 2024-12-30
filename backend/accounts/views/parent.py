@@ -9,15 +9,15 @@ from rest_framework.generics import (
 
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
-from accounts.models.student import Student
-from accounts.permissions.student import StudentPermissions
-from accounts.serializers.student import StudentReadSerializer, StudentSerializer
+from accounts.models.parent import Parent
+from accounts.permissions.parent import ParentPermissions
+from accounts.serializers.parent import ParentReadSerializer, ParentSerializer
 
 
 @final
-class AllStudents(ListAPIView[Student]):
-    queryset = Student.objects.all()
-    serializer_class = StudentReadSerializer
+class AllParents(ListAPIView[Parent]):
+    queryset = Parent.objects.all()
+    serializer_class = ParentReadSerializer
     permission_classes = [IsAuthenticated]
 
     @override
@@ -44,21 +44,21 @@ class AllStudents(ListAPIView[Student]):
 
 
 @final
-class AnyStudent(RetrieveUpdateDestroyAPIView[Student]):
-    serializer_class = StudentSerializer
-    permission_classes = [IsAuthenticated, StudentPermissions]
-    queryset = Student.objects.all()
+class AnyParent(RetrieveUpdateDestroyAPIView[Parent]):
+    serializer_class = ParentSerializer
+    permission_classes = [IsAuthenticated, ParentPermissions]
+    queryset = Parent.objects.all()
     lookup_field = "id"
 
 
 @final
-class ReadStudent(RetrieveAPIView[Student]):
-    serializer_class = StudentReadSerializer
+class ReadParent(RetrieveAPIView[Parent]):
+    serializer_class = ParentReadSerializer
     permission_classes = [IsAuthenticated]
-    queryset = Student.objects.all()
+    queryset = Parent.objects.all()
     lookup_field = "id"
 
 @final
-class CreateStudent(CreateAPIView[Student]):
-    serializer_class = StudentSerializer
+class CreateParent(CreateAPIView[Parent]):
+    serializer_class = ParentSerializer
     permission_classes = [DjangoModelPermissions]
