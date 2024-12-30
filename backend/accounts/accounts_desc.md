@@ -19,6 +19,7 @@ is_approved
 school
 ```
 
+
 Now, this will also hold have a OneToOne relationship with multiple models like:
 
 * Teacher, Student, Staff, Parent/Guardian

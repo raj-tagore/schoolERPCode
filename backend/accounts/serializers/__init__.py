@@ -1,9 +1,15 @@
 # accounts/serializers.py
  
+from typing import final, override
 from rest_framework import serializers
-from .models import Account
 
-class AccountSerializer(serializers.ModelSerializer): 
+from accounts.models import Account
+
+
+@final
+class AccountSerializer(serializers.ModelSerializer[Account]): 
+    @override
+    @final
     class Meta:
         model = Account
         fields = [
@@ -16,7 +22,8 @@ class AccountSerializer(serializers.ModelSerializer):
             'user_permissions': {'required': False},
         }
 
-class AccountReadSerializer(serializers.ModelSerializer):
+class AccountReadSerializer(serializers.ModelSerializer[Account]):
+    @final
     class Meta:
         model = Account
         fields = [

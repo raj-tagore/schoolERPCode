@@ -1,26 +1,35 @@
 # accounts/views.py
+from typing import final, override
+from rest_framework.generics import (
+    RetrieveUpdateDestroyAPIView,
+    RetrieveAPIView,
+    ListAPIView,
+    CreateAPIView,
+)
 
-from .models import Account
-from .serializers import AccountSerializer, AccountReadSerializer
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
-from .permissions import AccountPermissions
 
-class AllAccounts(ListAPIView):
+from accounts.models import Account
+from accounts.permissions import AccountPermissions
+from accounts.serializers import AccountReadSerializer, AccountSerializer
+
+
+@final
+class AllAccounts(ListAPIView[Account]):
     queryset = Account.objects.all()
     serializer_class = AccountReadSerializer
     permission_classes = [IsAuthenticated]
 
+    @override
     def get_queryset(self):
         queryset = super().get_queryset()
         request = self.request
 
-        id = request.query_params.get('id')
-        fname = request.query_params.get('fname')
-        lname = request.query_params.get('lname')
-        classroom = request.query_params.get('classroom') 
-        subject = request.query_params.get('subject') 
-        group = request.query_params.get('group')
+        id = request.query_params.get("id")
+        fname = request.query_params.get("fname")
+        lname = request.query_params.get("lname")
+        group = request.query_params.get("group")
+
 
         if id:
             queryset = queryset.filter(id=id)
@@ -28,34 +37,38 @@ class AllAccounts(ListAPIView):
             queryset = queryset.filter(fname__icontains=fname)
         if lname:
             queryset = queryset.filter(lname__icontains=lname)
-        if classroom:
-            queryset = queryset.filter(classrooms__id=classroom)
-        if subject:
-            queryset = queryset.filter(subjects__id=subject)
         if group:
             queryset = queryset.filter(groups__id=group)
 
         return queryset
 
-class AnyAccount(RetrieveUpdateDestroyAPIView):
+
+@final
+class AnyAccount(RetrieveUpdateDestroyAPIView[Account]):
     serializer_class = AccountSerializer
     permission_classes = [IsAuthenticated, AccountPermissions]
     queryset = Account.objects.all()
-    lookup_field = 'id'
+    lookup_field = "id"
 
-class SelfAccount(RetrieveUpdateDestroyAPIView):
+@final
+class SelfAccount(RetrieveUpdateDestroyAPIView[Account]):
     serializer_class = AccountSerializer
     permission_classes = [IsAuthenticated]
 
+    @override
     def get_object(self):
         return self.request.user
-    
-class ReadAccount(RetrieveAPIView):
+
+
+
+@final
+class ReadAccount(RetrieveAPIView[Account]):
     serializer_class = AccountReadSerializer
     permission_classes = [IsAuthenticated]
     queryset = Account.objects.all()
-    lookup_field = 'id'
+    lookup_field = "id"
 
-class CreateAccount(CreateAPIView):
+@final
+class CreateAccount(CreateAPIView[Account]):
     serializer_class = AccountSerializer
     permission_classes = [DjangoModelPermissions]

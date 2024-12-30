@@ -1,5 +1,5 @@
-from rest_framework import viewsets
-from .models import Classroom, Subject
+from .models.classroom import Classroom
+from .models.subject import Subject
 from .serializers import ClassroomSerializer, SubjectSerializer, BasicClassroomSerializer
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView, CreateAPIView

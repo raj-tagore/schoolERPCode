@@ -1,9 +1,12 @@
+from typing import final
 from rest_framework.permissions import BasePermission
-from django.contrib.auth.models import Group
 
+from accounts.models import Account
+
+@final
 class AccountPermissions(BasePermission):
 
-    def has_object_permission(self, request, view, obj):
+    def has_object_permission(self, request, view, obj: Account):
 
         if request.user.is_superuser:
             return True

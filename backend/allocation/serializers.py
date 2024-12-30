@@ -1,8 +1,10 @@
 # serializers.py
 
 from rest_framework import serializers
-from .models import Classroom, Subject
+
 from accounts.models import Account
+from allocation.models.classroom import Classroom
+from allocation.models.subject import Subject
 
 
 class BasicClassroomSerializer(serializers.ModelSerializer):

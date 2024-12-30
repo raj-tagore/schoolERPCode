@@ -1,0 +1,16 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Backend for schoolRecordsERP"
+requires-python = ">=3.12"
+dependencies = [
+    "django-tenants>=3.7.0",
+    "django>=5.1.4",
+    "django-extensions>=3.2.3",
+    "djangorestframework-simplejwt>=5.3.1",
+    "django-cors-headers>=4.6.0",
+    "psycopg2>=2.9.10",
+    "django-types>=0.20.0",
+    "django-stubs-ext>=5.1.1",
+    "djangorestframework-stubs>=3.15.2",
+]
