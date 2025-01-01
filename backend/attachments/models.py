@@ -8,3 +8,4 @@ class Attachment(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    additional_info = models.TextField(null=True, blank=True)

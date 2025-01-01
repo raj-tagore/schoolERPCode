@@ -7,16 +7,14 @@ All users, their roles, permissions, authentication, and data to be stored in th
 ### Account:
 This holds the basic info required by a django user. Fields obtained when extended by `UserProfile` are:
 ```
-username*, first_name, last_name, email, password, is_staff, is_active, is_superusser
+username*, first_name, last_name, email, password, is_staff, is_active, is_superuser
 groups*, user_permissions
 last_login, date_joined
 ```
 Fields marked by '*' are mandatory. Every user must be assigned a group on creation.
 Other fields added by us are:
 ```
-address, phone, whatsapp, dob
-is_approved
-school
+address, dob, is_approved, school
 ```
 
 Now, this will also hold have a OneToOne relationship with multiple models like:
@@ -31,6 +29,7 @@ This will have a OneToOne relationship with Account.
 
 Fields are:
 ```
+phone_no, whatsapp,
 identifier (similar to student_no)
 qualifications
 identity_proof (type, document), TET certificate, character_certificate, id_card
@@ -42,10 +41,16 @@ Same conditions as Teacher
 
 Fields are:
 ```
-student_no, roll_no,
-standard, division, 
-guardian_1, guardian_2, 
-address, 
+student_no, roll_no, standard, division, 
+
+address, aadhar_card_no, previous_school_student_id, religion, birth_place, mother_tongue, nationality, caste_status, medical_info
+
+prev_school_details: {
+    name, address, udise_no, board
+}
+
+guardian_1, guardian_2
+
 address_proof, birth_certificate, identity_proof,
 character_certificate, id_card, leaving_certificate
 report_cards
@@ -62,8 +67,9 @@ API must be coded with the above in mind.
 ### Parent
 Fields:
 ```
+phone_no, whatsapp,
 occupation, office_address (if applicable)
-qualifications
+qualifications, annual_income,
 ```
 * `Parent` instance, if generated programmatically, will not have a password. If any user tries to login, but the password does not exist, we must identify this and give the option to set a password. 
 ---

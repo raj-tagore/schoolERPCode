@@ -8,7 +8,7 @@ class AccountSerializer(serializers.ModelSerializer):
         model = Account
         fields = [
             'id', 'username', 'first_name', 'last_name', 'email', 'address', 'school',
-            'phone', 'whatsapp', 'is_active', 'is_approved', 'groups', 'user_permissions'
+            'is_active', 'is_approved', 'groups', 'user_permissions'
         ]
         extra_kwargs = {
             'password': {'write_only': True},
