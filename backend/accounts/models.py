@@ -3,7 +3,6 @@ from django.db import models
 from tenants.models import School
 
 class Account(AbstractUser):
-    address = models.CharField('Address', max_length=1000, blank=True)
 
     is_approved = models.BooleanField(default=False) 
 
