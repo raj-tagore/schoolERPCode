@@ -1,15 +1,15 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from django.utils.translation import gettext_lazy as _
-from .models import Account
+from .models import Student, Teacher, Parent
 
-@admin.register(Account)
-class AccountAdmin(UserAdmin):
-    list_display = ('username', 'first_name', 'last_name', 'school')
-    
-    # Fields for the Account detail view
-    fieldsets = UserAdmin.fieldsets + (
-        (_('Additional Information'), {
-            'fields': ('is_approved', 'address', 'school', 'phone', 'whatsapp'),
-        }),
-    )
+# Register your models here.
+@admin.register(Student)
+class StudentAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Teacher)
+class TeacherAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Parent)
+class ParentAdmin(admin.ModelAdmin):
+    pass

@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ['*']
 SHARED_APPS = (
     'django_tenants',
     'tenants',
-    'accounts',
+    'users',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,16 +42,17 @@ SHARED_APPS = (
     'rest_framework',
     'corsheaders',
     'django_extensions',
+    'import_export',
 )
 
 TENANT_APPS = (
+    'accounts',
     'allocation',
     'announcements',
     'assessments',
     'assignments',
     'attachments',
     'attendance',
-    'users',
 )
     
 
@@ -160,11 +161,11 @@ DATABASE_ROUTERS = (
 )
 
 AUTHENTICATION_BACKENDS = [ 
-    'accounts.backends.TenantAwareAuthBackend',
+    'users.backends.TenantAwareAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-AUTH_USER_MODEL = 'accounts.Account'
+AUTH_USER_MODEL = 'users.User'
 ANONYMOUS_USER_ID = -1
 GUARDIAN_CHECK_PERMISSIONS_IGNORING_OBJECTS = True
 

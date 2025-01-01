@@ -18,7 +18,7 @@ class Assessment(models.Model):
         return self.title
     
 class StudentAssessment(models.Model):
-    student = models.ForeignKey('accounts.Account', on_delete=models.CASCADE, related_name='assessments')
+    student = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='assessments')
     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE, related_name='students')
     marks = models.IntegerField()
     

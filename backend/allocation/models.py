@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import Account
+from users.models import User
 
 # Create your models here.
 
@@ -9,20 +9,20 @@ class Classroom(models.Model):
     is_active = models.BooleanField(default=True)
     standard = models.CharField(max_length=50)
     students = models.ManyToManyField(
-        Account,
+        User,
         related_name="classrooms",
         limit_choices_to={"groups__name": "Student"},
         blank=True,
     )
     class_teacher = models.ForeignKey(
-        Account,
+        User,
         on_delete=models.SET_NULL,
         null=True,
         related_name="classrooms_leading",
         limit_choices_to={"groups__name": "Teacher"},
     )
     other_teachers = models.ManyToManyField(
-        Account,
+        User,
         related_name="classrooms_assisting",
         limit_choices_to={"groups__name": "Teacher"},
         blank=True,
@@ -40,20 +40,20 @@ class Subject(models.Model):
         Classroom, on_delete=models.SET_NULL, null=True, related_name="subjects"
     )
     main_teacher = models.ForeignKey(
-        Account,
+        User,
         on_delete=models.SET_NULL,
         null=True,
         related_name="subjects_leading",
         limit_choices_to={"groups__name": "Teacher"},
     )
     other_teachers = models.ManyToManyField(
-        Account,
+        User,
         related_name="subjects_assisting",
         limit_choices_to={"groups__name": "Teacher"},
         blank=True,
     )
     additional_students = models.ManyToManyField(
-        Account,
+        User,
         related_name="subjects",
         limit_choices_to={"groups__name": "Student"},
         blank=True,

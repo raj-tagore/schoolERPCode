@@ -1,27 +1,21 @@
 # accounts/serializers.py
  
 from rest_framework import serializers
-from .models import Account
+from .models import Student, Teacher, Parent
 
-class AccountSerializer(serializers.ModelSerializer): 
+class StudentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Account
-        fields = [
-            'id', 'username', 'first_name', 'last_name', 'email', 'school',
-            'is_active', 'is_approved', 'groups', 'user_permissions',
-            'student_account', 'teacher_account', 'parent_account'
-        ]
-        extra_kwargs = {
-            'password': {'write_only': True},
-            'groups': {'required': False},
-            'user_permissions': {'required': False},
-        }
+        model = Student
+        fields = '__all__'
 
-class AccountReadSerializer(serializers.ModelSerializer):
+class ParentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Account
-        fields = [
-            'id', 'first_name', 'last_name', 'email',
-            'classrooms', 'subjects', 'groups'
-        ]
+        model = Parent
+        fields = '__all__'
+
+class TeacherSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teacher
+        fields = '__all__'
+ 
 
