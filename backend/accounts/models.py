@@ -8,9 +8,9 @@ class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='parent_account')
     phone = models.CharField('Phone number', max_length=20, blank=True)
     whatsapp = models.CharField('WhatsApp number', max_length=20, blank=True)
-    occupation = models.CharField('Occupation', max_length=400, blank=True)
-    office_address = models.TextField(blank=True, null=True)
-    annual_income = models.CharField('Annual Income', max_length=50, blank=True)
+    # occupation = models.CharField('Occupation', max_length=400, blank=True)
+    # office_address = models.TextField(blank=True, null=True)
+    # annual_income = models.CharField('Annual Income', max_length=50, blank=True)
 
 class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacher_account')

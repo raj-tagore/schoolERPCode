@@ -5,18 +5,6 @@ from .models import Classroom, Subject
 from users.models import User
 
 
-class BasicClassroomSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Classroom
-        fields = [
-            "id",
-            "name",
-            "is_active",
-            "standard",
-            "class_teacher",
-        ]
-
-
 class ClassroomSerializer(serializers.ModelSerializer):
     # Fields for write operations
     students = serializers.PrimaryKeyRelatedField(
