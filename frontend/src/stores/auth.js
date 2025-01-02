@@ -7,6 +7,7 @@ export const useAuthStore = defineStore('auth', {
     user: 'guest',
     access: null,
     refresh: null,
+    account: null,
   }),
 
   getters: {
@@ -23,14 +24,6 @@ export const useAuthStore = defineStore('auth', {
 
       const userResponse = await api.get('/api/users/self/')
       this.setUser(userResponse.data)
-    },
-
-    async register(profile) {
-      const resp = await api.post('api/users/', profile)
-      if (!resp || resp.status !== 201) {
-        throw new Error("Registration failed")
-      }
-      return true
     },
 
     logout() {
@@ -57,6 +50,7 @@ export const useAuthStore = defineStore('auth', {
       this.user = 'guest'
       this.access = null
       this.refresh = null
+      this.account = null
       Cookies.remove('access')
       Cookies.remove('refresh')
     }
@@ -64,6 +58,6 @@ export const useAuthStore = defineStore('auth', {
 
   // Persisting specified parts of the state
   persist: {
-    paths: ['access', 'refresh', 'user'],
+    paths: ['access', 'refresh', 'user', 'account'],
   },
 })

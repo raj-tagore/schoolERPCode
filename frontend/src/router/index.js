@@ -28,6 +28,17 @@ const routes = [
       },
     ],
   },
+  // {
+  //   path: '/register',
+  //   component: EmptyLayout,
+  //   children: [
+  //     {
+  //       path: '',
+  //       name: 'register',
+  //       component: RegisterPage,
+  //     },
+  //   ],
+  // },
   {
     path: '/dashboard',
     component: DashboardLayout,
@@ -49,11 +60,17 @@ const router = createRouter({
 
 // Navigation guard
 router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    const authStore = useAuthStore();
     const token = authStore.getAccess;
     if (!token) {
       return next({ name: 'Login' });
+    }
+  }
+  if (to.matched.some(record => record.meta.requiresAccount)) {
+    const account = authStore.getAccount;
+    if (!account) {
+      return next({ name: 'register' });
     }
   }
   next();

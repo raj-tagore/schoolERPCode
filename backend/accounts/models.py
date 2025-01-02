@@ -8,8 +8,8 @@ class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='parent_account')
     phone = models.CharField('Phone number', max_length=20, blank=True)
     whatsapp = models.CharField('WhatsApp number', max_length=20, blank=True)
-    # occupation = models.CharField('Occupation', max_length=400, blank=True)
-    # office_address = models.TextField(blank=True, null=True)
+    occupation = models.CharField('Occupation', max_length=400, blank=True)
+    office_address = models.TextField(blank=True, null=True)
     # annual_income = models.CharField('Annual Income', max_length=50, blank=True)
 
 class Teacher(models.Model):
@@ -30,11 +30,11 @@ class Student(models.Model):
 
     address = models.TextField(blank=True, null=True)
     aadhar_card_no = models.CharField(max_length=50, blank=True, null=True)
-    religion = models.CharField(max_length=100, blank=True, null=True)
-    birth_place = models.CharField(max_length=100, blank=True, null=True)
-    mother_tongue = models.CharField(max_length=50, blank=True, null=True)
-    nationality = models.CharField(max_length=50, blank=True, null=True)
-    caste = models.CharField(max_length=100, blank=True, null=True)
+    # religion = models.CharField(max_length=100, blank=True, null=True)
+    # birth_place = models.CharField(max_length=100, blank=True, null=True)
+    # mother_tongue = models.CharField(max_length=50, blank=True, null=True)
+    # nationality = models.CharField(max_length=50, blank=True, null=True)
+    # caste = models.CharField(max_length=100, blank=True, null=True)
     medical_info = models.TextField(blank=True, null=True)
 
     # Guardians
