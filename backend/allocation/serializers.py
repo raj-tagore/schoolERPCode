@@ -2,41 +2,29 @@
 
 from rest_framework import serializers
 from .models import Classroom, Subject
-from accounts.models import Account
-
-
-class BasicClassroomSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Classroom
-        fields = [
-            "id",
-            "name",
-            "is_active",
-            "standard",
-            "class_teacher",
-        ]
+from users.models import User
 
 
 class ClassroomSerializer(serializers.ModelSerializer):
     # Fields for write operations
     students = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Account.objects.filter(groups__name="Student"),
+        queryset=User.objects.filter(groups__name="Student"),
         required=False,
     )
     class_teacher = serializers.PrimaryKeyRelatedField(
-        queryset=Account.objects.filter(groups__name="Teacher"), required=False
+        queryset=User.objects.filter(groups__name="Teacher"), required=False
     )
     other_teachers = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Account.objects.filter(groups__name="Teacher"),
+        queryset=User.objects.filter(groups__name="Teacher"),
         required=False,
     )
 
     # Fields for read operations
-    # students_details = AccountSerializer(source="students", many=True, read_only=True)
-    # class_teacher_details = AccountSerializer(source="class_teacher", read_only=True)
-    # other_teachers_details = AccountSerializer(
+    # students_details = UserSerializer(source="students", many=True, read_only=True)
+    # class_teacher_details = UserSerializer(source="class_teacher", read_only=True)
+    # other_teachers_details = UserSerializer(
     #     source="other_teachers", many=True, read_only=True
     # )
 
@@ -76,26 +64,26 @@ class SubjectSerializer(serializers.ModelSerializer):
         queryset=Classroom.objects.all(), required=False
     )
     main_teacher = serializers.PrimaryKeyRelatedField(
-        queryset=Account.objects.filter(groups__name="Teacher"), required=False
+        queryset=User.objects.filter(groups__name="Teacher"), required=False
     )
     other_teachers = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Account.objects.filter(groups__name="Teacher"),
+        queryset=User.objects.filter(groups__name="Teacher"),
         required=False,
     )
     additional_students = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Account.objects.filter(groups__name="Student"),
+        queryset=User.objects.filter(groups__name="Student"),
         required=False,
     )
 
     # Fields for read operations
     # classroom_details = ClassroomSerializer(source="classroom", read_only=True)
-    # main_teacher_details = AccountSerializer(source="main_teacher", read_only=True)
-    # other_teachers_details = AccountSerializer(
+    # main_teacher_details = UserSerializer(source="main_teacher", read_only=True)
+    # other_teachers_details = UserSerializer(
     #     source="other_teachers", many=True, read_only=True
     # )
-    # additional_students_details = AccountSerializer(
+    # additional_students_details = UserSerializer(
     #     source="additional_students", many=True, read_only=True
     # )
 

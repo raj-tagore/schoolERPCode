@@ -28,7 +28,7 @@ data() {
 },
 methods: {
     async getStudentsData() {
-        const response = await api.get('api/accounts/all/?group=3');
+        const response = await api.get('api/users/all/?group=3');
         this.studentsData = response.data;
     },
 },

@@ -1,13 +1,13 @@
 from rest_framework import viewsets
 from .models import Classroom, Subject
-from .serializers import ClassroomSerializer, SubjectSerializer, BasicClassroomSerializer
+from .serializers import ClassroomSerializer, SubjectSerializer
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView, CreateAPIView
 from .permissions import ClassroomPermissions, SubjectPermissions
 
 class AllClassrooms(ListAPIView):
     queryset = Classroom.objects.all()
-    serializer_class = BasicClassroomSerializer
+    serializer_class = ClassroomSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

@@ -1,7 +1,7 @@
 from rest_framework.permissions import BasePermission
 from django.contrib.auth.models import Group
 
-class AccountPermissions(BasePermission):
+class UserPermissions(BasePermission):
 
     def has_object_permission(self, request, view, obj):
 

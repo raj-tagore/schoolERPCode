@@ -1,50 +1,62 @@
-from django.shortcuts import render
+# users/views.py
 
-from rest_framework.generics import (
-    ListAPIView,
-    RetrieveUpdateDestroyAPIView,
-    RetrieveAPIView,
-    CreateAPIView
-)
+from .models import User
+from .serializers import UserSerializer, UserReadSerializer
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from .permissions import UserPermissions
 
-from .models import Parent, Teacher, Student
-from .serializers import (
-    ParentSerializer,
-    TeacherSerializer,
-    StudentSerializer,
-)
-
-class AnyParent(RetrieveUpdateDestroyAPIView):
-    serializer_class = ParentSerializer
+class AllUsers(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserReadSerializer
     permission_classes = [IsAuthenticated]
-    queryset = Parent.objects.all()
-    lookup_field = 'id'  # or 'pk' if you prefer
 
-class CreateParent(CreateAPIView):
-    serializer_class = ParentSerializer
-    permission_classes = [DjangoModelPermissions]
-    queryset = Parent.objects.all()
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        request = self.request
 
+        id = request.query_params.get('id')
+        fname = request.query_params.get('fname')
+        lname = request.query_params.get('lname')
+        classroom = request.query_params.get('classroom') 
+        subject = request.query_params.get('subject') 
+        group = request.query_params.get('group')
 
-class AnyTeacher(RetrieveUpdateDestroyAPIView):
-    serializer_class = TeacherSerializer
-    permission_classes = [IsAuthenticated]
-    queryset = Teacher.objects.all()
+        if id:
+            queryset = queryset.filter(id=id)
+        if fname:
+            queryset = queryset.filter(fname__icontains=fname)
+        if lname:
+            queryset = queryset.filter(lname__icontains=lname)
+        if classroom:
+            queryset = queryset.filter(classrooms__id=classroom)
+        if subject:
+            queryset = queryset.filter(subjects__id=subject)
+        if group:
+            queryset = queryset.filter(groups__id=group)
+
+        return queryset
+
+class AnyUser(RetrieveUpdateDestroyAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated, UserPermissions]
+    queryset = User.objects.all()
     lookup_field = 'id'
 
-class CreateTeacher(CreateAPIView):
-    serializer_class = TeacherSerializer
-    permission_classes = [DjangoModelPermissions]
-    queryset = Teacher.objects.all()
-
-class AnyStudent(RetrieveUpdateDestroyAPIView):
-    serializer_class = StudentSerializer
+class SelfUser(RetrieveUpdateDestroyAPIView):
+    serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
-    queryset = Student.objects.all()
+
+    def get_object(self):
+        return self.request.user
+    
+class ReadUser(RetrieveAPIView):
+    serializer_class = UserReadSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
     lookup_field = 'id'
 
-class CreateStudent(CreateAPIView):
-    serializer_class = StudentSerializer
+class CreateUser(CreateAPIView):
+    serializer_class = UserSerializer
     permission_classes = [DjangoModelPermissions]
-    queryset = Student.objects.all()
+
