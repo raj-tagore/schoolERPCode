@@ -16,7 +16,7 @@ router = DefaultRouter()
 router.register(r"join_link", ClassroomJoinLinksView)
 
 urlpatterns = [
-    path("/classrooms/", include(router.urls)),
+    path("classrooms/", include(router.urls)),
     path("classrooms/all/", AllClassrooms.as_view()),
     path("classrooms/<int:id>/", AnyClassroom.as_view()),
     path("classrooms/create/", CreateClassroom.as_view()),
