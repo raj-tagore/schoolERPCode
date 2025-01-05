@@ -46,6 +46,9 @@ methods: {
         this.classroomsData = response.data;
 
         this.classroomsData.forEach(async (classroom)=> {
+			if (!classroom.class_teacher) {
+					return
+			}
             const teacherResponse = await api.get(`api/accounts/all/?id=${classroom.class_teacher}`);
             classroom.class_teacher_name = teacherResponse.data[0].first_name + " " + teacherResponse.data[0].last_name
         })
