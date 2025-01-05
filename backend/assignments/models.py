@@ -27,7 +27,7 @@ class Assignment(models.Model):
 
 class SubmittedAssignment(models.Model):
     student = models.ForeignKey(
-        'users.User',
+        'accounts.Student',
         on_delete=models.CASCADE,
         related_name="student",
         null=False,

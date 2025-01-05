@@ -6,8 +6,8 @@
         <v-list v-if="studentsData.length">
             <v-list-item v-for="(student, index) in studentsData"
             :key="index"
-            :title="student.first_name + ' ' + student.last_name"
-            :subtitle="student.username"
+            :title="student.user.first_name + ' ' + student.user.last_name"
+            :subtitle="student.user.username"
             class="border rounded mb-2 pa-3">
             </v-list-item>
         </v-list>
@@ -17,23 +17,28 @@
 
 <script>
 
-import api from '@/services/api'
+import { ref, onMounted } from 'vue';
+import api from '@/services/api';
 
 export default {
-name: 'StudentsList',
-data() {
-    return {
-    studentsData: [],
+  name: 'StudentsList',
+  setup() {
+    const studentsData = ref([]);
+
+    const getStudentsData = async () => {
+      const response = await api.get('api/accounts/students/all');
+      studentsData.value = response.data;
     };
-},
-methods: {
-    async getStudentsData() {
-        const response = await api.get('api/users/all/?group=3');
-        this.studentsData = response.data;
-    },
-},
-mounted() {
-    this.getStudentsData();
-}
+
+    onMounted(() => {
+      getStudentsData();
+    });
+
+    return {
+      studentsData,
+      getStudentsData,
+    };
+  },
 };
+
 </script>
