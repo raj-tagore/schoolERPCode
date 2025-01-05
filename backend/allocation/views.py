@@ -1,4 +1,4 @@
-from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from .models import Classroom, ClassroomJoinLinks, Subject
 from .serializers import ClassroomJoinLinkSerializer, ClassroomSerializer, SubjectSerializer
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
