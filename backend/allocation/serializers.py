@@ -117,3 +117,15 @@ class SubjectSerializer(serializers.ModelSerializer):
         if additional_students is not None:
             instance.additional_students.set(additional_students)
         return instance
+
+
+class ClassroomJoinLinkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Classroom
+        fields = [
+            "id",
+            "created_by",
+            "created_on",
+            "classroom",
+            "uuid",
+        ]

@@ -1,6 +1,6 @@
-from rest_framework import viewsets
-from .models import Classroom, Subject
-from .serializers import ClassroomSerializer, SubjectSerializer
+from rest_framework.views import APIView
+from .models import Classroom, ClassroomJoinLinks, Subject
+from .serializers import ClassroomJoinLinkSerializer, ClassroomSerializer, SubjectSerializer
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView, CreateAPIView
 from .permissions import ClassroomPermissions, SubjectPermissions
@@ -85,3 +85,8 @@ class CreateSubject(CreateAPIView):
     serializer_class = SubjectSerializer
     permission_classes = [DjangoModelPermissions]
 
+
+class ClassroomJoinLinksView(ModelViewSet):
+    queryset = ClassroomJoinLinks.objects.all()
+    serializer_class = ClassroomJoinLinkSerializer
+    permission_classes = [DjangoModelPermissions, ClassroomPermissions]

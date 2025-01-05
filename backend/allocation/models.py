@@ -61,3 +61,9 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.name
+
+class ClassroomJoinLinks(models.Model):
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='classroom_join_links')
+    created_on = models.DateTimeField(auto_now_add=True)
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='join_links')
+    uuid = models.UUIDField(unique=True, editable=False, primary_key=True)
