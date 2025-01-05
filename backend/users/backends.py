@@ -8,11 +8,13 @@ class TenantAwareAuthBackend(BaseBackend):
     def authenticate(self, request, username = ..., password = ..., **kwargs):
 
         tenant = getattr(request, 'tenant', None)
+        print(username)
         if not tenant:
             raise Http404('tenant not given')
         user = User.objects.get(username=username)
         if user.check_password(password):
-            if user.school == tenant or str(user.school) == 'public':
+            # Decide what to do when user.school is None
+            if user.school == tenant or str(user.school) == 'public' or user.school == None:
                 return None
             raise PermissionDenied('User and School mismatch')
         raise AuthenticationFailed('Wrong Credentials')
