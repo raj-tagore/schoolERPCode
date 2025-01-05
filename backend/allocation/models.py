@@ -1,30 +1,26 @@
 from django.db import models
-from users.models import User
+from accounts.models import Student, Teacher
 
 # Create your models here.
-
 
 class Classroom(models.Model):
     name = models.CharField(max_length=50)
     is_active = models.BooleanField(default=True)
     standard = models.CharField(max_length=50)
     students = models.ManyToManyField(
-        User,
+        Student,
         related_name="classrooms",
-        limit_choices_to={"groups__name": "Student"},
         blank=True,
     )
     class_teacher = models.ForeignKey(
-        User,
+        Teacher,
         on_delete=models.SET_NULL,
         null=True,
         related_name="classrooms_leading",
-        limit_choices_to={"groups__name": "Teacher"},
     )
     other_teachers = models.ManyToManyField(
-        User,
+        Teacher,
         related_name="classrooms_assisting",
-        limit_choices_to={"groups__name": "Teacher"},
         blank=True,
     )
 
@@ -39,24 +35,11 @@ class Subject(models.Model):
     classroom = models.ForeignKey(
         Classroom, on_delete=models.SET_NULL, null=True, related_name="subjects"
     )
-    main_teacher = models.ForeignKey(
-        User,
+    teacher = models.ForeignKey(
+        Teacher,
         on_delete=models.SET_NULL,
         null=True,
-        related_name="subjects_leading",
-        limit_choices_to={"groups__name": "Teacher"},
-    )
-    other_teachers = models.ManyToManyField(
-        User,
-        related_name="subjects_assisting",
-        limit_choices_to={"groups__name": "Teacher"},
-        blank=True,
-    )
-    additional_students = models.ManyToManyField(
-        User,
         related_name="subjects",
-        limit_choices_to={"groups__name": "Student"},
-        blank=True,
     )
 
     def __str__(self):

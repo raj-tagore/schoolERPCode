@@ -4,7 +4,7 @@ from django.db import models
 
 class Attendance(models.Model):
     date = models.DateField()
-    student = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='attendances')
+    student = models.ForeignKey('accounts.Student', on_delete=models.CASCADE, related_name='attendances')
     subject = models.ForeignKey('allocation.Subject', on_delete=models.SET_NULL, null=True, related_name='attendances')
     classroom = models.ForeignKey('allocation.Classroom', on_delete=models.SET_NULL, null=True, related_name='attendances')
     record = models.CharField(max_length=50, choices=[('P', 'Present'), ('A', 'Absent'), ('L', 'Late'), ('E', 'Excused')])

@@ -15,6 +15,18 @@ from .serializers import (
     StudentSerializer,
 )
 
+class AllParents(ListAPIView):
+    serializer_class = ParentSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Parent.objects.all()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        request = self.request
+
+        # filter parents of student here
+        return queryset
+
 class AnyParent(RetrieveUpdateDestroyAPIView):
     serializer_class = ParentSerializer
     permission_classes = [IsAuthenticated]
@@ -27,6 +39,18 @@ class CreateParent(CreateAPIView):
     queryset = Parent.objects.all()
 
 
+class AllTeachers(ListAPIView):
+    serializer_class = TeacherSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Teacher.objects.all()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        request = self.request
+
+        # filter parents of student here
+        return queryset
+
 class AnyTeacher(RetrieveUpdateDestroyAPIView):
     serializer_class = TeacherSerializer
     permission_classes = [IsAuthenticated]
@@ -37,6 +61,19 @@ class CreateTeacher(CreateAPIView):
     serializer_class = TeacherSerializer
     permission_classes = [DjangoModelPermissions]
     queryset = Teacher.objects.all()
+    
+
+class AllStudents(ListAPIView):
+    serializer_class = StudentSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Student.objects.all()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        request = self.request
+
+        # filter parents of student here
+        return queryset
 
 class AnyStudent(RetrieveUpdateDestroyAPIView):
     serializer_class = StudentSerializer
