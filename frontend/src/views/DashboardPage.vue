@@ -23,11 +23,16 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
 import ClassroomCards from '@/components/ClassroomCards.vue';
-export default {
+
+export default defineComponent({
   components: {
     ClassroomCards,
-  }
-}
+  },
+  setup() {
+    return {};
+  },
+});
 
 </script>
