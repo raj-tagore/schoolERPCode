@@ -7,7 +7,7 @@
     cols="6" 
     md="3" 
     lg="2" >
-        <v-card>
+		<v-card @click="goToClassroom(index)">
         <v-img 
             :src="getRandomClassroomImage()" 
             class="custom-img"
@@ -23,6 +23,8 @@
 <script>
 
 import api from '@/services/api'
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 export default {
 name: 'ClassroomCards',
@@ -41,6 +43,10 @@ methods: {
         const index = Math.floor(Math.random() * this.images.length);
         return this.images[index];
     },
+	goToClassroom(id) {
+		const classroomLink = `${window.location.origin}/classroom?id=${id}`;
+		router.push({ path: classroomLink });
+	},
     async getClassroomsData() {
         const response = await api.get('api/allocation/classrooms/all/');
         this.classroomsData = response.data;
@@ -56,7 +62,7 @@ methods: {
     async getTeacherName(id) {
         const response = await api.get(`api/accounts/all/?id=${id}`);
         return response.data.first_name + " " + response.data.last_name;
-    }
+    },
 },
 mounted() {
     this.getClassroomsData();

@@ -1,14 +1,15 @@
-import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '@/stores/auth'
+import { createRouter, createWebHistory } from 'vue-router';
 
 // Layouts
 import DashboardLayout from '@/layouts/DashboardLayout.vue';
 import EmptyLayout from '@/layouts/EmptyLayout.vue';
 
+import DashboardPage from '@/views/DashboardPage.vue';
 // Pages
 import HomePage from '@/views/HomePage.vue';
 import LoginPage from '@/views/LoginPage.vue';
-import DashboardPage from '@/views/DashboardPage.vue';
+import ClassroomPage from '@/views/ClassroomPage.vue';
 
 const routes = [
   {
@@ -47,6 +48,24 @@ const routes = [
         path: '',
         name: 'Dashboard',
         component: DashboardPage,
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/classroom',
+    component: DashboardLayout,
+    children: [
+      {
+        path: '',
+        name: 'Classroom',
+        component: ClassroomPage,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: '/join',
+        name: 'Classroom Join',
+        component: ClassroomPage,
         meta: { requiresAuth: true },
       },
     ],
