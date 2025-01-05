@@ -8,16 +8,22 @@ class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='parent_account')
     phone = models.CharField('Phone number', max_length=20, blank=True)
     whatsapp = models.CharField('WhatsApp number', max_length=20, blank=True)
-    occupation = models.CharField('Occupation', max_length=400, blank=True)
-    office_address = models.TextField(blank=True, null=True)
+    # occupation = models.CharField('Occupation', max_length=400, blank=True)
+    # office_address = models.TextField(blank=True, null=True)
     # annual_income = models.CharField('Annual Income', max_length=50, blank=True)
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name} ({self.user.username})"
 
 class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacher_account')
     identifier = models.BigIntegerField('ID')
-    qualifications = models.TextField('Qualifications', blank=True)
+    # qualifications = models.TextField('Qualifications', blank=True)
     phone = models.CharField('Phone number', max_length=20, blank=True)
     whatsapp = models.CharField('WhatsApp number', max_length=20, blank=True)
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name} ({self.user.username})"
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_account')
@@ -25,17 +31,19 @@ class Student(models.Model):
     # Basic Fields
     student_no = models.CharField(max_length=50, unique=True)
     roll_no = models.CharField(max_length=50, blank=True, null=True)
-    standard = models.CharField(max_length=50, blank=True, null=True)
-    division = models.CharField(max_length=10, blank=True, null=True)
+    
+    # Standard and Division technically not required because there is a link with 'Classroom' itself
+    # standard = models.CharField(max_length=50, blank=True, null=True)
+    # division = models.CharField(max_length=10, blank=True, null=True)
 
-    address = models.TextField(blank=True, null=True)
-    aadhar_card_no = models.CharField(max_length=50, blank=True, null=True)
+    # address = models.TextField(blank=True, null=True)
+    # aadhar_card_no = models.CharField(max_length=50, blank=True, null=True)
     # religion = models.CharField(max_length=100, blank=True, null=True)
     # birth_place = models.CharField(max_length=100, blank=True, null=True)
     # mother_tongue = models.CharField(max_length=50, blank=True, null=True)
     # nationality = models.CharField(max_length=50, blank=True, null=True)
     # caste = models.CharField(max_length=100, blank=True, null=True)
-    medical_info = models.TextField(blank=True, null=True)
+    # medical_info = models.TextField(blank=True, null=True)
 
     # Guardians
     guardian_1 = models.ForeignKey(Parent, on_delete=models.SET_NULL, null=True, blank=True, related_name='student_guardian1')
@@ -107,7 +115,7 @@ class Student(models.Model):
     #     related_name='student_report_cards'
     # )
 
-
     def __str__(self):
-        return f"{self.student_no} - {self.standard} {self.division}"
+        # Access first name and last name from the related User model
+        return f"{self.user.first_name} {self.user.last_name} ({self.user.username})"
 

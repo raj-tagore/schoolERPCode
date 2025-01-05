@@ -21,6 +21,5 @@ class UserReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'id', 'first_name', 'last_name', 'email',
-            'classrooms', 'subjects', 'groups'
+            'id', 'first_name', 'last_name', 'email', 'groups'
         ]

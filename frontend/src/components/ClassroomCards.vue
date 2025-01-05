@@ -1,22 +1,31 @@
 <template>
 <v-container>
-    <v-row>
-    <v-col 
-    v-for="(classroom, index) in classroomsData" 
-    :key="index" 
-    cols="6" 
-    md="3" 
-    lg="2" >
-        <v-card>
-        <v-img 
-            :src="getRandomClassroomImage()" 
-            class="custom-img"
-        ></v-img>
-        <v-card-title>{{ classroom.name }}</v-card-title>
-        <v-card-subtitle class="pb-5">{{ classroom.class_teacher_name || "Loading..." }}</v-card-subtitle>
-        </v-card>
-    </v-col>
-    </v-row>
+    <v-card class="mb-5">
+        <v-card-title class="text-h4">Your Classes</v-card-title>
+        <v-card-text>
+            <v-row>
+            <v-col 
+            v-for="(classroom, index) in classroomsData" 
+            :key="index" 
+            cols="6" 
+            md="3" 
+            lg="2" >
+                <v-card>
+                <v-img 
+                    :src="getRandomClassroomImage()" 
+                    class="custom-img"
+                ></v-img>
+                <v-card-title class="text-body-1">{{ classroom.name }}</v-card-title>
+                <v-card-subtitle>{{ classroom.class_teacher_details.user.first_name || "Loading..." }}</v-card-subtitle>
+                <v-card-actions class="d-flex justify-center">
+                    <v-btn>Enter Class</v-btn>
+                </v-card-actions>
+                </v-card>
+            </v-col>
+            </v-row>
+        </v-card-text>
+    </v-card>
+
 </v-container>
 </template>
 
@@ -44,16 +53,7 @@ methods: {
     async getClassroomsData() {
         const response = await api.get('api/allocation/classrooms/all/');
         this.classroomsData = response.data;
-
-        this.classroomsData.forEach(async (classroom)=> {
-            const teacherResponse = await api.get(`api/accounts/all/?id=${classroom.class_teacher}`);
-            classroom.class_teacher_name = teacherResponse.data[0].first_name + " " + teacherResponse.data[0].last_name
-        })
     },
-    async getTeacherName(id) {
-        const response = await api.get(`api/accounts/all/?id=${id}`);
-        return response.data.first_name + " " + response.data.last_name;
-    }
 },
 mounted() {
     this.getClassroomsData();

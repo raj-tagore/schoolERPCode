@@ -9,6 +9,7 @@ import EmptyLayout from '@/layouts/EmptyLayout.vue';
 import HomePage from '@/views/HomePage.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import DashboardPage from '@/views/DashboardPage.vue';
+import ClassroomPage from '@/views/ClassroomPage.vue';
 
 const routes = [
   {
@@ -51,6 +52,12 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/classrooms/:id',
+    name: 'ClassroomPage',
+    component: ClassroomPage,
+    props: true,
+  }
 ];
 
 const router = createRouter({
