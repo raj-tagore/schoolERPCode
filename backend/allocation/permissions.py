@@ -12,7 +12,6 @@ class ClassroomPermissions(BasePermission):
         # Check if user is in the 'Teacher' group
         if "Teacher" in [group.name for group in request.user.groups.all()]:
             # Check if user is teaching or assisting in any related classroom
-            classrooms = obj.classrooms.all()
             if (
                 obj.class_teacher == request.user
                 or obj.other_teachers.filter(id=request.user.id).exists()
@@ -51,4 +50,29 @@ class SubjectPermissions(BasePermission):
                 return True
             return False
 
+        return False
+
+
+class ClassroomJoinLinkPermissions(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_superuser:
+            return True
+
+        if "Admin" in [group.name for group in request.user.groups.all()]:
+            return True
+
+        # Check if user is in the 'Teacher' group
+        if "Teacher" in [group.name for group in request.user.groups.all()]:
+            # Check if user is teaching or assisting in any related classroom
+            classroom = obj.classroom.all()
+            if (
+                classroom.class_teacher == request.user
+                or classroom.other_teachers.filter(id=request.user.id).exists()
+            ):
+                return True
+            if (
+                classroom.students.filter(id=request.user.id).exists()
+                and request.method in SAFE_METHODS
+            ):
+                return True
         return False

@@ -3,7 +3,7 @@ from .models import Classroom, ClassroomJoinLinks, Subject
 from .serializers import ClassroomJoinLinkSerializer, ClassroomSerializer, SubjectSerializer
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView, CreateAPIView
-from .permissions import ClassroomPermissions, SubjectPermissions
+from .permissions import ClassroomJoinLinkPermissions, ClassroomPermissions, SubjectPermissions
 
 class AllClassrooms(ListAPIView):
     queryset = Classroom.objects.all()
@@ -89,4 +89,4 @@ class CreateSubject(CreateAPIView):
 class ClassroomJoinLinksView(ModelViewSet):
     queryset = ClassroomJoinLinks.objects.all()
     serializer_class = ClassroomJoinLinkSerializer
-    permission_classes = [DjangoModelPermissions, ClassroomPermissions]
+    permission_classes = [DjangoModelPermissions, ClassroomJoinLinkPermissions]

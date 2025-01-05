@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import make_password
 
 class UserResource(resources.ModelResource):
     def before_save_instance(self, instance, row, **kwargs):
+        print(instance)
         if instance.password and not instance.password.startswith('pbkdf2_'):
             instance.password = make_password(instance.password)
         return super().before_save_instance(instance, row, **kwargs)

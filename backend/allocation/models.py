@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import User
+import uuid
 
 # Create your models here.
 
@@ -63,7 +64,8 @@ class Subject(models.Model):
         return self.name
 
 class ClassroomJoinLinks(models.Model):
+
+    id = models.UUIDField(unique=True, editable=False, primary_key=True, default=uuid.uuid4)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='classroom_join_links')
     created_on = models.DateTimeField(auto_now_add=True)
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='join_links')
-    uuid = models.UUIDField(unique=True, editable=False, primary_key=True)

@@ -1,7 +1,7 @@
 # serializers.py
 
 from rest_framework import serializers
-from .models import Classroom, Subject
+from .models import Classroom, ClassroomJoinLinks, Subject
 from users.models import User
 
 
@@ -121,11 +121,12 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 class ClassroomJoinLinkSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Classroom
+        model = ClassroomJoinLinks
         fields = [
             "id",
             "created_by",
             "created_on",
             "classroom",
-            "uuid",
         ]
+    def update(a, b, c):
+        raise "Not Supported"
