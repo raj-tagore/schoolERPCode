@@ -1,7 +1,7 @@
 <template>
 <v-container>
     <v-card class="mb-5">
-        <v-card-title class="text-h5">Your Classes</v-card-title>
+        <v-card-title class="text-h5">Classes</v-card-title>
         <v-card-text>
             <v-row>
             <v-col 

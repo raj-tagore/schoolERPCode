@@ -1,11 +1,20 @@
 <template>
 <v-container>
-    Classroom ID: {{ id }}
+  <v-row>
+    <v-col cols="12" lg="4">
+      <SubjectCards />
+    </v-col>
+  </v-row>
 </v-container>
 </template>
 
 <script>
+import SubjectCards from '@/components/SubjectCards.vue';
+
 export default {
-    props: ['id'],
+  components: {
+    SubjectCards,
+  },
+  props: ['id'],
 }
 </script>
