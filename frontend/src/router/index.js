@@ -10,6 +10,7 @@ import HomePage from '@/views/HomePage.vue';
 import LoginPage from '@/views/LoginPage.vue';
 import DashboardPage from '@/views/DashboardPage.vue';
 import ClassroomPage from '@/views/ClassroomPage.vue';
+import ClassroomsPage from '@/views/ClassroomsPage.vue';
 
 const routes = [
   {
@@ -41,23 +42,36 @@ const routes = [
   //   ],
   // },
   {
-    path: '/dashboard',
+    path: '/app/',
     component: DashboardLayout,
     children: [
       {
-        path: '',
+        path: 'dashboard/',
         name: 'Dashboard',
         component: DashboardPage,
         meta: { requiresAuth: true },
       },
+      {
+        path: 'classrooms/',
+        component: EmptyLayout,
+        meta: { requiresAuth: true },
+        children: [
+          { 
+            path: 'all/',
+            name: 'Classrooms',
+            component: ClassroomsPage,
+            props: true,
+          },
+          { 
+            path: ':id/',
+            name: 'Classroom',
+            component: ClassroomPage,
+            props: true,
+          },
+        ]
+      },
     ],
   },
-  {
-    path: '/classrooms/:id',
-    name: 'ClassroomPage',
-    component: ClassroomPage,
-    props: true,
-  }
 ];
 
 const router = createRouter({

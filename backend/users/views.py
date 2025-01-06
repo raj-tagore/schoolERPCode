@@ -18,8 +18,6 @@ class AllUsers(ListAPIView):
         id = request.query_params.get('id')
         fname = request.query_params.get('fname')
         lname = request.query_params.get('lname')
-        classroom = request.query_params.get('classroom') 
-        subject = request.query_params.get('subject') 
         group = request.query_params.get('group')
 
         if id:
@@ -28,10 +26,6 @@ class AllUsers(ListAPIView):
             queryset = queryset.filter(fname__icontains=fname)
         if lname:
             queryset = queryset.filter(lname__icontains=lname)
-        if classroom:
-            queryset = queryset.filter(classrooms__id=classroom)
-        if subject:
-            queryset = queryset.filter(subjects__id=subject)
         if group:
             queryset = queryset.filter(groups__id=group)
 

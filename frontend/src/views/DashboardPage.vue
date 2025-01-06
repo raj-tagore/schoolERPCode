@@ -1,5 +1,5 @@
 <template>
-  <ClassroomCards />
+  This is the Dashboard
   <!-- <v-container>
     <v-row>
       <v-col cols="12" lg="6">
@@ -24,12 +24,8 @@
 
 <script>
 import { defineComponent } from 'vue';
-import ClassroomCards from '@/components/ClassroomCards.vue';
 
 export default defineComponent({
-  components: {
-    ClassroomCards,
-  },
   setup() {
     return {};
   },

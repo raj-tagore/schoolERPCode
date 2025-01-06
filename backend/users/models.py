@@ -11,5 +11,15 @@ class User(AbstractUser):
 
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='users', null=True)
 
+    @property
+    def account(self):
+        if hasattr(self, 'teacher_account'):
+            return {'type': 'Teacher', 'id': self.teacher_account.id}
+        if hasattr(self, 'parent_account'):
+            return {'type': 'Parent', 'id': self.parent_account.id}
+        if hasattr(self, 'student_account'):
+            return {'type': 'Student', 'id': self.student_account.id}
+        return None
+
     def __str__(self):
         return self.username

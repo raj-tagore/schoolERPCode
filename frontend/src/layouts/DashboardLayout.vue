@@ -4,21 +4,27 @@
       <v-list dense>
         <!-- User Info -->
         <v-list-item>
-          <div>
-            <h3>{{ user.first_name }} {{ user.last_name }}</h3>
-            <h4>{{ user.username }}</h4>
-            <span>User Role to be here</span>
-          </div>
+          <v-card prepend-icon="mdi-account" class="pa-2 ma-2" 
+          :title="user.first_name + ' ' + user.last_name"
+          :subtitle="user.account?.type || 'No linked account'">
+          <v-card-actions>
+            <v-btn @click="logoutHandler">Logout</v-btn>
+          </v-card-actions>
+          </v-card>
         </v-list-item>
 
         <v-divider :thickness="10" class="border-opacity-100"></v-divider>
 
         <!-- Dashboard -->
-        <v-list-item to="/dashboard">
+        <v-list-item :to="{name: 'Dashboard'}">
           <v-list-item-title>Dashboard</v-list-item-title>
         </v-list-item>
+
+        <v-list-item :to="{name: 'Classrooms'}">
+          <v-list-item-title>Classes</v-list-item-title>
+        </v-list-item>
         
-        <ExpandableListItem title="Classrooms">
+        <!-- <ExpandableListItem title="Classrooms">
           <v-list dense>
             <v-list-item to="/classrooms">
               <v-list-item-title>View Classrooms</v-list-item-title>
@@ -27,7 +33,7 @@
               <v-list-item-title>Create Classroom</v-list-item-title>
             </v-list-item>
           </v-list>
-        </ExpandableListItem>
+        </ExpandableListItem> -->
 
       </v-list>
     </v-navigation-drawer>
@@ -54,7 +60,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth' // Pinia store
-import ExpandableListItem from '@/components/c-expandable-list-item.vue'
+// import ExpandableListItem from '@/components/c-expandable-list-item.vue'
 
 const drawer = ref(false)
 
