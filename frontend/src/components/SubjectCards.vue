@@ -10,7 +10,7 @@
             cols="6" >
                 <v-card class="pa-1">
                 <v-card-title class="text-body-1">{{ subject.name }}</v-card-title>
-                <v-card-subtitle>{{ subject.teacher_details.user.first_name || "Loading..." }}</v-card-subtitle>
+                <v-card-subtitle>{{ subject.teacher_details?.user?.first_name && "Loading..." }}</v-card-subtitle>
                 <v-card-actions class="d-flex justify-center">
                     <v-btn :to="{ name: 'Classroom', params: { id: subject.id }}">Enter</v-btn>
                 </v-card-actions>
@@ -28,7 +28,7 @@ import { ref, onMounted } from 'vue';
 import api from '@/services/api';
 
 export default {
-  name: 'ClassroomCards',
+  name: 'SubjectCards',
   setup() {
     const subjectsData = ref([]);
 
