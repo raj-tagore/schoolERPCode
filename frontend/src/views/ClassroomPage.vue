@@ -1,6 +1,6 @@
 <template>
-	<v-container>
-		<v-row>
+	<v-container v-if="this.classroom">
+		<v-row align="center" justify="center">
 			<v-col cols="12" lg="4">
 				<v-card>
 					<v-tabs
@@ -16,7 +16,7 @@
 				</v-card>
 				<v-tabs-window v-model="tabs">
 					<v-tabs-window-item>
-						<v-card v-if="this.classroom">
+						<v-card>
 							<v-img 
 								:src="getRandomClassroomImage()" 
 								class="custom-img"
@@ -37,9 +37,56 @@
 					<v-tabs-window-item>
 						<v-card>
 							<v-card-title>Settings</v-card-title>
+							<v-card-text>
+								<v-row>
+									<v-col cols="12" lg="6">
+										<v-text-field label="Standard" v-model="classroom.standard"></v-text-field>
+									</v-col>
+									<v-col cols="12" lg="6">
+										<v-text-field label="Name" v-model="classroom.name"></v-text-field>
+									</v-col>
+								</v-row>
+								<v-row>
+									<v-btn @click="updateClassroom()" color="primary">Update</v-btn>
+								</v-row>
+							</v-card-text>
 						</v-card>
 					</v-tabs-window-item>
 				</v-tabs-window>
+			</v-col>
+		</v-row>
+		<v-row>
+			<v-col>
+				<v-card>
+					<v-card-title>
+						Teachers
+					</v-card-title>
+					<v-card-text>
+						<v-data-table :items="classroom.other_teachers" :headers="teacher_headers">
+							<template #[`item.id`]="{ item }">
+								<router-link :to="{ name: 'Dashboard', params: { id: item} }">
+									View Profile
+									</router-link>
+							</template>
+						</v-data-table>
+					</v-card-text>
+				</v-card>
+			</v-col>
+			<v-col>
+				<v-card>
+					<v-card-title>
+						Students
+					</v-card-title>
+					<v-card-text>
+						<v-data-table :items="classroom.students" :headers="student_headers">
+							<template #[`item.id`]="{ item }">
+								<router-link :to="{ name: 'Dashboard', params: { id: item} }">
+									View Profile
+									</router-link>
+							</template>
+						</v-data-table>
+					</v-card-text>
+				</v-card>
 			</v-col>
 		</v-row>
 	</v-container>
@@ -57,6 +104,14 @@ export default {
 			tabs: null,
 			classroom: null,
 			subjects: [],
+			teacher_headers: [
+				{ title: 'Name', value: 'user.first_name' },
+				{ title: 'Profile', key: 'id', value: teacher => `app/teachers/${teacher.id}` },
+			],
+			student_headers: [
+				{ title: 'Name', value: 'user.first_name' },
+				{ title: 'Profile', key: 'id', value: teacher => `app/teachers/${teacher.id}` },
+			],
 			images: [
 				require('@/assets/classrooms/classroom1.png'),
 				require('@/assets/classrooms/classroom2.png'),
@@ -70,11 +125,19 @@ export default {
 			const index = Math.floor(Math.random() * this.images.length);
 			return this.images[index];
 		},
+		async updateClassroom() {
+			await api.put(`api/allocation/classrooms/${this.id}/`, this.classroom);
+		},
 		async getClassroomData() {
-			const classroomResponse = await api.get(`api/allocation/classrooms/${this.id}`);
-			this.classroom = classroomResponse.data;
-			const subjectsResponse = await api.get(`api/allocation/subjects/all?classroom=${this.id}`);
-			this.subjects = subjectsResponse.data;
+			this.classroom = (await api.get(`api/allocation/classrooms/${this.id}`)).data;
+			this.subjects = (await api.get(`api/allocation/subjects/all?classroom=${this.id}`)).data;
+			this.classroom.other_teachers = await Promise.all(this.classroom.other_teachers.map(async (teacher_id) => {
+				return (await api.get(`api/accounts/teachers/${teacher_id}/`)).data;
+			}));
+			this.classroom.students = await Promise.all(this.classroom.students.map(async (student_id) => {
+				return (await api.get(`api/accounts/students/${student_id}/`)).data;
+			}));
+			console.log(this.classroom);
 		},
 	},
 	mounted() {
