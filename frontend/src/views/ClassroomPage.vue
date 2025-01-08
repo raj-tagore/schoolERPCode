@@ -142,7 +142,10 @@ export default {
 			return this.images[index];
 		},
 		async updateClassroom() {
-			await api.put(`api/allocation/classrooms/${this.classroomId}/`, this.classroom);
+			await api.put(
+				`api/allocation/classrooms/${this.classroomId}/`,
+				this.classroom,
+			);
 		},
 
 		async getClassroomData() {
@@ -150,7 +153,9 @@ export default {
 				await api.get(`api/allocation/classrooms/${this.classroomId}`)
 			).data;
 			this.subjects = (
-				await api.get(`api/allocation/subjects/all/?classroom=${this.classroomId}`)
+				await api.get(
+					`api/allocation/subjects/all/?classroom=${this.classroomId}`,
+				)
 			).data;
 		},
 	},

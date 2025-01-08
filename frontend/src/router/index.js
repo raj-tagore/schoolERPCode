@@ -69,20 +69,18 @@ const routes = [
                         name: "Classroom",
                         component: ClassroomPage,
                         props: true,
+                    },
+                    {
+						path: ":classroomId/subjects/",
+                        name: "Subjects",
+                        component: SubjectTopBarLayout,
+                        props: true,
                         children: [
                             {
-                                path: "subjects/",
-                                name: "Subjects",
-                                component: SubjectTopBarLayout,
+                                path: ":subjectId/",
+                                name: "Subject",
+                                component: SubjectPage,
                                 props: true,
-                                children: [
-                                    {
-                                        path: ":subjectId/",
-                                        name: "Subject",
-                                        component: SubjectPage,
-                                        props: true,
-                                    },
-                                ],
                             },
                         ],
                     },

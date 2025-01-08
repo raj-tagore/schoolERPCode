@@ -1,5 +1,5 @@
 <template>
-	<v-container v-if="this.classroom">
+	<v-container v-if="this.subject">
 		<v-row align="center" justify="center">
 			<v-col>
 				<v-card>
@@ -21,32 +21,12 @@
 							<v-col cols="12" lg="4">
 								<v-card>
 									<v-card-title>
-										{{this.classroom.name}}
+										{{this.subject.name}}
 										<p class="text-body-2 pb-4">
-											<b>Standard: </b>{{this.classroom.standard}} <br>
-											<b>Class Teacher: </b>{{ this.classroom.class_teacher_details?.user?.first_name || "Loading..." }}
+											<b>Name: </b>{{this.subject.name}} <br>
+											<b>Description: </b>{{ this.subject.description }}
 										</p>
 									</v-card-title>
-								</v-card>
-							</v-col>
-							<v-col cols="12" lg="4">
-								<v-card>
-									<v-card-title>Subjects</v-card-title>
-									<v-card-text>
-										<v-container>
-											<v-row>
-												<v-col v-for="subject in subjects" :key="subject.id" cols="6">
-													<v-card>
-														<v-card-title class="text-body-1">{{ subject.name }}</v-card-title>
-														<v-card-subtitle v-if="subject.teacher_details">{{ subject.teacher_details.user.first_name + ' ' + subject.teacher_details.user.last_name }}</v-card-subtitle>
-														<v-card-actions class="justify-center">
-															<v-btn>Enter</v-btn>
-														</v-card-actions>
-													</v-card>
-												</v-col>
-											</v-row>
-										</v-container>
-									</v-card-text>
 								</v-card>
 							</v-col>
 						</v-row>
@@ -128,16 +108,16 @@ export default {
 	props: ["subjectId"],
 	methods: {
 		async updateSubjects() {
-			await api.put(`api/allocation/subjects/${this.id}/`, this.classroom);
+			await api.put(`api/allocation/subjects/${this.subjectId}/`, this.subject);
 		},
-		async getClassroomData() {
+		async getSubjectData() {
 			this.subject = (
-				await api.get(`api/allocation/subjects/${this.id}`)
+				await api.get(`api/allocation/subjects/${this.subjectId}`)
 			).data;
 		},
 	},
 	mounted() {
-		this.getClassroomData();
+		this.getSubjectData();
 	},
 };
 </script>
