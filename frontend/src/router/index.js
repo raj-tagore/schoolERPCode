@@ -4,7 +4,7 @@ import { useAuthStore } from "@/stores/auth";
 // Layouts
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
-import SubjectTopBarLayout from "@/layouts/SubjectTopBarLayout.vue";
+import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
 
 // Pages
 import HomePage from "@/views/HomePage.vue";
@@ -55,29 +55,26 @@ const routes = [
             },
             {
                 path: "classrooms/",
-                component: EmptyLayout,
+                component: AppTopBarLayout,
                 meta: { requiresAuth: true },
                 children: [
                     {
                         path: "all/",
                         name: "Classrooms",
                         component: ClassroomsPage,
-                        props: true,
                     },
                     {
                         path: ":classroomId/",
-                        name: "Classroom",
-                        component: ClassroomPage,
-                        props: true,
-                    },
-                    {
-						path: ":classroomId/subjects/",
-                        name: "Subjects",
-                        component: SubjectTopBarLayout,
                         props: true,
                         children: [
                             {
-                                path: ":subjectId/",
+                                path: "",
+                                name: "Classroom",
+                                component: ClassroomPage,
+								props: true,
+                            },
+                            {
+                                path: "/subject/:subjectId/",
                                 name: "Subject",
                                 component: SubjectPage,
                                 props: true,

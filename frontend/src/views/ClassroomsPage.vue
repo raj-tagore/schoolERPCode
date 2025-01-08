@@ -3,13 +3,12 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
-import ClassroomCards from '@/components/ClassroomCards.vue';
+import { defineComponent } from "vue";
+import ClassroomCards from "@/components/ClassroomCards.vue";
 
 export default defineComponent({
-components: {
-    ClassroomCards,
-},
+	components: {
+		ClassroomCards,
+	},
 });
-
 </script>

@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar app color="grey" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-			<v-toolbar-title>Subjects</v-toolbar-title>
+			<v-toolbar-title>Classroom</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
 
