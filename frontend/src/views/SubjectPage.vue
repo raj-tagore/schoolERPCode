@@ -20,10 +20,6 @@
 						<v-row class="ma-4">
 							<v-col cols="12" lg="4">
 								<v-card>
-									<v-img 
-										:src="getRandomClassroomImage()" 
-										class="custom-img"
-									></v-img>
 									<v-card-title>
 										{{this.classroom.name}}
 										<p class="text-body-2 pb-4">
@@ -44,7 +40,7 @@
 														<v-card-title class="text-body-1">{{ subject.name }}</v-card-title>
 														<v-card-subtitle v-if="subject.teacher_details">{{ subject.teacher_details.user.first_name + ' ' + subject.teacher_details.user.last_name }}</v-card-subtitle>
 														<v-card-actions class="justify-center">
-															<v-btn :to="{name: 'Subject', params: {subjectId: subject.id}}">Enter</v-btn>
+															<v-btn>Enter</v-btn>
 														</v-card-actions>
 													</v-card>
 												</v-col>
@@ -110,8 +106,7 @@ export default {
 	data() {
 		return {
 			tabs: null,
-			classroom: null,
-			subjects: [],
+			subject: [],
 			teacher_headers: [
 				{ title: "Name", value: "user.first_name" },
 				{
@@ -128,29 +123,16 @@ export default {
 					value: (teacher) => `app/teachers/${teacher.id}`,
 				},
 			],
-			images: [
-				require("@/assets/classrooms/classroom1.png"),
-				require("@/assets/classrooms/classroom2.png"),
-				require("@/assets/classrooms/classroom3.png"),
-			],
 		};
 	},
-	props: ["classroomId"],
+	props: ["subjectId"],
 	methods: {
-		getRandomClassroomImage() {
-			const index = Math.floor(Math.random() * this.images.length);
-			return this.images[index];
+		async updateSubjects() {
+			await api.put(`api/allocation/subjects/${this.id}/`, this.classroom);
 		},
-		async updateClassroom() {
-			await api.put(`api/allocation/classrooms/${this.classroomId}/`, this.classroom);
-		},
-
 		async getClassroomData() {
-			this.classroom = (
-				await api.get(`api/allocation/classrooms/${this.classroomId}`)
-			).data;
-			this.subjects = (
-				await api.get(`api/allocation/subjects/all/?classroom=${this.classroomId}`)
+			this.subject = (
+				await api.get(`api/allocation/subjects/${this.id}`)
 			).data;
 		},
 	},

@@ -12,7 +12,7 @@
                 <v-card-title class="text-body-1">{{ subject.name }}</v-card-title>
                 <v-card-subtitle>{{ subject.teacher_details?.user?.first_name && "Loading..." }}</v-card-subtitle>
                 <v-card-actions class="d-flex justify-center">
-                    <v-btn :to="{ name: 'Classroom', params: { id: subject.id }}">Enter</v-btn>
+                    <v-btn :to="{ name: 'Subject', params: { subjectId: subject.id }}">Enter</v-btn>
                 </v-card-actions>
                 </v-card>
             </v-col>
@@ -24,31 +24,33 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import api from '@/services/api';
+import { ref, onMounted } from "vue";
+import api from "@/services/api";
 
 export default {
-  name: 'SubjectCards',
-  setup() {
-    const subjectsData = ref([]);
+	name: "SubjectCards",
+	setup() {
 
-    const getSubjectsData = async () => {
-      try {
-        const response = await api.get('api/allocation/subjects/all/');
-        subjectsData.value = response.data;
-      } catch (error) {
-        console.error('Error fetching subjects data:', error);
-      }
-    };
+		const subjectsData = ref([]);
 
-    onMounted(() => {
-      getSubjectsData();
-    });
+		const getSubjectsData = async () => {
+			try {
+				const response = await api.get("api/allocation/subjects/all/");
+				subjectsData.value = response.data;
+				console.log("Subjects data:", subjectsData.value);
+			} catch (error) {
+				console.error("Error fetching subjects data:", error);
+			}
+		};
 
-    return {
-      subjectsData,
-    };
-  },
+		onMounted(() => {
+			getSubjectsData();
+		});
+
+		return {
+			subjectsData,
+		};
+	},
 };
 </script>
       
