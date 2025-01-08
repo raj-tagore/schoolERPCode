@@ -12,7 +12,6 @@
 					>
 						<v-tab>Overview</v-tab>
 						<v-tab>Settings</v-tab>
-						<v-tab>Members</v-tab>
 					</v-tabs>
 				</v-card>
 				<v-tabs-window v-model="tabs">
@@ -42,31 +41,14 @@
 								</v-row>
 								<v-row>
 									<v-col cols="12" lg="6">
-										<v-text-area label="Description" v-model="classroom.name"></v-text-area>
+										<v-text-area label="Description" v-model="subject.description"></v-text-area>
 									</v-col>
 								</v-row>
 								<v-row>
-									<v-col cols="12" lg="6">
-										<v-text-field label="Class Teacher" v-model="classroom.class_teacher"></v-text-field>
-									</v-col>
-								</v-row>
-								<v-row>
-									<v-btn @click="updateClassroom()" color="primary">Update</v-btn>
+									<v-btn @click="updateSubject()" color="primary">Update</v-btn>
 								</v-row>
 							</v-card-text>
 						</v-card>
-					</v-tabs-window-item>
-					<v-tabs-window-item>
-						<v-row class="ma-4">
-							<v-col>
-								<ClassroomTeacherTable :classroom="classroom">
-								</ClassroomTeacherTable>
-							</v-col>
-							<v-col>
-								<ClassroomStudentTable :classroom="classroom">
-								</ClassroomStudentTable>
-							</v-col>
-						</v-row>
 					</v-tabs-window-item>
 				</v-tabs-window>
 			</v-col>
@@ -77,39 +59,16 @@
 <script>
 import api from "@/services/api";
 
-import ClassroomTeacherTable from "@/components/ClassroomTeacherTable.vue";
-import ClassroomStudentTable from "@/components/ClassroomStudentTable.vue";
-
 export default {
-	components: {
-		ClassroomTeacherTable,
-		ClassroomStudentTable,
-	},
 	data() {
 		return {
 			tabs: null,
 			subject: [],
-			teacher_headers: [
-				{ title: "Name", value: "user.first_name" },
-				{
-					title: "Actions",
-					key: "id",
-					value: (teacher) => `app/teachers/${teacher.id}`,
-				},
-			],
-			student_headers: [
-				{ title: "Name", value: "user.first_name" },
-				{
-					title: "Actions",
-					key: "id",
-					value: (teacher) => `app/teachers/${teacher.id}`,
-				},
-			],
 		};
 	},
 	props: ["subjectId"],
 	methods: {
-		async updateSubjects() {
+		async updateSubject() {
 			await api.put(`api/allocation/subjects/${this.subjectId}/`, this.subject);
 		},
 		async getSubjectData() {
