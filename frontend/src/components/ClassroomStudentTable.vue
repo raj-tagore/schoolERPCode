@@ -4,7 +4,14 @@
 			Students
 		</v-card-title>
 		<v-card-text>
-			<v-data-table :items="students" :headers="student_headers">
+			<v-data-table :search="search" :items="students" :headers="student_headers">
+				<template v-slot:top>
+					<v-text-field
+						v-model="search"
+						label="Search (UPPER CASE ONLY)"
+						class="mx-4"
+					></v-text-field>
+				</template>
 				<template #[`item.id`]="{ item }">
 					<v-btn :to="{ name: 'Dashboard', params: { id: item } }">
 						View
@@ -16,28 +23,35 @@
 </template>
 
 <script>
-import api from '@/services/api'
+import api from "@/services/api";
 
 export default {
-	props: ['classroom'],
+	props: ["classroom"],
 	data() {
 		return {
 			students: [],
 			student_headers: [
-				{ title: 'Name', value: 'user.first_name' },
-				{ title: 'Actions', key: 'id', value: student => `app/students/${student.id}` },
+				{ title: "Name", value: "user.first_name", key: "name" },
+				{
+					title: "",
+					key: "id",
+					align: "end",
+					value: (student) => `app/students/${student.id}`,
+				},
 			],
 		};
 	},
 	methods: {
 		async getStudents() {
-			this.students = await Promise.all(this.classroom.students.map(async (student_id) => {
-				return (await api.get(`api/accounts/students/${student_id}/`)).data;
-			}));
+			this.students = await Promise.all(
+				this.classroom.students.map(async (student_id) => {
+					return (await api.get(`api/accounts/students/${student_id}/`)).data;
+				}),
+			);
 		},
 	},
 	mounted() {
 		this.getStudents();
 	},
-}
+};
 </script>

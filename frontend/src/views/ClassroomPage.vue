@@ -68,6 +68,11 @@
 									</v-col>
 								</v-row>
 								<v-row>
+									<v-col cols="12" lg="6">
+										<v-text-field label="Class Teacher" v-model="classroom.class_teacher"></v-text-field>
+									</v-col>
+								</v-row>
+								<v-row>
 									<v-btn @click="updateClassroom()" color="primary">Update</v-btn>
 								</v-row>
 							</v-card-text>
@@ -92,11 +97,10 @@
 </template>
 
 <script>
+import api from "@/services/api";
 
-import api from '@/services/api'
-
-import ClassroomTeacherTable from '@/components/ClassroomTeacherTable.vue'
-import ClassroomStudentTable from '@/components/ClassroomStudentTable.vue'
+import ClassroomTeacherTable from "@/components/ClassroomTeacherTable.vue";
+import ClassroomStudentTable from "@/components/ClassroomStudentTable.vue";
 
 export default {
 	components: {
@@ -109,21 +113,29 @@ export default {
 			classroom: null,
 			subjects: [],
 			teacher_headers: [
-				{ title: 'Name', value: 'user.first_name' },
-				{ title: 'Actions', key: 'id', value: teacher => `app/teachers/${teacher.id}` },
+				{ title: "Name", value: "user.first_name" },
+				{
+					title: "Actions",
+					key: "id",
+					value: (teacher) => `app/teachers/${teacher.id}`,
+				},
 			],
 			student_headers: [
-				{ title: 'Name', value: 'user.first_name' },
-				{ title: 'Actions', key: 'id', value: teacher => `app/teachers/${teacher.id}` },
+				{ title: "Name", value: "user.first_name" },
+				{
+					title: "Actions",
+					key: "id",
+					value: (teacher) => `app/teachers/${teacher.id}`,
+				},
 			],
 			images: [
-				require('@/assets/classrooms/classroom1.png'),
-				require('@/assets/classrooms/classroom2.png'),
-				require('@/assets/classrooms/classroom3.png'),
+				require("@/assets/classrooms/classroom1.png"),
+				require("@/assets/classrooms/classroom2.png"),
+				require("@/assets/classrooms/classroom3.png"),
 			],
 		};
 	},
-	props: ['id'],
+	props: ["id"],
 	methods: {
 		getRandomClassroomImage() {
 			const index = Math.floor(Math.random() * this.images.length);
@@ -133,12 +145,16 @@ export default {
 			await api.put(`api/allocation/classrooms/${this.id}/`, this.classroom);
 		},
 		async getClassroomData() {
-			this.classroom = (await api.get(`api/allocation/classrooms/${this.id}`)).data;
-			this.subjects = (await api.get(`api/allocation/subjects/all/?classroom=${this.id}`)).data;
+			this.classroom = (
+				await api.get(`api/allocation/classrooms/${this.id}`)
+			).data;
+			this.subjects = (
+				await api.get(`api/allocation/subjects/all/?classroom=${this.id}`)
+			).data;
 		},
 	},
 	mounted() {
 		this.getClassroomData();
-	}
-}
+	},
+};
 </script>
