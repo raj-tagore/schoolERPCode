@@ -30,12 +30,14 @@ export default {
 	data() {
 		return {
 			students: [],
+			search: "",
 			student_headers: [
 				{ title: "Name", value: "user.first_name", key: "name" },
 				{
 					title: "",
 					key: "id",
 					align: "end",
+					sortable: false,
 					value: (student) => `app/students/${student.id}`,
 				},
 			],

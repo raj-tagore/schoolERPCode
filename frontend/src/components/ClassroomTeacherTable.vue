@@ -37,6 +37,7 @@ export default {
 					title: "",
 					key: "id",
 					align: "end",
+					sortable: false,
 					value: (teacher) => `app/teachers/${teacher.id}`,
 				},
 			],
