@@ -83,9 +83,9 @@
 									<v-card-text>
 										<v-data-table :items="classroom.other_teachers" :headers="teacher_headers">
 											<template #[`item.id`]="{ item }">
-												<router-link :to="{ name: 'Dashboard', params: { id: item} }">
-													View Profile
-												</router-link>
+												<v-btn :to="{ name: 'Dashboard', params: { id: item} }">
+													View
+												</v-btn>
 											</template>
 										</v-data-table>
 									</v-card-text>
@@ -99,9 +99,9 @@
 									<v-card-text>
 										<v-data-table :items="classroom.students" :headers="student_headers">
 											<template #[`item.id`]="{ item }">
-												<router-link :to="{ name: 'Dashboard', params: { id: item } }">
-													View Profile
-													</router-link>
+												<v-btn :to="{ name: 'Dashboard', params: { id: item } }">
+													View
+												</v-btn>
 											</template>
 										</v-data-table>
 									</v-card-text>
@@ -129,11 +129,11 @@ export default {
 			subjects: [],
 			teacher_headers: [
 				{ title: 'Name', value: 'user.first_name' },
-				{ title: 'Profile', key: 'id', value: teacher => `app/teachers/${teacher.id}` },
+				{ title: 'Actions', key: 'id', value: teacher => `app/teachers/${teacher.id}` },
 			],
 			student_headers: [
 				{ title: 'Name', value: 'user.first_name' },
-				{ title: 'Profile', key: 'id', value: teacher => `app/teachers/${teacher.id}` },
+				{ title: 'Actions', key: 'id', value: teacher => `app/teachers/${teacher.id}` },
 			],
 			images: [
 				require('@/assets/classrooms/classroom1.png'),
