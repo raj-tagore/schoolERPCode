@@ -42,7 +42,7 @@
 												<v-col v-for="subject in subjects" :key="subject.id" cols="6">
 													<v-card>
 														<v-card-title class="text-body-1">{{ subject.name }}</v-card-title>
-														<v-card-subtitle>{{ subject.teacher_details.user.first_name + ' ' + subject.teacher_details.user.last_name }}</v-card-subtitle>
+														<v-card-subtitle v-if="subject.teacher_details">{{ subject.teacher_details.user.first_name + ' ' + subject.teacher_details.user.last_name }}</v-card-subtitle>
 														<v-card-actions class="justify-center">
 															<v-btn>Enter</v-btn>
 														</v-card-actions>
@@ -76,36 +76,12 @@
 					<v-tabs-window-item>
 						<v-row class="ma-4">
 							<v-col>
-								<v-card>
-									<v-card-title>
-										Teachers
-									</v-card-title>
-									<v-card-text>
-										<v-data-table :items="classroom.other_teachers" :headers="teacher_headers">
-											<template #[`item.id`]="{ item }">
-												<v-btn :to="{ name: 'Dashboard', params: { id: item} }">
-													View
-												</v-btn>
-											</template>
-										</v-data-table>
-									</v-card-text>
-								</v-card>
+								<ClassroomTeacherTable :classroom="classroom">
+								</ClassroomTeacherTable>
 							</v-col>
 							<v-col>
-								<v-card>
-									<v-card-title>
-										Students
-									</v-card-title>
-									<v-card-text>
-										<v-data-table :items="classroom.students" :headers="student_headers">
-											<template #[`item.id`]="{ item }">
-												<v-btn :to="{ name: 'Dashboard', params: { id: item } }">
-													View
-												</v-btn>
-											</template>
-										</v-data-table>
-									</v-card-text>
-								</v-card>
+								<ClassroomStudentTable :classroom="classroom">
+								</ClassroomStudentTable>
 							</v-col>
 						</v-row>
 					</v-tabs-window-item>
@@ -119,8 +95,13 @@
 
 import api from '@/services/api'
 
+import ClassroomTeacherTable from '@/components/ClassroomTeacherTable.vue'
+import ClassroomStudentTable from '@/components/ClassroomStudentTable.vue'
+
 export default {
 	components: {
+		ClassroomTeacherTable,
+		ClassroomStudentTable,
 	},
 	data() {
 		return {
@@ -154,12 +135,6 @@ export default {
 		async getClassroomData() {
 			this.classroom = (await api.get(`api/allocation/classrooms/${this.id}`)).data;
 			this.subjects = (await api.get(`api/allocation/subjects/all/?classroom=${this.id}`)).data;
-			this.classroom.other_teachers = await Promise.all(this.classroom.other_teachers.map(async (teacher_id) => {
-				return (await api.get(`api/accounts/teachers/${teacher_id}/`)).data;
-			}));
-			this.classroom.students = await Promise.all(this.classroom.students.map(async (student_id) => {
-				return (await api.get(`api/accounts/students/${student_id}/`)).data;
-			}));
 		},
 	},
 	mounted() {
