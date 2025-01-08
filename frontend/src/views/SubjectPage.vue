@@ -37,10 +37,12 @@
 							<v-card-text>
 								<v-row>
 									<v-col cols="12" lg="6">
-										<v-text-field label="Standard" v-model="classroom.standard"></v-text-field>
+										<v-text-field label="Name" v-model="subject.name"></v-text-field>
 									</v-col>
+								</v-row>
+								<v-row>
 									<v-col cols="12" lg="6">
-										<v-text-field label="Name" v-model="classroom.name"></v-text-field>
+										<v-text-area label="Description" v-model="classroom.name"></v-text-area>
 									</v-col>
 								</v-row>
 								<v-row>

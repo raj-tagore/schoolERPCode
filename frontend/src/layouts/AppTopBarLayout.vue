@@ -1,17 +1,17 @@
 <template>
-  <v-app>
-    <v-app-bar app color="grey" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-			<v-toolbar-title>Classroom</v-toolbar-title>
-      <v-spacer></v-spacer>
-    </v-app-bar>
+	<v-app>
+		<v-app-bar app color="grey">
+			<v-toolbar-title class="flex text-center">
+				<h4>Classroom</h4>
+			</v-toolbar-title>
+		</v-app-bar>
 
-    <v-main>
-      <v-container class="mt-5">
-        <router-view></router-view>
-      </v-container>
-    </v-main>
-  </v-app>
+		<v-main>
+			<v-container class="mt-5">
+				<router-view></router-view>
+			</v-container>
+		</v-main>
+	</v-app>
 </template>
 
 
