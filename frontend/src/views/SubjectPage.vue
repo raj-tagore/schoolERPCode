@@ -18,15 +18,7 @@
 					<v-tabs-window-item>
 						<v-row class="ma-4">
 							<v-col cols="12" lg="4">
-								<v-card>
-									<v-card-title>
-										{{this.subject.name}}
-										<p class="text-body-2 pb-4">
-											<b>Name: </b>{{this.subject.name}} <br>
-											<b>Description: </b>{{ this.subject.description }}
-										</p>
-									</v-card-title>
-								</v-card>
+								<SubjectCard :subject="subject"></SubjectCard>
 							</v-col>
 						</v-row>
 					</v-tabs-window-item>
@@ -58,8 +50,12 @@
 
 <script>
 import api from "@/services/api";
+import SubjectCard from "@/components/SubjectCard.vue";
 
 export default {
+	components: {
+		SubjectCard
+	},
 	data() {
 		return {
 			tabs: null,

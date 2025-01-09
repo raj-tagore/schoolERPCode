@@ -99,7 +99,7 @@ const routes = [
                                         name: "Subject",
                                         props: true,
                                         meta: {
-											defaultRoute: "Subject",
+                                            defaultRoute: "Subject",
                                             getDisplayName: async (params) =>
                                                 (
                                                     await api.get(
