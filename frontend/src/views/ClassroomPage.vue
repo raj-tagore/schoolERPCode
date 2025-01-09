@@ -17,7 +17,7 @@
 			</v-card>
 			<v-tabs-window v-model="tabs">
 				<v-tabs-window-item>
-					<v-row class="ma-4">
+					<v-row class="ma-2">
 						<v-col cols="12" lg="4">
 							<v-card>
 								<v-img 
@@ -77,7 +77,7 @@
 					</v-card>
 				</v-tabs-window-item>
 				<v-tabs-window-item>
-					<v-row class="ma-4">
+					<v-row class="ma-2">
 						<v-col>
 							<ClassroomTeacherTable :classroom="classroom">
 							</ClassroomTeacherTable>
