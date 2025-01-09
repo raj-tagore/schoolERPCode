@@ -43,7 +43,7 @@ export default {
 				{{console.log(breadcrumbItems)}}
 				<v-breadcrumbs :items="breadcrumbItems">
 					<template v-slot:title="{item}">
-						<v-btn to="item.to">
+						<v-btn :to="item.to">
 							{{item.title}}
 						</v-btn>
 
