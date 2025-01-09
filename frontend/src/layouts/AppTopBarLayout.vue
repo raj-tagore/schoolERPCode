@@ -51,11 +51,7 @@ export default {
 				</v-breadcrumbs>
 				
 			</v-toolbar-title>
-
-
 		</v-app-bar>
-
-
 		<v-main>
 			<router-view></router-view>
 		</v-main>
