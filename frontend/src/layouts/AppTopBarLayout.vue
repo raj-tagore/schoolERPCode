@@ -42,13 +42,8 @@ export default {
 			<v-toolbar-title class="flex d-flex justify-space-between">
 				{{console.log(breadcrumbItems)}}
 				<v-breadcrumbs :items="breadcrumbItems"></v-breadcrumbs>
-				
 			</v-toolbar-title>
-
-
 		</v-app-bar>
-
-
 		<v-main>
 			<router-view></router-view>
 		</v-main>
