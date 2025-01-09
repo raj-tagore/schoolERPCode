@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import api from "@/services/api";
+import { getClassrooms } from "@/services/api";
 
 export default {
 	name: "ClassroomCards",
@@ -50,8 +50,7 @@ export default {
 			return this.images[index];
 		},
 		async getClassroomsData() {
-			const response = await api.get("api/allocation/classrooms/all/");
-			this.classroomsData = response.data;
+			this.classroomsData = await getClassrooms();
 		},
 	},
 	mounted() {

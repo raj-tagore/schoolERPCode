@@ -99,8 +99,10 @@
 <script>
 import api from "@/services/api";
 
-import ClassroomTeacherTable from "@/components/ClassroomTeacherTable.vue";
+import { getClassroom, getClassroomSubjects } from "@/services/api";
+
 import ClassroomStudentTable from "@/components/ClassroomStudentTable.vue";
+import ClassroomTeacherTable from "@/components/ClassroomTeacherTable.vue";
 
 export default {
 	components: {
@@ -149,14 +151,8 @@ export default {
 		},
 
 		async getClassroomData() {
-			this.classroom = (
-				await api.get(`api/allocation/classrooms/${this.classroomId}`)
-			).data;
-			this.subjects = (
-				await api.get(
-					`api/allocation/subjects/all/?classroom=${this.classroomId}`,
-				)
-			).data;
+			this.classroom = await getClassroom(this.classroomId);
+			this.subjects = await getClassroomSubjects(this.classroomId);
 		},
 	},
 	mounted() {

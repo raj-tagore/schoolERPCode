@@ -15,15 +15,20 @@ export default {
 			this.breadcrumbItems = await Promise.all(
 				currentRoute.matched
 					.filter((route) => route.meta.getDisplayName)
-					.map(
-						async (route) =>
-							await route.meta.getDisplayName(currentRoute.params),
-					),
+					.map(async (route) => ({
+						title: await route.meta.getDisplayName(currentRoute.params),
+						to: {
+							name: route.meta.defaultRoute,
+							params: currentRoute.params,
+						},
+					})),
 			);
+			console.log(this.breadcrumbItems);
 		},
 	},
 	mounted() {
 		const currentRoute = useRoute();
+		this.populateBreadcrumbs(currentRoute);
 		watch(currentRoute, (route) => {
 			this.populateBreadcrumbs(route);
 		});
@@ -37,6 +42,7 @@ export default {
 			<v-toolbar-title class="flex d-flex justify-space-between">
 				{{console.log(breadcrumbItems)}}
 				<v-breadcrumbs :items="breadcrumbItems"></v-breadcrumbs>
+				
 			</v-toolbar-title>
 
 

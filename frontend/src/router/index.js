@@ -1,21 +1,20 @@
-import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import { createRouter, createWebHistory } from "vue-router";
 
+import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
 // Layouts
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
-import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
 
+import ClassroomPage from "@/views/ClassroomPage.vue";
+import ClassroomsPage from "@/views/ClassroomsPage.vue";
+import DashboardPage from "@/views/DashboardPage.vue";
 // Pages
 import HomePage from "@/views/HomePage.vue";
 import LoginPage from "@/views/LoginPage.vue";
-import DashboardPage from "@/views/DashboardPage.vue";
-import ClassroomPage from "@/views/ClassroomPage.vue";
-import ClassroomsPage from "@/views/ClassroomsPage.vue";
 import SubjectPage from "@/views/SubjectPage.vue";
 
-
-import api from '@/services/api'
+import api, { getClassroom } from "@/services/api";
 
 const routes = [
     {
@@ -59,7 +58,11 @@ const routes = [
             {
                 path: "classrooms/",
                 component: AppTopBarLayout,
-                meta: { requiresAuth: true, getDisplayName: () => "Classroom" },
+                meta: {
+                    requiresAuth: true,
+                    getDisplayName: () => "Classroom",
+                    defaultRoute: "Classrooms",
+                },
                 children: [
                     {
                         path: "",
@@ -72,8 +75,8 @@ const routes = [
                         component: EmptyLayout,
                         meta: {
                             getDisplayName: async (params) =>
-                                (await api.get(`api/allocation/classrooms/${params.classroomId}`)).data
-                                    .name,
+                                (await getClassroom(params.classroomId)).name,
+                            defaultRoute: "Classroom",
                         },
                         children: [
                             {
@@ -85,14 +88,18 @@ const routes = [
                             {
                                 path: "subject/",
                                 component: EmptyLayout,
-                                meta: { getDisplayName: () => "Subject" },
+                                meta: {
+                                    getDisplayName: () => "Subject",
+                                    defaultRoute: "Subject",
+                                },
                                 children: [
                                     {
                                         path: ":subjectId/",
                                         component: SubjectPage,
-										name: "Subject",
+                                        name: "Subject",
                                         props: true,
                                         meta: {
+											defaultRoute: "Subject",
                                             getDisplayName: async (params) =>
                                                 (
                                                     await api.get(
