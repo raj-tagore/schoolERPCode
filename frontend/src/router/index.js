@@ -14,6 +14,9 @@ import ClassroomPage from "@/views/ClassroomPage.vue";
 import ClassroomsPage from "@/views/ClassroomsPage.vue";
 import SubjectPage from "@/views/SubjectPage.vue";
 
+
+import api from '@/services/api'
+
 const routes = [
     {
         path: "/",
@@ -56,28 +59,49 @@ const routes = [
             {
                 path: "classrooms/",
                 component: AppTopBarLayout,
-                meta: { requiresAuth: true },
+                meta: { requiresAuth: true, getDisplayName: () => "Classroom" },
                 children: [
                     {
-                        path: "all/",
+                        path: "",
                         name: "Classrooms",
                         component: ClassroomsPage,
                     },
                     {
                         path: ":classroomId/",
                         props: true,
+                        component: EmptyLayout,
+                        meta: {
+                            getDisplayName: async (params) =>
+                                (await api.get(`api/allocation/classrooms/${params.classroomId}`)).data
+                                    .name,
+                        },
                         children: [
                             {
                                 path: "",
                                 name: "Classroom",
                                 component: ClassroomPage,
-								props: true,
+                                props: true,
                             },
                             {
-                                path: "/subject/:subjectId/",
+                                path: "subject/",
                                 name: "Subject",
-                                component: SubjectPage,
-                                props: true,
+                                component: EmptyLayout,
+                                meta: { getDisplayName: () => "Subject" },
+                                children: [
+                                    {
+                                        path: ":subjectId/",
+                                        component: SubjectPage,
+                                        props: true,
+                                        meta: {
+                                            getDisplayName: async (params) =>
+                                                (
+                                                    await api.get(
+                                                        `api/allocation/subjects/${params.subjectId}`,
+                                                    )
+                                                ).data.name,
+                                        },
+                                    },
+                                ],
                             },
                         ],
                     },

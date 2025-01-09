@@ -48,31 +48,36 @@
       </v-btn>
     </v-app-bar>
 
+  <Suspense>
     <v-main>
-      <v-container>
-        <router-view></router-view>
+        <v-container>
+          <router-view></router-view>
+          <template #fallback>
+            Loading...
+          </template>
       </v-container>
     </v-main>
+  </Suspense>
   </v-app>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth' // Pinia store
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth"; // Pinia store
 // import ExpandableListItem from '@/components/c-expandable-list-item.vue'
 
-const drawer = ref(false)
+const drawer = ref(false);
 
-const router = useRouter()
-const authStore = useAuthStore()
+const router = useRouter();
+const authStore = useAuthStore();
 
-const user = computed(() => authStore.user)
+const user = computed(() => authStore.user);
 
 // Actions
 function logoutHandler() {
-  router.push({ name: 'Login' })
-  authStore.logout()
+	router.push({ name: "Login" });
+	authStore.logout();
 }
 </script>
 
