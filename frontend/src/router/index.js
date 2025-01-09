@@ -84,13 +84,13 @@ const routes = [
                             },
                             {
                                 path: "subject/",
-                                name: "Subject",
                                 component: EmptyLayout,
                                 meta: { getDisplayName: () => "Subject" },
                                 children: [
                                     {
                                         path: ":subjectId/",
                                         component: SubjectPage,
+										name: "Subject",
                                         props: true,
                                         meta: {
                                             getDisplayName: async (params) =>
