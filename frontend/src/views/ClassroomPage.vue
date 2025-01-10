@@ -83,16 +83,10 @@
 					</v-card>
 				</v-tabs-window-item>
 				<v-tabs-window-item>
-					<v-row class="ma-2">
-						<v-col>
-							<ClassroomTeacherTable :classroom="classroom">
+						<ClassroomTeacherTable :classroom="classroom" @addTeacher="addTeacher" @removeTeacher="removeTeacher">
 							</ClassroomTeacherTable>
-						</v-col>
-						<v-col>
-							<ClassroomStudentTable :classroom="classroom">
+						<ClassroomStudentTable :classroom="classroom" @addStudent="addStudent" @removeStudent="removeStudent">
 							</ClassroomStudentTable>
-						</v-col>
-					</v-row>
 				</v-tabs-window-item>
 			</v-tabs-window>
 		</v-col>
@@ -136,7 +130,7 @@ export default {
 		},
 		async updateClassroom() {
 			const classroom = structuredClone(this.classroom);
-			classroom.class_teacher_details = null;
+			classroom.class_teacher_details = undefined;
 			await api.put(
 				`api/allocation/classrooms/${this.classroomId}/`,
 				classroom,
@@ -154,6 +148,33 @@ export default {
 				value: item.id,
 			};
 		},
+
+		addTeacher(teacher) {
+			this.classroom.other_teachers.push(teacher);
+			this.updateClassroom();
+		},
+
+		removeTeacher(teacherId) {
+			this.classroom.other_teachers.splice(
+				this.classroom.other_teachers.indexOf(teacherId),
+				1,
+			);
+			this.updateClassroom();
+		},
+
+		addStudent(student) {
+			this.classroom.students.push(student);
+			this.updateClassroom();
+		},
+
+		removeStudent(studentId) {
+			this.classroom.students.splice(
+				this.classroom.students.indexOf(studentId),
+				1,
+			);
+			this.updateClassroom();
+		},
+
 
 		async getClassroomData() {
 			this.classroom = await getClassroom(this.classroomId);
