@@ -1,6 +1,5 @@
 <template>
-<v-container>
-    <v-card class="mb-5 pa-4">
+    <v-card class="mb-5">
         <v-card-title >Subjects</v-card-title>
         <v-card-text>
             <v-row>
@@ -8,9 +7,9 @@
             v-for="(subject, index) in subjectsData" 
             :key="index" 
             cols="6" >
-                <v-card class="pa-1">
+                <v-card>
                 <v-card-title class="text-body-1">{{ subject.name }}</v-card-title>
-                <v-card-subtitle>{{ subject.teacher_details?.user?.first_name && "Loading..." }}</v-card-subtitle>
+                <v-card-subtitle>{{ subject.teacher_details?.user?.first_name }}</v-card-subtitle>
                 <v-card-actions class="d-flex justify-center">
                     <v-btn :to="{ name: 'Subject', params: { subjectId: subject.id }}">Enter</v-btn>
                 </v-card-actions>
@@ -19,8 +18,6 @@
             </v-row>
         </v-card-text>
     </v-card>
-
-</v-container>
 </template>
 
 <script>
