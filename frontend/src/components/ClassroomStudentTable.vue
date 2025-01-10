@@ -1,4 +1,5 @@
 <template>
+	<v-container>
 	<v-card>
 		<v-card-title>
 			Students
@@ -50,16 +51,16 @@
 				</template>
 				<template #[`item.id`]="{ item }">
 					<v-btn :to="{ name: 'Dashboard', params: { id: item} }">
-						View
+						<v-icon>mdi-eye</v-icon>
 					</v-btn>
 					<v-btn color="red" @click="$emit('removeStudent', item.id)">
 						<v-icon>mdi-delete</v-icon>
-						Remove
 					</v-btn>
 				</template>
 			</v-data-table>
 		</v-card-text>
 	</v-card>
+</v-container>
 </template>
 
 <script>
