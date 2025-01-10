@@ -11,6 +11,9 @@ importers:
       '@mdi/font':
         specifier: 5.9.55
         version: 5.9.55
+      '@mdi/js':
+        specifier: ^7.4.47
+        version: 7.4.47
       axios:
         specifier: ^1.7.9
         version: 1.7.9
@@ -671,6 +674,9 @@ packages:
 
   '@mdi/font@5.9.55':
     resolution: {integrity: sha512-jswRF6q3eq8NWpWiqct6q+6Fg/I7nUhrxYJfiEM8JJpap0wVJLQdbKtyS65GdlK7S7Ytnx3TTi/bmw+tBhkGmg==}
+
+  '@mdi/js@7.4.47':
+    resolution: {integrity: sha512-KPnNOtm5i2pMabqZxpUz7iQf+mfrYZyKCZ8QNz85czgEt7cuHcGorWfdzUMWYA0SD+a6Hn4FmJ+YhzzzjkTZrQ==}
 
   '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
     resolution: {integrity: sha512-54/JRvkLIzzDWshCWfuhadfrfZVPiElY8Fcgmg1HroEly/EDSszzhBAsarCux+D/kOslTRquNzuyGSmUSTTHGg==}
@@ -4911,6 +4917,8 @@ snapshots:
   '@leichtgewicht/ip-codec@2.0.5': {}
 
   '@mdi/font@5.9.55': {}
+
+  '@mdi/js@7.4.47': {}
 
   '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
     dependencies:
