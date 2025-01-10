@@ -45,7 +45,6 @@
 									</v-container>
 								</v-sheet>
 							</template>
-
 						</v-dialog>
 					</v-container>
 				</template>
