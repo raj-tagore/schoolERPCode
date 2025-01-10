@@ -41,7 +41,7 @@ export default {
 		<v-app-bar v-if="breadcrumbItems" app color="grey" density="compact">
 			<v-breadcrumbs :items="breadcrumbItems">
 				<template v-slot:title="{item}">
-					<v-btn :to="item.to">
+					<v-btn size="small" :to="item.to">
 						{{item.title}}
 					</v-btn>
 				</template>
