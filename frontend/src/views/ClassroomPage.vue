@@ -34,22 +34,7 @@
 							</v-card>
 						</v-col>
 						<v-col cols="12" lg="4">
-							<v-card>
-								<v-card-title>Subjects</v-card-title>
-								<v-card-text>
-									<v-row>
-										<v-col v-for="subject in subjects" :key="subject.id" cols="6">
-											<v-card>
-												<v-card-title class="text-body-1">{{ subject.name }}</v-card-title>
-												<v-card-subtitle v-if="subject.teacher_details">{{ subject.teacher_details.user.first_name + ' ' + subject.teacher_details.user.last_name }}</v-card-subtitle>
-												<v-card-actions class="justify-center">
-													<v-btn :to="{name: 'Subject', params: {subjectId: subject.id}}">Enter</v-btn>
-												</v-card-actions>
-											</v-card>
-										</v-col>
-									</v-row>
-								</v-card-text>
-							</v-card>
+							<SubjectCards :url="`api/allocation/subjects/all/?classroom=${classroom.id}`" />
 						</v-col>
 						<v-col cols="12" lg="4">
 							<AnnouncementCards :url="`api/announcements/all/?classroom=${classroom.id}`" />
@@ -102,12 +87,14 @@ import { getClassroom, getClassroomSubjects } from "@/services/api";
 import ClassroomStudentTable from "@/components/ClassroomStudentTable.vue";
 import ClassroomTeacherTable from "@/components/ClassroomTeacherTable.vue";
 import AnnouncementCards from "@/components/AnnouncementCards.vue";
+import SubjectCards from "@/components/SubjectCards.vue";
 
 export default {
 	components: {
 		ClassroomTeacherTable,
 		ClassroomStudentTable,
 		AnnouncementCards,
+		SubjectCards,
 	},
 	data() {
 		return {
