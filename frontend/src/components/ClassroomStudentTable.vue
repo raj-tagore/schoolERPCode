@@ -5,12 +5,13 @@
 			Students
 		</v-card-title>
 		<v-card-text>
-			<v-data-table density="compact" :search="search" :items="students" :headers="student_headers">
+			<v-data-table density="comfortable" :search="search" :items="students" :headers="student_headers">
 				<template v-slot:top>
 					<v-container>
 						<v-text-field
 							v-model="search"
 							label="Search"
+							density="comfortable"
 						></v-text-field>
 						<v-dialog>
 							<template v-slot:activator="{ props: activatorProps }">

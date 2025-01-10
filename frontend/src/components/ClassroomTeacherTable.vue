@@ -5,12 +5,13 @@
 			Teachers
 		</v-card-title>
 		<v-card-text>
-			<v-data-table density="compact" :search="search" :items="teachers" :headers="teacher_headers">
+			<v-data-table density="comfortable" :search="search" :items="teachers" :headers="teacher_headers">
 				<template v-slot:top>
 					<v-container>
 						<v-text-field
 							v-model="search"
 							label="Search"
+							density="comfortable"
 						></v-text-field>
 						<v-dialog>
 							<template v-slot:activator="{ props: activatorProps }">
@@ -44,7 +45,6 @@
 									</v-container>
 								</v-sheet>
 							</template>
-
 						</v-dialog>
 					</v-container>
 				</template>
