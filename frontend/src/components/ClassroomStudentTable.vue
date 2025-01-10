@@ -63,7 +63,6 @@
 import api from "@/services/api";
 import { watch } from "vue";
 
-
 export default {
 	props: ["classroom"],
 	data() {
@@ -73,7 +72,12 @@ export default {
 			search: "",
 			newStudent: null,
 			student_headers: [
-				{ title: "Name", value: "user.first_name", key: "name" },
+				{
+					title: "Name",
+					value: (teacher) =>
+						`${teacher.user.first_name} ${teacher.user.last_name}`,
+					key: "name",
+				},
 				{
 					title: "",
 					key: "id",
@@ -92,7 +96,7 @@ export default {
 				subtitle: item.identifier,
 				value: item.id,
 			};
-			return result
+			return result;
 		},
 		async getAllStudents() {
 			this.allStudents = (await api.get("api/accounts/students/all")).data;
