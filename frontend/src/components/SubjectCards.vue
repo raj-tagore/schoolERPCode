@@ -29,14 +29,14 @@ import api from "@/services/api";
 
 export default {
 	name: "SubjectCards",
-	props: ["classroom"],
-	setup() {
+	props: ["url"],
+	setup(props) {
 
 		const subjectsData = ref([]);
 
 		const getSubjectsData = async () => {
 			try {
-				const response = await api.get(`api/allocation/subjects/all/?classroom=${this.classroom.id}`);
+				const response = await api.get(props.url);
 				subjectsData.value = response.data;
 				console.log("Subjects data:", subjectsData.value);
 			} catch (error) {
