@@ -52,7 +52,8 @@
 					<v-btn :to="{ name: 'Dashboard', params: { id: item} }">
 						View
 					</v-btn>
-					<v-btn @click="$emit('removeTeacher', item.id)">
+					<v-btn color="red" @click="$emit('removeTeacher', item.id)">
+						<v-icon>mdi-delete</v-icon>
 						Remove
 					</v-btn>
 				</template>
