@@ -5,7 +5,7 @@
 			Teachers
 		</v-card-title>
 		<v-card-text>
-			<v-data-table :search="search" :items="teachers" :headers="teacher_headers">
+			<v-data-table density="compact" :search="search" :items="teachers" :headers="teacher_headers">
 				<template v-slot:top>
 					<v-container>
 						<v-text-field
