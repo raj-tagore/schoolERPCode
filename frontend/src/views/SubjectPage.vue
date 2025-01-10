@@ -36,7 +36,7 @@
 							</v-row>
 							<v-row>
 								<v-col cols="12" lg="6">
-									<v-text-area label="Description" v-model="subject.description"></v-text-area>
+									<v-textarea label="Description" v-model="subject.description"></v-textarea>
 								</v-col>
 							</v-row>
 							<v-row>

@@ -70,7 +70,7 @@
 							</v-row>
 							<v-row>
 								<v-col cols="12" lg="6">
-									<v-text-field label="Class Teacher" v-model="classroom.class_teacher"></v-text-field>
+									<v-autocomplete label="Class Teacher" :item-props="teacherInfoFromObj" :items="teachers" v-model="classroom.class_teacher"></v-autocomplete>
 								</v-col>
 							</v-row>
 							<v-row>
@@ -116,23 +116,8 @@ export default {
 		return {
 			tabs: null,
 			classroom: null,
+			teachers: [],
 			subjects: [],
-			teacher_headers: [
-				{ title: "Name", value: "user.first_name" },
-				{
-					title: "Actions",
-					key: "id",
-					value: (teacher) => `app/teachers/${teacher.id}`,
-				},
-			],
-			student_headers: [
-				{ title: "Name", value: "user.first_name" },
-				{
-					title: "Actions",
-					key: "id",
-					value: (teacher) => `app/teachers/${teacher.id}`,
-				},
-			],
 			images: [
 				require("@/assets/classrooms/classroom1.png"),
 				require("@/assets/classrooms/classroom2.png"),
@@ -151,6 +136,18 @@ export default {
 				`api/allocation/classrooms/${this.classroomId}/`,
 				this.classroom,
 			);
+		},
+
+		async getTeachers() {
+			this.teachers = (await api.get("api/users/teachers/all")).data;
+		},
+
+		teacherInfoFromObj(item) {
+			return {
+				title: `${item.user.first_name} ${item.user.last_name}`,
+				subtitle: item.identifier,
+				value: item.id,
+			};
 		},
 
 		async getClassroomData() {

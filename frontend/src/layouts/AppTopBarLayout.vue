@@ -39,19 +39,6 @@ export default {
 <template>
 	<v-app>
 		<v-app-bar v-if="breadcrumbItems" app color="grey" density="compact">
-<<<<<<< HEAD
-			<v-toolbar-title class="flex d-flex justify-space-between">
-				<v-breadcrumbs :items="breadcrumbItems">
-					<template v-slot:title="{item}">
-						<v-btn :to="item.to">
-							{{item.title}}
-						</v-btn>
-
-					</template>
-				</v-breadcrumbs>
-				
-			</v-toolbar-title>
-=======
 			<v-breadcrumbs :items="breadcrumbItems">
 				<template v-slot:title="{item}">
 					<v-btn :to="item.to">
@@ -59,7 +46,6 @@ export default {
 					</v-btn>
 				</template>
 			</v-breadcrumbs>
->>>>>>> 9b77ea60c9b055bef67e6ef92ff651c600858e70
 		</v-app-bar>
 		<v-main>
 			<router-view></router-view>
