@@ -11,7 +11,6 @@
 						<v-text-field
 							v-model="search"
 							label="Search"
-							class="mx-4"
 						></v-text-field>
 						<v-dialog>
 							<template v-slot:activator="{ props: activatorProps }">
