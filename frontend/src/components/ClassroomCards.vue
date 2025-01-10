@@ -20,7 +20,9 @@
                 <v-card-actions class="d-flex justify-center">
                     <v-btn :to="{ name: 'Classroom', params: { classroomId: classroom.id }}">Enter Class</v-btn>
                 </v-card-actions>
+
                 </v-card>
+				<AnnouncementsCard :classroom="classroom" />
             </v-col>
             </v-row>
         </v-card-text>
@@ -31,8 +33,12 @@
 
 <script>
 import { getClassrooms } from "@/services/api";
+import AnnouncementsCard from "@/components/AnnouncementsCard.vue";
 
 export default {
+	components: {
+		AnnouncementsCard,
+	},
 	name: "ClassroomCards",
 	data() {
 		return {

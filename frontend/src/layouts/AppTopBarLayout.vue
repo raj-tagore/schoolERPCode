@@ -23,7 +23,6 @@ export default {
 						},
 					})),
 			);
-			console.log(this.breadcrumbItems);
 		},
 	},
 	mounted() {
@@ -40,7 +39,6 @@ export default {
 	<v-app>
 		<v-app-bar v-if="breadcrumbItems" app color="grey" density="compact">
 			<v-toolbar-title class="flex d-flex justify-space-between">
-				{{console.log(breadcrumbItems)}}
 				<v-breadcrumbs :items="breadcrumbItems">
 					<template v-slot:title="{item}">
 						<v-btn :to="item.to">
