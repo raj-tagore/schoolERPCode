@@ -7,7 +7,7 @@
 		<v-card-text>
 			<v-data-table :search="search" :items="students" :headers="student_headers">
 				<template v-slot:top>
-					<v-container class="d-flex">
+					<v-container>
 						<v-text-field
 							v-model="search"
 							label="Search"

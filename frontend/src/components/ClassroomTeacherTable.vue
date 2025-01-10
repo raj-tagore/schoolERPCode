@@ -7,11 +7,10 @@
 		<v-card-text>
 			<v-data-table :search="search" :items="teachers" :headers="teacher_headers">
 				<template v-slot:top>
-					<v-container class="d-flex">
+					<v-container>
 						<v-text-field
 							v-model="search"
 							label="Search"
-							class="mx-4"
 						></v-text-field>
 						<v-dialog>
 							<template v-slot:activator="{ props: activatorProps }">
