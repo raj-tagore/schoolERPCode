@@ -72,6 +72,9 @@
 								<v-col cols="12" lg="6">
 									<v-autocomplete label="Class Teacher" :item-props="teacherInfoFromObj" :items="teachers" v-model="classroom.class_teacher"></v-autocomplete>
 								</v-col>
+								<v-col cols="12" lg="6">
+									<v-checkbox label="Is Active" v-model="classroom.is_active"></v-checkbox>
+								</v-col>
 							</v-row>
 							<v-row>
 								<v-btn @click="updateClassroom()" color="primary">Update</v-btn>
@@ -132,9 +135,11 @@ export default {
 			return this.images[index];
 		},
 		async updateClassroom() {
+			const classroom = structuredClone(this.classroom);
+			classroom.class_teacher_details = null;
 			await api.put(
 				`api/allocation/classrooms/${this.classroomId}/`,
-				this.classroom,
+				classroom,
 			);
 		},
 
