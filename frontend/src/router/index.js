@@ -60,7 +60,7 @@ const routes = [
                 component: AppTopBarLayout,
                 meta: {
                     requiresAuth: true,
-                    getDisplayName: () => "Classroom",
+                    getDisplayName: () => "Classes",
                     defaultRoute: "Classrooms",
                 },
                 children: [

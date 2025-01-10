@@ -9,6 +9,7 @@
 					dark
 					align-tabs="center"
 					v-model="tabs"
+					density="comfortable"
 				>
 					<v-tab>Student View</v-tab>
 					<v-tab>Settings</v-tab>
