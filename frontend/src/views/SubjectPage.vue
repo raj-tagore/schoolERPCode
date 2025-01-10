@@ -40,6 +40,14 @@
 								</v-col>
 							</v-row>
 							<v-row>
+								<v-col cols="12" lg="6">
+									<v-autocomplete label="Teacher" :item-props="teacherInfoFromObj" :items="teachers" v-model="subject.teacher"></v-autocomplete>
+								</v-col>
+								<v-col cols="12" lg="6">
+									<v-checkbox label="Is Active" v-model="subject.is_active"></v-checkbox>
+								</v-col>
+								</v-row>
+							<v-row>
 								<v-btn @click="updateSubject()" color="primary">Update</v-btn>
 							</v-row>
 						</v-card-text>
@@ -64,6 +72,7 @@ export default {
 	data() {
 		return {
 			tabs: null,
+			teachers: [],
 			subject: [],
 		};
 	},
@@ -71,6 +80,16 @@ export default {
 	methods: {
 		async updateSubject() {
 			await api.put(`api/allocation/subjects/${this.subjectId}/`, this.subject);
+		},
+		async getTeachers() {
+			this.teachers = (await api.get("api/accounts/teachers/all")).data;
+		},
+		teacherInfoFromObj(item) {
+			return {
+				title: `${item.user.first_name} ${item.user.last_name}`,
+				subtitle: item.identifier,
+				value: item.id,
+			};
 		},
 		async getSubjectData() {
 			this.subject = (
@@ -80,6 +99,7 @@ export default {
 	},
 	mounted() {
 		this.getSubjectData();
+		this.getTeachers();
 	},
 };
 </script>
