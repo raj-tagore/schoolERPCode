@@ -139,7 +139,7 @@ export default {
 		},
 
 		async getTeachers() {
-			this.teachers = (await api.get("api/users/teachers/all")).data;
+			this.teachers = (await api.get("api/accounts/teachers/all")).data;
 		},
 
 		teacherInfoFromObj(item) {
@@ -157,6 +157,7 @@ export default {
 	},
 	mounted() {
 		this.getClassroomData();
+		this.getTeachers();
 	},
 };
 </script>
