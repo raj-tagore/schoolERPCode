@@ -50,12 +50,8 @@
 					</v-container>
 				</template>
 				<template #[`item.id`]="{ item }">
-					<v-btn :to="{ name: 'Dashboard', params: { id: item} }">
-						<v-icon>mdi-eye</v-icon>
-					</v-btn>
-					<v-btn color="red" @click="$emit('removeTeacher', item.id)">
-						<v-icon>mdi-delete</v-icon>
-					</v-btn>
+						<v-btn size="small" icon="mdi-eye" :to="{ name: 'Dashboard', params: { id: item} }"></v-btn>
+						<v-btn size="small" icon="mdi-delete" color="red" @click="$emit('removeTeacher', item.id)"></v-btn>
 				</template>
 			</v-data-table>
 		</v-card-text>
