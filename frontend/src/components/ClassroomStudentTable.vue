@@ -73,7 +73,7 @@ export default {
 			search: "",
 			newStudent: null,
 			student_headers: [
-				{ title: "Name", value: "user.first_name", key: "name" },
+				{ title: "Name", value: "user.full_name", key: "name" },
 				{
 					title: "",
 					key: "id",

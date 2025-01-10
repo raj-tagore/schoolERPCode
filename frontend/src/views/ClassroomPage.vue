@@ -7,6 +7,7 @@
 					background-color="deep-purple accent-4"
 					center-active
 					dark
+					density="comfortable"
 					align-tabs="center"
 					v-model="tabs"
 					density="comfortable"

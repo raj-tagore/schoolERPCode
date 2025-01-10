@@ -72,7 +72,7 @@ export default {
 			search: "",
 			newTeacher: null,
 			teacher_headers: [
-				{ title: "Name", value: "user.first_name", key: "name" },
+				{ title: "Name", value: "user.full_name", key: "name" },
 				{
 					title: "",
 					key: "id",
@@ -85,7 +85,6 @@ export default {
 	},
 	methods: {
 		teacherInfoFromObj(item) {
-			console.log(item);
 			const result = {
 				title: `${item.user.first_name} ${item.user.last_name}`,
 				subtitle: item.identifier,

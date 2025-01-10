@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'id', 'username', 'first_name', 'last_name', 'email', 'school',
+            'id', 'username', 'first_name', 'last_name', 'full_name', 'email', 'school',
             'is_active', 'is_approved', 'groups', 'user_permissions',
             'account',
         ]
@@ -17,9 +17,10 @@ class UserSerializer(serializers.ModelSerializer):
             'user_permissions': {'required': False},
         }
 
+
 class UserReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'id', 'first_name', 'last_name', 'email', 'groups', 'account'
+            'id', 'first_name', 'last_name', "full_name", 'email', 'groups', 'account'
         ]
