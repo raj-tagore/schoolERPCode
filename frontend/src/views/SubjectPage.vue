@@ -10,7 +10,7 @@
 					align-tabs="center"
 					v-model="tabs"
 				>
-					<v-tab>Overview</v-tab>
+					<v-tab>Student View</v-tab>
 					<v-tab>Settings</v-tab>
 				</v-tabs>
 			</v-card>
@@ -19,6 +19,9 @@
 					<v-row class="ma-2">
 						<v-col cols="12" lg="4">
 							<SubjectCard :subject="subject"></SubjectCard>
+						</v-col>
+						<v-col cols="12" lg="4" v-if="subject.id">
+							<AnnouncementCards :url="`api/announcements/all/?subject=${subject.id}`" />
 						</v-col>
 					</v-row>
 				</v-tabs-window-item>
@@ -51,10 +54,12 @@
 <script>
 import api from "@/services/api";
 import SubjectCard from "@/components/SubjectCard.vue";
+import AnnouncementCards from "@/components/AnnouncementCards.vue";
 
 export default {
 	components: {
-		SubjectCard
+		SubjectCard,
+		AnnouncementCards,
 	},
 	data() {
 		return {

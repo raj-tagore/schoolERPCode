@@ -10,7 +10,7 @@
 					align-tabs="center"
 					v-model="tabs"
 				>
-					<v-tab>Overview</v-tab>
+					<v-tab>Student View</v-tab>
 					<v-tab>Settings</v-tab>
 					<v-tab>Members</v-tab>
 				</v-tabs>
@@ -50,6 +50,9 @@
 									</v-row>
 								</v-card-text>
 							</v-card>
+						</v-col>
+						<v-col cols="12" lg="4">
+							<AnnouncementCards :url="`api/announcements/all/?classroom=${classroom.id}`" />
 						</v-col>
 					</v-row>
 				</v-tabs-window-item>
@@ -101,11 +104,13 @@ import { getClassroom, getClassroomSubjects } from "@/services/api";
 
 import ClassroomStudentTable from "@/components/ClassroomStudentTable.vue";
 import ClassroomTeacherTable from "@/components/ClassroomTeacherTable.vue";
+import AnnouncementCards from "@/components/AnnouncementCards.vue";
 
 export default {
 	components: {
 		ClassroomTeacherTable,
 		ClassroomStudentTable,
+		AnnouncementCards,
 	},
 	data() {
 		return {
