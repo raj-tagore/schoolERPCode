@@ -27,11 +27,13 @@
 								></v-img>
 								<v-card-title>
 									{{this.classroom.name}}
-									<p class="text-body-2 pb-4">
-										<b>Standard: </b>{{this.classroom.standard}} <br>
-										<b>Class Teacher: </b>{{ this.classroom.class_teacher_details?.user?.first_name || "Loading..." }}
-									</p>
 								</v-card-title>
+								<v-card-subtitle>
+									<p class="text-body-2 pb-4">
+										Standard: {{this.classroom.standard}} <br>
+										Class Teacher: {{ this.classroom.class_teacher_details?.user?.first_name || "Loading..." }}
+									</p>
+								</v-card-subtitle>
 							</v-card>
 						</v-col>
 						<v-col cols="12" lg="4">

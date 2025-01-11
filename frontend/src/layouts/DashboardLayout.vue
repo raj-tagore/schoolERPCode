@@ -4,7 +4,7 @@
       <v-list dense>
         <!-- User Info -->
         <v-list-item>
-          <v-card prepend-icon="mdi-account" class="pa-2 ma-2" 
+          <v-card class="pa-2 ma-2" 
           :title="user.first_name + ' ' + user.last_name"
           :subtitle="user.account?.type || 'No linked account'">
           <v-card-actions>

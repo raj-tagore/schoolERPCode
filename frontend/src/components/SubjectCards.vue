@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mb-5">
+    <v-card>
         <v-card-title >Subjects</v-card-title>
         <v-card-text>
             <v-row>
@@ -8,8 +8,8 @@
             :key="index" 
             cols="6" >
                 <v-card>
-                <v-card-title class="text-body-1">{{ subject.name }}</v-card-title>
-                <v-card-subtitle>{{ subject.teacher_details?.user?.first_name }}</v-card-subtitle>
+                <v-card-title class="text-body-1 pb-0">{{ subject.name }}</v-card-title>
+                <v-card-subtitle>{{ subject.teacher_details?.user?.full_name }}</v-card-subtitle>
                 <v-card-actions class="d-flex justify-center">
                     <v-btn :to="{ name: 'Subject', params: { subjectId: subject.id }}">Enter</v-btn>
                 </v-card-actions>

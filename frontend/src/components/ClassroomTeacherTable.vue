@@ -86,7 +86,7 @@ export default {
 	methods: {
 		teacherInfoFromObj(item) {
 			const result = {
-				title: `${item.user.first_name} ${item.user.last_name}`,
+				title: `${item.user.full_name}`,
 				subtitle: item.identifier,
 				value: item.id,
 			};
