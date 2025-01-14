@@ -21,7 +21,7 @@ import { ref, onMounted } from 'vue';
 import api from '@/services/api';
 
 export default {
-  name: 'AnnouncementCards',
+  name: 'AnnouncementsCard',
   props: ['url'],
   setup(props) {
     const AnnouncementsData = ref([]);

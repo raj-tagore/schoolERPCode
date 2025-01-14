@@ -16,6 +16,10 @@ class User(AbstractUser):
     )
 
     @property
+    def permissions(self):
+        return list(self.get_all_permissions())
+
+    @property
     def account(self):
         if hasattr(self, "teacher_account"):
             return {"type": "Teacher", "id": self.teacher_account.id}

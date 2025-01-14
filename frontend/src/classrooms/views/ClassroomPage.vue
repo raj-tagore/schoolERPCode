@@ -85,12 +85,12 @@
 <script>
 import api from "@/services/api";
 
-import { getClassroom, getClassroomSubjects } from "@/services/api";
+import { getClassroom, getClassroomSubjects } from "@/classrooms/api";
 
-import ClassroomStudentTable from "@/components/ClassroomStudentTable.vue";
-import ClassroomTeacherTable from "@/components/ClassroomTeacherTable.vue";
-import AnnouncementCards from "@/components/AnnouncementCards.vue";
-import SubjectCards from "@/components/SubjectCards.vue";
+import ClassroomStudentTable from "@/classrooms/components/ClassroomStudentTable.vue";
+import ClassroomTeacherTable from "@/classrooms/components/ClassroomTeacherTable.vue";
+import AnnouncementCards from "@/announcements/components/AnnouncementsCard.vue";
+import SubjectCards from "@/subjects/components/SubjectCards.vue";
 
 export default {
 	components: {
@@ -126,7 +126,6 @@ export default {
 				classroom,
 			);
 		},
-
 		async getTeachers() {
 			this.teachers = (await api.get("api/accounts/teachers/all")).data;
 		},

@@ -22,7 +22,6 @@
                 </v-card-actions>
 
                 </v-card>
-				<AnnouncementsCard :classroom="classroom" />
             </v-col>
             </v-row>
         </v-card-text>
@@ -32,14 +31,10 @@
 </template>
 
 <script>
-import { getClassrooms } from "@/services/api";
-import AnnouncementsCard from "@/components/AnnouncementsCard.vue";
+import { getClassrooms } from "../api";
 
 export default {
-	components: {
-		AnnouncementsCard,
-	},
-	name: "ClassroomCards",
+	name: "ClassroomsCard",
 	data() {
 		return {
 			classroomsData: [],

@@ -9,15 +9,6 @@ const api = axios.create({
     withCredentials: true,
 });
 
-const getClassroom = async (classroomId) =>
-    (await api.get(`api/allocation/classrooms/${classroomId}`)).data;
-
-const getClassrooms = async () =>
-    (await api.get("api/allocation/classrooms/all")).data;
-
-const getClassroomSubjects = async (classroomId) =>
-    (await api.get(`api/allocation/subjects/all/?classroom=${classroomId}`)).data;
-
 api.interceptors.request.use(
     (config) => {
         const authStore = useAuthStore();
@@ -71,4 +62,3 @@ api.interceptors.response.use(
 );
 
 export default api;
-export { getClassroom, getClassrooms, getClassroomSubjects };

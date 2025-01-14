@@ -1,14 +1,14 @@
 <template>
-    <ClassroomCards />
+    <ClassroomsCard />
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import ClassroomCards from "@/components/ClassroomCards.vue";
+import ClassroomsCard from "@/classrooms/components/ClassroomsCard.vue";
 
 export default defineComponent({
 	components: {
-		ClassroomCards,
+		ClassroomsCard,
 	},
 });
 </script>
