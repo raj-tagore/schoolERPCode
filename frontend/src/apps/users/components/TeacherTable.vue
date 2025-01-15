@@ -32,51 +32,36 @@
 	</v-container>
 </template>
 
-<script>
-import { watch } from "vue";
+<script setup>
+import { ref, watch } from "vue";
+
 import { getTeachers, getClassroomTeachers } from "@/apps/users/api";
 
-export default {
-	props: ["url", "showAddTeacher", "showRemoveTeacher", "classroom", "filter"],
-	data() {
-		return {
-			teachers: [],
-			search: "",
-			teacher_headers: [
-				{ title: "Name", value: "user.full_name", key: "name" },
-				{
-					title: "",
-					key: "id",
-					align: "end",
-					sortable: false,
-					value: (teacher) => `app/teachers/${teacher.id}`,
-				},
-			],
-		};
-	},
-	methods: {
-		teacherInfoFromObj(item) {
-			const result = {
-				title: `${item.user.full_name}`,
-				subtitle: item.identifier,
-				value: item.id,
-			};
-			return result;
-		},
-	},
-	mounted() {
-		if (this.classroom) {
-			this.teachers = getClassroomTeachers(classroom);
-		} else {
-			this.teachers = getTeachers(filter);
-		}
+const props = defineProps({
+	showAddTeacher: Boolean,
+	showRemoveTeacher: Boolean,
+	classroom: Object,
+	filter: Object,
+});
 
-		watch(this.classroom, () => {
-			this.getTeachers();
-		});
-		watch(this.filter, () => {
-			this.teachers = getTeachers(filter);
-		});
+let teachers = ref([]);
+const search = ref("");
+const teacher_headers = ref([
+	{ title: "Name", value: "user.full_name", key: "name" },
+	{
+		title: "",
+		key: "id",
+		align: "end",
+		sortable: false,
+		value: (teacher) => `app/teachers/${teacher.id}`,
 	},
-};
+]);
+
+if (props) {
+	if (props.classroom) {
+		teachers = await getClassroomTeachers(props.classroom);
+	} else {
+		teachers = await getTeachers(props.filter);
+	}
+}
 </script>

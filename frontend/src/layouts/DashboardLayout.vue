@@ -38,7 +38,6 @@
       </v-list>
     </v-navigation-drawer>
 
-
     <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>School ERP Dashboard</v-toolbar-title>
@@ -81,10 +80,6 @@ function logoutHandler() {
 }
 </script>
 
-<script>
-// For Options API style components, remove this block entirely since we are using the <script setup> syntax above.
-// This block is intentionally left empty as all logic is now in <script setup>.
-</script>
 
 <style>
 /* Add any custom styles if necessary */

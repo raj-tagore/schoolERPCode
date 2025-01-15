@@ -1,6 +1,6 @@
 <template>
 	<v-container>
-	<v-row align="center" justify="center" v-if="this.classroom">
+	<v-row align="center" justify="center" v-if="classroom">
 		<v-col>
 			<v-card>
 				<v-tabs
@@ -26,12 +26,12 @@
 									class="custom-img"
 								></v-img>
 								<v-card-title>
-									{{this.classroom.name}}
+									{{classroom.name}}
 								</v-card-title>
 								<v-card-subtitle>
 									<p class="text-body-2 pb-4">
-										Standard: {{this.classroom.standard}} <br>
-										Class Teacher: {{ this.classroom.class_teacher_details?.user?.first_name || "Loading..." }}
+										Standard: {{classroom.standard}} <br>
+										Class Teacher: {{ classroom.class_teacher_details?.user?.first_name || "Loading..." }}
 									</p>
 								</v-card-subtitle>
 							</v-card>
@@ -71,9 +71,9 @@
 					</v-card>
 				</v-tabs-window-item>
 				<v-tabs-window-item>
-						<TeacherTable :classroom="classroom" @addTeacher="(teacher) => addTeacherToClassroom(this.classroom, teacher)" @removeTeacher="(teacher) => removeTeacherFromClassroom(this.classroom, teacher)">
+						<TeacherTable :classroom="classroom" @addTeacher="(teacher) => addTeacherToClassroom(classroom, teacher)" @removeTeacher="(teacher) => removeTeacherFromClassroom(classroom, teacher)">
 							</TeacherTable>
-						<StudentTable :classroom="classroom" @addStudent="(student) => addStudentToClassroom(this.classroom, student)" @removeStudent="(student) => removeStudentFromClassroom(classroom, student)">
+						<StudentTable :classroom="classroom" @addStudent="(student) => addStudentToClassroom(classroom, student)" @removeStudent="(student) => removeStudentFromClassroom(classroom, student)">
 							</StudentTable>
 				</v-tabs-window-item>
 			</v-tabs-window>
@@ -82,44 +82,33 @@
 </v-container>
 </template>
 
-<script>
+<script setup>
 import {
-	getClassroom,
-	addTeacherToClassroom,
-	removeTeacherFromClassroom,
 	addStudentToClassroom,
-	removeStudentFromClassroom,
+	addTeacherToClassroom,
+	getClassroom,
 	getClassroomImage,
+	removeStudentFromClassroom,
+	removeTeacherFromClassroom,
 } from "@/apps/classrooms/api";
 
+import { ref } from "vue";
+
+// biome-ignore lint/style/useConst: Biome does not support vue yet
+let tabs = ref(null);
+let classroom = ref(null);
+
+const props = defineProps({
+	classroomId: Number,
+});
+
 import AnnouncementCards from "@/apps/announcements/components/AnnouncementsCard.vue";
+import SubjectCards from "@/apps/subjects/components/SubjectCards.vue";
 import StudentTable from "@/apps/users/components/StudentTable.vue";
 import TeacherTable from "@/apps/users/components/TeacherTable.vue";
-import SubjectCards from "@/apps/subjects/components/SubjectCards.vue";
 
-export default {
-	components: {
-		ClassroomTeacherTable,
-		ClassroomStudentTable,
-		AnnouncementCards,
-		SubjectCards,
-	},
-	data() {
-		return {
-			tabs: null,
-			classroom: null,
-		};
-	},
-	props: ["classroomId"],
-	methods: {
-		async getClassroomData() {
-			this.classroom = await getClassroom(this.classroomId);
-			this.subjects = await getSubjects(this.classroomId);
-		},
-	},
-	mounted() {
-		this.getClassroomData();
-		this.getTeachers();
-	},
-};
+classroom = await getClassroom(props.classroomId);
+console.log(classroom)
+
+
 </script>

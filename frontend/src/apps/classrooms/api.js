@@ -24,7 +24,7 @@ const addTeacherToClassroom = async (classroom, teacherId) => {
     updateClassroom();
 };
 
-const getClassroomImage = async () => {
+const getClassroomImage = () => {
     const index = Math.floor(Math.random() * images.length);
     return images[index];
 };
