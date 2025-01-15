@@ -22,7 +22,7 @@
 						<v-col cols="12" lg="4">
 							<v-card>
 								<v-img 
-									:src="getRandomClassroomImage()" 
+									:src="getClassroomImage()" 
 									class="custom-img"
 								></v-img>
 								<v-card-title>
@@ -71,10 +71,10 @@
 					</v-card>
 				</v-tabs-window-item>
 				<v-tabs-window-item>
-						<ClassroomTeacherTable :classroom="classroom" @addTeacher="addTeacher" @removeTeacher="removeTeacher">
-							</ClassroomTeacherTable>
-						<ClassroomStudentTable :classroom="classroom" @addStudent="addStudent" @removeStudent="removeStudent">
-							</ClassroomStudentTable>
+						<TeacherTable :classroom="classroom" @addTeacher="(teacher) => addTeacherToClassroom(this.classroom, teacher)" @removeTeacher="(teacher) => removeTeacherFromClassroom(this.classroom, teacher)">
+							</TeacherTable>
+						<StudentTable :classroom="classroom" @addStudent="(student) => addStudentToClassroom(this.classroom, student)" @removeStudent="(student) => removeStudentFromClassroom(classroom, student)">
+							</StudentTable>
 				</v-tabs-window-item>
 			</v-tabs-window>
 		</v-col>
@@ -83,13 +83,18 @@
 </template>
 
 <script>
-import api from "@/services/api";
+import {
+	getClassroom,
+	addTeacherToClassroom,
+	removeTeacherFromClassroom,
+	addStudentToClassroom,
+	removeStudentFromClassroom,
+	getClassroomImage,
+} from "@/apps/classrooms/api";
 
-import { getClassroom, getClassroomSubjects } from "@/apps/classrooms/api";
-
-import ClassroomStudentTable from "@/apps/classrooms/components/ClassroomStudentTable.vue";
-import ClassroomTeacherTable from "@/apps/classrooms/components/ClassroomTeacherTable.vue";
 import AnnouncementCards from "@/apps/announcements/components/AnnouncementsCard.vue";
+import StudentTable from "@/apps/users/components/StudentTable.vue";
+import TeacherTable from "@/apps/users/components/TeacherTable.vue";
 import SubjectCards from "@/apps/subjects/components/SubjectCards.vue";
 
 export default {
@@ -103,71 +108,13 @@ export default {
 		return {
 			tabs: null,
 			classroom: null,
-			teachers: [],
-			subjects: [],
-			images: [
-				require("@/assets/classrooms/classroom1.png"),
-				require("@/assets/classrooms/classroom2.png"),
-				require("@/assets/classrooms/classroom3.png"),
-			],
 		};
 	},
 	props: ["classroomId"],
 	methods: {
-		getRandomClassroomImage() {
-			const index = Math.floor(Math.random() * this.images.length);
-			return this.images[index];
-		},
-		async updateClassroom() {
-			const classroom = structuredClone(this.classroom);
-			classroom.class_teacher_details = undefined;
-			await api.put(
-				`api/allocation/classrooms/${this.classroomId}/`,
-				classroom,
-			);
-		},
-		async getTeachers() {
-			this.teachers = (await api.get("api/accounts/teachers/all")).data;
-		},
-
-		teacherInfoFromObj(item) {
-			return {
-				title: `${item.user.first_name} ${item.user.last_name}`,
-				subtitle: item.identifier,
-				value: item.id,
-			};
-		},
-
-		addTeacher(teacher) {
-			this.classroom.other_teachers.push(teacher);
-			this.updateClassroom();
-		},
-
-		removeTeacher(teacherId) {
-			this.classroom.other_teachers.splice(
-				this.classroom.other_teachers.indexOf(teacherId),
-				1,
-			);
-			this.updateClassroom();
-		},
-
-		addStudent(student) {
-			this.classroom.students.push(student);
-			this.updateClassroom();
-		},
-
-		removeStudent(studentId) {
-			this.classroom.students.splice(
-				this.classroom.students.indexOf(studentId),
-				1,
-			);
-			this.updateClassroom();
-		},
-
-
 		async getClassroomData() {
 			this.classroom = await getClassroom(this.classroomId);
-			this.subjects = await getClassroomSubjects(this.classroomId);
+			this.subjects = await getSubjects(this.classroomId);
 		},
 	},
 	mounted() {
