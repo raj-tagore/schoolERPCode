@@ -116,6 +116,5 @@ class Student(models.Model):
     # )
 
     def __str__(self):
-        # Access first name and last name from the related User model
-        return f"{self.user.first_name} {self.user.last_name} ({self.user.username})"
+        return f"{self.user.full_name} ({self.user.username})"
 

@@ -31,3 +31,4 @@ class UsersAdmin(UserAdmin, ImportExportModelAdmin):
             'fields': ('is_approved', 'school'),
         }),
     )
+
