@@ -7,13 +7,12 @@ const getTeachers = async (filter) =>
         )
     ).data;
 
-const getStudents = async (filter) => {
-    return (
+const getStudents = async (filter) => 
+    (
         await api.get(
-            `api/accounts/teachers/all${filter ? "?" : ""}${filter ? new URLSearchParams(filter) : ""}`,
+            `api/accounts/students/all${filter ? "?" : ""}${filter ? new URLSearchParams(filter) : ""}`,
         )
     ).data;
-};
 
 
 export { getTeachers, getStudents };

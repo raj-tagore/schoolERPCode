@@ -24,6 +24,7 @@
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@babel/eslint-parser": "^7.26.5",
+    "@biomejs/biome": "1.9.4",
     "@types/webfontloader": "^1.6.38",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-router": "~5.0.8",

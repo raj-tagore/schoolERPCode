@@ -7,13 +7,11 @@
 		<v-card-text>
 			<v-data-table density="comfortable" :search="search" :items="students" :headers="student_headers">
 				<template v-slot:top>
-					<v-container>
-						<v-text-field
-							v-model="search"
-							label="Search"
-							density="comfortable"
-						></v-text-field>
-					</v-container>
+					<v-text-field
+						v-model="search"
+						label="Search"
+						density="compact"
+					/>
 				</template>
 				<template #[`item.id`]="{ item }">
 						<v-btn class="mx-2" size="x-small" icon="mdi-eye" :to="{ name: 'Dashboard', params: { id: item} }"></v-btn>
@@ -25,14 +23,14 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, onMounted } from "vue";
 import { getStudents } from "@/apps/users/api";
 
-const { props } = defineProps({
+const props  = defineProps({
 	filter: Object
 });
 
-let students = ref([]);
+const students = ref([]);
 const search = ref("");
 const student_headers = ref([
 	{ title: "Name", value: "user.full_name", key: "name" },
@@ -45,10 +43,10 @@ const student_headers = ref([
 	},
 ]);
 
-if (props) {
-	students = await getStudents(props.filter);
-	watch(props.filter, async () => {
-		students = await getStudents(props.filter);
-	});
-}
+const fetchStudents = async () => {
+    students.value = await getStudents(props.filter || {});
+};
+
+onMounted(fetchStudents);
+
 </script>

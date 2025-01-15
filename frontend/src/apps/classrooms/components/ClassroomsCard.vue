@@ -12,47 +12,37 @@
             lg="2" >
                 <v-card>
                 <v-img 
-                    :src="getRandomClassroomImage()" 
+                    :src="getClassroomImage()" 
                     class="custom-img"
                 ></v-img>
                 <v-card-title class="text-body-1">{{ classroom.name }}</v-card-title>
-				<v-card-subtitle>{{ classroom.class_teacher_details?.user?.first_name || "Loading..." }}</v-card-subtitle>
+				<v-card-subtitle>{{ classroom.class_teacher_details?.user?.full_name || "Loading..." }}</v-card-subtitle>
                 <v-card-actions class="d-flex justify-center">
                     <v-btn :to="{ name: 'Classroom', params: { classroomId: classroom.id }}">Enter Class</v-btn>
                 </v-card-actions>
-
                 </v-card>
             </v-col>
             </v-row>
         </v-card-text>
     </v-card>
-
 </v-container>
 </template>
 
 <script>
-import { getClassrooms } from "../api";
+import { getClassrooms, getClassroomImage } from "../api";
 
 export default {
 	name: "ClassroomsCard",
 	data() {
 		return {
 			classroomsData: [],
-			images: [
-				require("@/assets/classrooms/classroom1.png"),
-				require("@/assets/classrooms/classroom2.png"),
-				require("@/assets/classrooms/classroom3.png"),
-			],
 		};
 	},
 	methods: {
-		getRandomClassroomImage() {
-			const index = Math.floor(Math.random() * this.images.length);
-			return this.images[index];
-		},
+		getClassroomImage,
 		async getClassroomsData() {
-			this.classroomsData = await getClassrooms();
-		},
+            this.classroomsData = await getClassrooms();
+        },
 	},
 	mounted() {
 		this.getClassroomsData();

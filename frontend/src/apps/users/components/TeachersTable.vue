@@ -7,13 +7,11 @@
 			<v-card-text>
 				<v-data-table density="comfortable" :search="search" :items="teachers" :headers="teacher_headers">
 					<template v-slot:top>
-						<v-container>
-							<v-text-field
-								v-model="search"
-								label="Search"
-								density="comfortable"
-							></v-text-field>
-						</v-container>
+						<v-text-field
+							v-model="search"
+							label="Search"
+							density="compact"
+						/>
 					</template>
 					<template #[`item.id`]="{ item }">
 						<v-btn class="mx-2" size="x-small" icon="mdi-eye" :to="{ name: 'Dashboard', params: { id: item} }"></v-btn>
@@ -25,7 +23,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { getTeachers } from "@/apps/users/api";
 
 const props = defineProps({
