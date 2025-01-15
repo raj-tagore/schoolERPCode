@@ -26,12 +26,9 @@
     "@babel/eslint-parser": "^7.26.5",
     "@types/webfontloader": "^1.6.38",
     "@vue/cli-plugin-babel": "~5.0.8",
-    "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-plugin-router": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
-    "@vue/compiler-sfc": "^3.5.13",
-    "eslint": "^9.18.0",
-    "eslint-plugin-vue": "^9.32.0"
+    "@vue/compiler-sfc": "^3.5.13"
   },
   "postcss": {
     "plugins": {
