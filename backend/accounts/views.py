@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Q
 
 from rest_framework.generics import (
     ListAPIView,
@@ -47,6 +48,21 @@ class AllTeachers(ListAPIView):
     def get_queryset(self):
         queryset = super().get_queryset()
         request = self.request
+        id = request.query_params.get('id')
+        classrooms_leading = request.query_params.get('classrooms_leading')
+        classrooms_assisting = request.query_params.get('classrooms_assisting')
+        classrooms = request.query_params.get('classrooms')
+
+        if id:
+            queryset = queryset.filter(id=id)
+        if classrooms_leading:
+            queryset = queryset.filter(classrooms_leading__id=classrooms_leading)
+        if classrooms_assisting:
+            queryset = queryset.filter(classrooms_assisting__id=classrooms_assisting)
+        if classrooms:
+            queryset = queryset.filter(
+                Q(classrooms_leading__id=classrooms) | Q(classrooms_assisting__id=classrooms)
+            ).distinct()
 
         # filter parents of student here
         return queryset
@@ -71,6 +87,14 @@ class AllStudents(ListAPIView):
     def get_queryset(self):
         queryset = super().get_queryset()
         request = self.request
+
+        id = request.query_params.get('id')
+        classrooms = request.query_params.get('classroom')
+
+        if id:
+            queryset = queryset.filter(id=id)
+        if classrooms:
+            queryset = queryset.filter(classrooms__id=classrooms)
 
         # filter parents of student here
         return queryset

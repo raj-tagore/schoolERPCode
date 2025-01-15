@@ -9,6 +9,7 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = '__all__'
+        depth = 1
 
 class ParentSerializer(serializers.ModelSerializer):
     user = UserReadSerializer()

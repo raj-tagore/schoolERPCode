@@ -4,7 +4,7 @@
       <v-list dense>
         <!-- User Info -->
         <v-list-item>
-          <v-card prepend-icon="mdi-account" class="pa-2 ma-2" 
+          <v-card class="pa-2 ma-2" 
           :title="user.first_name + ' ' + user.last_name"
           :subtitle="user.account?.type || 'No linked account'">
           <v-card-actions>
@@ -38,7 +38,6 @@
       </v-list>
     </v-navigation-drawer>
 
-
     <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>School ERP Dashboard</v-toolbar-title>
@@ -48,38 +47,39 @@
       </v-btn>
     </v-app-bar>
 
+  <Suspense>
     <v-main>
-      <v-container class="mt-5">
-        <router-view></router-view>
+        <v-container>
+          <router-view></router-view>
+          <template #fallback>
+            Loading...
+          </template>
       </v-container>
     </v-main>
+  </Suspense>
   </v-app>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth' // Pinia store
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth"; // Pinia store
 // import ExpandableListItem from '@/components/c-expandable-list-item.vue'
 
-const drawer = ref(false)
+const drawer = ref(false);
 
-const router = useRouter()
-const authStore = useAuthStore()
+const router = useRouter();
+const authStore = useAuthStore();
 
-const user = computed(() => authStore.user)
+const user = computed(() => authStore.user);
 
 // Actions
 function logoutHandler() {
-  router.push({ name: 'Login' })
-  authStore.logout()
+	router.push({ name: "Login" });
+	authStore.logout();
 }
 </script>
 
-<script>
-// For Options API style components, remove this block entirely since we are using the <script setup> syntax above.
-// This block is intentionally left empty as all logic is now in <script setup>.
-</script>
 
 <style>
 /* Add any custom styles if necessary */
