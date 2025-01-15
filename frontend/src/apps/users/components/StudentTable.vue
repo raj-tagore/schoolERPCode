@@ -13,18 +13,10 @@
 							label="Search"
 							density="comfortable"
 						></v-text-field>
-							<v-btn
-								v-bind="activatorProps"
-								@click="$emit('addStudent')"
-							>
-								<v-icon>mdi-plus</v-icon>
-								Add Student
-							</v-btn>
 					</v-container>
 				</template>
 				<template #[`item.id`]="{ item }">
 						<v-btn class="mx-2" size="x-small" icon="mdi-eye" :to="{ name: 'Dashboard', params: { id: item} }"></v-btn>
-						<v-btn v-if="showRemoveStudent" class="mx-2" size="x-small" icon="mdi-delete" color="red" @click="$emit('removeStudent', item.id)"></v-btn>
 				</template>
 			</v-data-table>
 		</v-card-text>
@@ -34,13 +26,10 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { getStudents, getClassroomStudents } from "@/apps/users/api";
+import { getStudents } from "@/apps/users/api";
 
 const { props } = defineProps({
-	showAddStudent: Boolean,
-	showRemoveStudent: Boolean,
-	classroom: Object,
-	filter: Object,
+	filter: Object
 });
 
 let students = ref([]);
@@ -57,16 +46,9 @@ const student_headers = ref([
 ]);
 
 if (props) {
-	if (props.classroom) {
-		students = await getClassroomStudents(props.classroom);
-		watch(props.classroom, async () => {
-			students = await getStudents();
-		});
-	} else {
+	students = await getStudents(props.filter);
+	watch(props.filter, async () => {
 		students = await getStudents(props.filter);
-		watch(props.filter, async () => {
-			students = await getStudents(props.filter);
-		});
-	}
+	});
 }
 </script>

@@ -47,6 +47,15 @@ class AllTeachers(ListAPIView):
     def get_queryset(self):
         queryset = super().get_queryset()
         request = self.request
+        id = request.query_params.get('id')
+        classrooms_leading = request.query_params.get('classrooms_leading')
+        classrooms_assisting = request.query_params.get('classrooms_assisting')
+        if id:
+            queryset = queryset.filter(id=id)
+        if classrooms_leading:
+            queryset = queryset.filter(classrooms_leading__id=classrooms_leading)
+        if classrooms_assisting:
+            queryset = queryset.filter(classrooms_assisting__id=classrooms_assisting)
 
         # filter parents of student here
         return queryset

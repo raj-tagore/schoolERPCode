@@ -71,10 +71,11 @@
 					</v-card>
 				</v-tabs-window-item>
 				<v-tabs-window-item>
-						<TeacherTable :classroom="classroom" @addTeacher="(teacher) => addTeacherToClassroom(classroom, teacher)" @removeTeacher="(teacher) => removeTeacherFromClassroom(classroom, teacher)">
-							</TeacherTable>
-						<StudentTable :classroom="classroom" @addStudent="(student) => addStudentToClassroom(classroom, student)" @removeStudent="(student) => removeStudentFromClassroom(classroom, student)">
-							</StudentTable>
+					Lead Teacher
+					<TeacherTable :filter="{ classrooms_leading: classroom.id }" />
+					Assisting Teachers
+					<TeacherTable :filter="{ classrooms_assisting: classroom.id }" />
+					<StudentTable :filter="{ classroom: classroom.id }" />
 				</v-tabs-window-item>
 			</v-tabs-window>
 		</v-col>
@@ -84,12 +85,8 @@
 
 <script setup>
 import {
-	addStudentToClassroom,
-	addTeacherToClassroom,
 	getClassroom,
 	getClassroomImage,
-	removeStudentFromClassroom,
-	removeTeacherFromClassroom,
 } from "@/apps/classrooms/api";
 
 import { ref } from "vue";
@@ -108,7 +105,6 @@ import StudentTable from "@/apps/users/components/StudentTable.vue";
 import TeacherTable from "@/apps/users/components/TeacherTable.vue";
 
 classroom = await getClassroom(props.classroomId);
-console.log(classroom)
 
 
 </script>
