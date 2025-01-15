@@ -1,5 +1,5 @@
-import ClassroomPage from "@/classrooms/views/ClassroomPage.vue";
-import ClassroomsPage from "@/classrooms/views/ClassroomsPage.vue";
+import ClassroomPage from "@/apps/classrooms/views/ClassroomPage.vue";
+import ClassroomsPage from "@/apps/classrooms/views/ClassroomsPage.vue";
 import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
 import api from "@/services/api";
 

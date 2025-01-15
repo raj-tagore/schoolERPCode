@@ -4,7 +4,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import ClassroomsCard from "@/classrooms/components/ClassroomsCard.vue";
+import ClassroomsCard from "@/apps/classrooms/components/ClassroomsCard.vue";
 
 export default defineComponent({
 	components: {

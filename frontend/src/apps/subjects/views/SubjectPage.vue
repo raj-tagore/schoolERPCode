@@ -61,8 +61,8 @@
 
 <script>
 import api from "@/services/api";
-import SubjectCard from "@/subjects/components/SubjectCard.vue";
-import AnnouncementCards from "@/announcements/components/AnnouncementsCard.vue";
+import SubjectCard from "@/apps/subjects/components/SubjectCard.vue";
+import AnnouncementCards from "@/apps/announcements/components/AnnouncementsCard.vue";
 
 export default {
 	components: {

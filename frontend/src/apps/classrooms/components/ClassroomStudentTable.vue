@@ -88,7 +88,7 @@ export default {
 		studentInfoFromObj(item) {
 			console.log(item);
 			const result = {
-				title: `${item.user.first_name} ${item.user.last_name}`,
+				title: item.user.full_name,
 				subtitle: item.identifier,
 				value: item.id,
 			};
@@ -99,11 +99,8 @@ export default {
 		},
 		async submit(event) {
 			this.loading = true;
-
 			const results = await event;
-
 			this.loading = false;
-
 			alert(JSON.stringify(results, null, 2));
 		},
 		async getStudents() {

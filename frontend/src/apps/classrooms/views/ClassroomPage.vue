@@ -85,12 +85,12 @@
 <script>
 import api from "@/services/api";
 
-import { getClassroom, getClassroomSubjects } from "@/classrooms/api";
+import { getClassroom, getClassroomSubjects } from "@/apps/classrooms/api";
 
-import ClassroomStudentTable from "@/classrooms/components/ClassroomStudentTable.vue";
-import ClassroomTeacherTable from "@/classrooms/components/ClassroomTeacherTable.vue";
-import AnnouncementCards from "@/announcements/components/AnnouncementsCard.vue";
-import SubjectCards from "@/subjects/components/SubjectCards.vue";
+import ClassroomStudentTable from "@/apps/classrooms/components/ClassroomStudentTable.vue";
+import ClassroomTeacherTable from "@/apps/classrooms/components/ClassroomTeacherTable.vue";
+import AnnouncementCards from "@/apps/announcements/components/AnnouncementsCard.vue";
+import SubjectCards from "@/apps/subjects/components/SubjectCards.vue";
 
 export default {
 	components: {

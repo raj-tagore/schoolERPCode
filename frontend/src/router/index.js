@@ -8,8 +8,8 @@ import DashboardPage from "@/views/DashboardPage.vue";
 import HomePage from "@/views/HomePage.vue";
 import LoginPage from "@/views/LoginPage.vue";
 // Routes in Apps
-import classroomsRoutes from "@/classrooms/routes";
-import subjectsRoutes from "@/subjects/routes"
+import classroomsRoutes from "@/apps/classrooms/routes";
+import subjectsRoutes from "@/apps/subjects/routes"
 
 const routes = [
     {

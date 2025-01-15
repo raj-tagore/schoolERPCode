@@ -1,5 +1,5 @@
 import EmptyLayout from "@/layouts/EmptyLayout.vue"
-import SubjectPage from "@/subjects/views/SubjectPage.vue"
+import SubjectPage from "@/apps/subjects/views/SubjectPage.vue"
 import api from "@/services/api"
 
 export default [
