@@ -1,7 +1,6 @@
 <template>
     <v-card>
         <v-card-title >Subjects</v-card-title>
-		<v-card-subtitle>Classroom name here</v-card-subtitle>
         <v-card-text>
             <v-row>
             <v-col 
@@ -34,7 +33,6 @@ let subjects = ref([]);
 const fetchSubjects = async () => {
   subjects.value = await getSubjects(props.filter);
 };
-
 onMounted(fetchSubjects);
 </script>
 
