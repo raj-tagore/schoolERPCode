@@ -1,10 +1,11 @@
 <template>
     <v-card>
         <v-card-title >Subjects</v-card-title>
+		<v-card-subtitle>Classroom name here</v-card-subtitle>
         <v-card-text>
             <v-row>
             <v-col 
-            v-for="(subject, index) in subjectsData" 
+            v-for="(subject, index) in subjects" 
             :key="index" 
             cols="6" >
                 <v-card>
@@ -20,35 +21,21 @@
     </v-card>
 </template>
 
-<script>
+<script setup>
 import { ref, onMounted } from "vue";
-import api from "@/services/api";
+import { getSubjects } from "../api"
 
-export default {
-	name: "SubjectCards",
-	props: ["url"],
-	setup(props) {
+// Props
+const props = defineProps({
+  filter: Object, 
+});
 
-		const subjectsData = ref([]);
-
-		const getSubjectsData = async () => {
-			try {
-				const response = await api.get(props.url);
-				subjectsData.value = response.data;
-				console.log("Subjects data:", subjectsData.value);
-			} catch (error) {
-				console.error("Error fetching subjects data:", error);
-			}
-		};
-
-		onMounted(() => {
-			getSubjectsData();
-		});
-
-		return {
-			subjectsData,
-		};
-	},
+let subjects = ref([]);
+const fetchSubjects = async () => {
+  subjects.value = await getSubjects(props.filter);
 };
+
+onMounted(fetchSubjects);
 </script>
+
       

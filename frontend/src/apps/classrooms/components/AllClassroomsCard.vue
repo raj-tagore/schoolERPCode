@@ -28,27 +28,19 @@
 </v-container>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from "vue";
 import { getClassrooms, getClassroomImage } from "../api";
 
-export default {
-	name: "ClassroomsCard",
-	data() {
-		return {
-			classroomsData: [],
-		};
-	},
-	methods: {
-		getClassroomImage,
-		async getClassroomsData() {
-            this.classroomsData = await getClassrooms();
-        },
-	},
-	mounted() {
-		this.getClassroomsData();
-	},
+const classroomsData = ref([]); // Reactive variable for classroom data
+
+const fetchClassroomsData = async () => {
+    classroomsData.value = await getClassrooms();
 };
+
+onMounted(fetchClassroomsData); // Call data fetch on component mount
 </script>
+
 
 <style>
 .custom-img {

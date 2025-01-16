@@ -65,7 +65,7 @@ const props = defineProps({
 });
 
 import AnnouncementsCard from "@/apps/announcements/components/AnnouncementsCard.vue";
-import SubjectsCard from "@/apps/subjects/components/SubjectCards.vue";
+import SubjectsCard from "@/apps/subjects/components/SubjectsCard.vue";
 import StudentsTable from "@/apps/users/components/StudentsTable.vue";
 import TeachersTable from "@/apps/users/components/TeachersTable.vue";
 import ClassroomCard from "@/apps/classrooms/components/ClassroomCard.vue"
