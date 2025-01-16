@@ -26,7 +26,7 @@
 							<SubjectsList :filter="{ classroom: classroom.id }" />
 						</v-col>
 						<v-col cols="12" lg="4">
-							<AnnouncementsCard :url="`api/announcements/all/?classroom=${classroom.id}`" />
+							<AnnouncementsList :url="`api/announcements/all/?classroom=${classroom.id}`" />
 						</v-col>
 					</v-row>
 				</v-tabs-window-item>
@@ -64,7 +64,7 @@ const props = defineProps({
 	classroomId: Number,
 });
 
-import AnnouncementsCard from "@/apps/announcements/components/AnnouncementsCard.vue";
+import AnnouncementsList from "@/apps/announcements/components/AnnouncementsList.vue";
 import SubjectsList from "@/apps/subjects/components/SubjectsList.vue";
 import StudentsTable from "@/apps/users/components/StudentsTable.vue";
 import TeachersTable from "@/apps/users/components/TeachersTable.vue";
