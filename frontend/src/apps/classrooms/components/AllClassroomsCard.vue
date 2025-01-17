@@ -3,6 +3,16 @@
     <v-card class="mb-5">
         <v-card-title class="text-h5">Classes</v-card-title>
         <v-card-text>
+				<container>
+					<v-row>
+						<v-col>
+						<v-text-field
+							v-model="search"
+							label="Search"
+						/>
+
+						</v-col>
+					</v-row>
             <v-row>
             <v-col 
             v-for="(classroom, index) in classroomsData" 
@@ -22,23 +32,35 @@
                 </v-card-actions>
                 </v-card>
             </v-col>
-            </v-row>
+            </v-row></container>
         </v-card-text>
     </v-card>
 </v-container>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { getClassrooms, getClassroomImage } from "../api";
 
-const classroomsData = ref([]); // Reactive variable for classroom data
+const classroomsDataRaw = ref([]);
+const search = ref("");
+
+const classroomsData = computed({
+	get: () => {
+		console.log(search.value.length);
+		if (search.value.length === 0) {
+			return classroomsDataRaw.value;
+		}
+		return classroomsDataRaw.value.filter((v) =>
+			`${v.name}${v.standard}`.includes(search.value),
+		);
+	},
+});
 
 const fetchClassroomsData = async () => {
-    classroomsData.value = await getClassrooms();
+	classroomsDataRaw.value = await getClassrooms();
 };
-
-onMounted(fetchClassroomsData); // Call data fetch on component mount
+onMounted(fetchClassroomsData);
 </script>
 
 
