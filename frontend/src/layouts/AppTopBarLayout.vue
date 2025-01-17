@@ -1,39 +1,38 @@
-<script>
-import { watch } from "vue";
+<script setup>
+import { ref, watch, onMounted } from "vue";
 
 import { useRoute } from "vue-router";
 
-export default {
-	name: "AppTopBarLayout",
-	data() {
-		return {
-			breadcrumbItems: null,
-		};
-	},
-	methods: {
-		async populateBreadcrumbs(currentRoute) {
-			this.breadcrumbItems = await Promise.all(
-				currentRoute.matched
-					.filter((route) => route.meta.getDisplayName)
-					.map(async (route) => ({
-						title: await route.meta.getDisplayName(currentRoute.params),
-						to: {
-							name: route.meta.defaultRoute,
-							params: currentRoute.params,
-						},
-					})),
-			);
-			this.breadcrumbItems = this.breadcrumbItems.slice(-3);
-		},
-	},
-	mounted() {
-		const currentRoute = useRoute();
-		this.populateBreadcrumbs(currentRoute);
-		watch(currentRoute, (route) => {
-			this.populateBreadcrumbs(route);
-		});
-	},
-};
+const currentRoute = useRoute();
+
+const breadcrumbItems = ref([]);
+
+const updateBreadcrumbs = async (route) => {
+	breadcrumbItems.value = (
+		await Promise.all(
+			route.matched
+				.filter((route) => route.meta.getDisplayName)
+				.map(async (route) => ({
+					title: await route.meta.getDisplayName(currentRoute.params),
+					to: {
+						name: route.meta.defaultRoute,
+						params: currentRoute.params,
+					},
+				})),
+		)
+	).slice(-3);
+	const breadcrumbsLength = breadcrumbItems.value.length;
+	const lastBreadcrumb = breadcrumbItems.value[breadcrumbsLength - 1];
+	if (lastBreadcrumb) {
+		lastBreadcrumb.active = true;
+		lastBreadcrumb.disabled = false;
+	}
+	console.log(breadcrumbItems.value)
+}
+
+watch(currentRoute, updateBreadcrumbs);
+
+onMounted(() => updateBreadcrumbs(currentRoute))
 </script>
 
 <template>
