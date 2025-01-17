@@ -10,6 +10,7 @@ import LoginPage from "@/views/LoginPage.vue";
 // Routes in Apps
 import classroomsRoutes from "@/apps/classrooms/routes";
 import subjectsRoutes from "@/apps/subjects/routes"
+import usersRoutes from "@/apps/users/routes"
 
 const routes = [
     {
@@ -40,6 +41,7 @@ const routes = [
             },
             ...classroomsRoutes,
             ...subjectsRoutes,
+            ...usersRoutes,
         ],
     },
 ];
