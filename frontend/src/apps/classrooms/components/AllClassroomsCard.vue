@@ -11,7 +11,6 @@
 							label="Search for your classroom"
                             density="comfortable"
 						/>
-
 						</v-col>
 					</v-row>
             <v-row>
@@ -19,8 +18,8 @@
             v-for="(classroom, index) in classroomsData" 
             :key="index" 
             cols="12" 
-            sm="4" 
-            xl="2" >
+            md="3" 
+            lg="2" >
                 <v-card>
                 <v-img 
                     :src="getClassroomImage()" 
