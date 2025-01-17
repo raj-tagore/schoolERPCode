@@ -12,6 +12,7 @@
 </template>
 
 <script setup>
+
 import StudentsTable from "@/apps/users/components/StudentsTable.vue";
 import TeachersTable from "@/apps/users/components/TeachersTable.vue";
 

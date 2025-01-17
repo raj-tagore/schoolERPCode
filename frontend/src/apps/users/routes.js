@@ -1,6 +1,7 @@
-import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue"
-import EmptyLayout from "@/layouts/EmptyLayout.vue"
-import UsersPage from "./views/UsersPage.vue"
+import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
+import EmptyLayout from "@/layouts/EmptyLayout.vue";
+import UsersPage from "./views/UsersPage.vue";
+import api from '@/services/api';
 
 export default [
     {
@@ -8,13 +9,13 @@ export default [
         component: AppTopBarLayout,
         meta: {
             getDisplayName: () => "Users",
-            defaultRoute: "Users"
+            defaultRoute: "Users",
         },
         children: [
             {
                 path: "",
-				name: "Users",
-                component: UsersPage
+                name: "Users",
+                component: UsersPage,
             },
             {
                 path: ":userId",
@@ -23,10 +24,10 @@ export default [
                 props: true,
                 meta: {
                     defaultRoute: "User",
-                    getDisplayName: async (params) => 
-                    (await api.get(`api/users/${params.userId}/`)).data.full_name,
+                    getDisplayName: async (params) =>
+                        (await api.get(`api/users/${params.userId}/`)).data.full_name,
                 },
             },
         ],
     },
-]
+];
