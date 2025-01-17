@@ -6,7 +6,6 @@ export default [
     {
         path: "users/",
         component: AppTopBarLayout,
-        name: "Users",
         meta: {
             getDisplayName: () => "Users",
             defaultRoute: "Users"
@@ -14,6 +13,7 @@ export default [
         children: [
             {
                 path: "",
+				name: "Users",
                 component: UsersPage
             },
             {
