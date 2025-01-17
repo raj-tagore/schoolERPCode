@@ -11,14 +11,13 @@
 							label="Search for your classroom"
                             density="comfortable"
 						/>
-
 						</v-col>
 					</v-row>
             <v-row>
             <v-col 
             v-for="(classroom, index) in classroomsData" 
             :key="index" 
-            cols="6" 
+            cols="12" 
             md="3" 
             lg="2" >
                 <v-card>
