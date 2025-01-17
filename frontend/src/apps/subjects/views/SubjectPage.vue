@@ -21,7 +21,7 @@
 							<SubjectCard :subject="subject"></SubjectCard>
 						</v-col>
 						<v-col cols="12" lg="4" v-if="subject.id">
-							<AnnouncementCards :url="`api/announcements/all/?subject=${subject.id}`" />
+							<AnnouncementsList :url="`api/announcements/all/?subject=${subject.id}`" />
 						</v-col>
 					</v-row>
 				</v-tabs-window-item>
@@ -62,12 +62,12 @@
 <script>
 import api from "@/services/api";
 import SubjectCard from "@/apps/subjects/components/SubjectCard.vue";
-import AnnouncementCards from "@/apps/announcements/components/AnnouncementsCard.vue";
+import AnnouncementsList from "@/apps/announcements/components/AnnouncementsList.vue";
 
 export default {
 	components: {
 		SubjectCard,
-		AnnouncementCards,
+		AnnouncementsList,
 	},
 	data() {
 		return {
@@ -86,7 +86,7 @@ export default {
 		},
 		teacherInfoFromObj(item) {
 			return {
-				title: `${item.user.first_name} ${item.user.last_name}`,
+				title: `${item.user.full_name}`,
 				subtitle: item.identifier,
 				value: item.id,
 			};
