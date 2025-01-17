@@ -21,6 +21,8 @@ class AllAnnouncements(ListAPIView):
         title = request.query_params.get('title')
         classroom = request.query_params.get('classroom') 
         subject = request.query_params.get('subject') 
+        students = request.query_params.get('students') 
+        teachers = request.query_params.get('other_teachers') 
 
         if id:
             queryset = queryset.filter(id=id)
@@ -30,6 +32,10 @@ class AllAnnouncements(ListAPIView):
             queryset = queryset.filter(classrooms__id=classroom)
         if subject:
             queryset = queryset.filter(subjects__id=subject)
+        if students:
+            queryset = queryset.filter(classrooms__students__id__in=[students]).distinct()
+        if teachers:
+            queryset = queryset.filter(classrooms__other_teachers__id__in=[teachers]).distinct()
 
         return queryset
 

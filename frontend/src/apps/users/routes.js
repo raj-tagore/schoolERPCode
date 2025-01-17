@@ -1,6 +1,6 @@
 import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
-import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import UsersPage from "./views/UsersPage.vue";
+import UserPage from "./views/UserPage.vue";
 import api from '@/services/api';
 
 export default [
@@ -19,7 +19,7 @@ export default [
             },
             {
                 path: ":userId",
-                component: EmptyLayout,
+                component: UserPage,
                 name: "User",
                 props: true,
                 meta: {

@@ -11,8 +11,8 @@ const images = [
 const getClassroom = async (classroomId) =>
     (await api.get(`api/allocation/classrooms/${classroomId}`)).data;
 
-const getClassrooms = async () =>
-    (await api.get("api/allocation/classrooms/all")).data;
+const getClassrooms = async (filter) =>
+    (await api.get(`api/allocation/classrooms/all?${new URLSearchParams(filter)}`)).data;
 
 
 const updateClassroom = async (classroom) => {

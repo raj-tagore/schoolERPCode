@@ -2,8 +2,14 @@ from rest_framework import viewsets
 from .models import Classroom, Subject
 from .serializers import ClassroomSerializer, SubjectSerializer
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView, CreateAPIView
+from rest_framework.generics import (
+    RetrieveUpdateDestroyAPIView,
+    RetrieveAPIView,
+    ListAPIView,
+    CreateAPIView,
+)
 from .permissions import ClassroomPermissions, SubjectPermissions
+
 
 class AllClassrooms(ListAPIView):
     queryset = Classroom.objects.all()
@@ -14,10 +20,12 @@ class AllClassrooms(ListAPIView):
         queryset = super().get_queryset()
         request = self.request
 
-        id = request.query_params.get('id')
-        name = request.query_params.get('name')
-        standard = request.query_params.get('standard')
-        class_teacher = request.query_params.get('class_teacher')
+        id = request.query_params.get("id")
+        name = request.query_params.get("name")
+        standard = request.query_params.get("standard")
+        class_teacher = request.query_params.get("class_teacher")
+        students = request.query_params.get("students")
+        other_teachers = request.query_params.get("other_teachers")
 
         if id:
             queryset = queryset.filter(id=id)
@@ -27,14 +35,22 @@ class AllClassrooms(ListAPIView):
             queryset = queryset.filter(standards__id=standard)
         if class_teacher:
             queryset = queryset.filter(class_teacher__id=class_teacher)
+        if students:
+            queryset = queryset.filter(students__id__in=[students]).distinct()
+        if other_teachers:
+            queryset = queryset.filter(
+                other_teachers__id__in=[other_teachers]
+            ).distinct()
 
         return queryset
+
 
 class AnyClassroom(RetrieveUpdateDestroyAPIView):
     serializer_class = ClassroomSerializer
     permission_classes = [IsAuthenticated, ClassroomPermissions]
     queryset = Classroom.objects.all()
-    lookup_field = 'id'
+    lookup_field = "id"
+
 
 class CreateClassroom(CreateAPIView):
     queryset = Classroom.objects.all()
@@ -51,13 +67,12 @@ class AllSubjects(ListAPIView):
         queryset = super().get_queryset()
         request = self.request
 
-        id = request.query_params.get('id')
-        name = request.query_params.get('name')
-        is_active = request.query_params.get('is_active')
-        description = request.query_params.get('description')
-        classroom = request.query_params.get('classroom')
-        main_teacher = request.query_params.get('main_teacher')
-
+        id = request.query_params.get("id")
+        name = request.query_params.get("name")
+        is_active = request.query_params.get("is_active")
+        description = request.query_params.get("description")
+        classroom = request.query_params.get("classroom")
+        main_teacher = request.query_params.get("main_teacher")
 
         if id:
             queryset = queryset.filter(id=id)
@@ -74,14 +89,15 @@ class AllSubjects(ListAPIView):
 
         return queryset
 
+
 class AnySubject(RetrieveUpdateDestroyAPIView):
     serializer_class = SubjectSerializer
     permission_classes = [IsAuthenticated, SubjectPermissions]
     queryset = Subject.objects.all()
-    lookup_field = 'id'
+    lookup_field = "id"
+
 
 class CreateSubject(CreateAPIView):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
     permission_classes = [DjangoModelPermissions]
-
