@@ -5,6 +5,7 @@ from .serializers import UserSerializer, UserReadSerializer
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from .permissions import UserPermissions
+from django.db.models import Q
 
 class AllUsers(ListAPIView):
     queryset = User.objects.all()
@@ -18,6 +19,7 @@ class AllUsers(ListAPIView):
         id = request.query_params.get('id')
         fname = request.query_params.get('fname')
         lname = request.query_params.get('lname')
+        name = request.query_params.get('name')
         group = request.query_params.get('group')
 
         if id:
@@ -26,6 +28,10 @@ class AllUsers(ListAPIView):
             queryset = queryset.filter(fname__icontains=fname)
         if lname:
             queryset = queryset.filter(lname__icontains=lname)
+        if name:
+            queryset = queryset.filter(
+                Q(first_name__icontains=name) | Q(last_name__icontains=name)
+            )
         if group:
             queryset = queryset.filter(groups__id=group)
 

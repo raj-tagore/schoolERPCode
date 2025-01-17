@@ -5,7 +5,11 @@
 				Teachers
 			</v-card-title>
 			<v-card-text>
-				<v-data-table density="comfortable" :search="search" :items="teachers" :headers="teacher_headers">
+				<v-data-table density="comfortable" 
+				:search="search" 
+				:items="teachers" 
+				:headers="teacher_headers"
+				:items-per-page="10">
 					<template v-slot:top>
 						<v-text-field
 							v-model="search"
