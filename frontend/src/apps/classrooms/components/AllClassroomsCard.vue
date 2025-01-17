@@ -18,9 +18,9 @@
             <v-col 
             v-for="(classroom, index) in classroomsData" 
             :key="index" 
-            cols="6" 
-            md="3" 
-            lg="2" >
+            cols="12" 
+            sm="4" 
+            xl="2" >
                 <v-card>
                 <v-img 
                     :src="getClassroomImage()" 
