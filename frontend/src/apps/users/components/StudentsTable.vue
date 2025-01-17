@@ -5,7 +5,11 @@
 			Students
 		</v-card-title>
 		<v-card-text>
-			<v-data-table density="comfortable" :search="search" :items="students" :headers="student_headers">
+			<v-data-table density="comfortable" 
+			:search="search" 
+			:items="students" 
+			:headers="student_headers"
+			:items-per-page="10">
 				<template v-slot:top>
 					<v-text-field
 						v-model="search"
