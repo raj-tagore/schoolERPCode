@@ -1,27 +1,25 @@
 <template>
 	<v-container>
 		<v-card>
+			<v-card-title>Subject Search</v-card-title>
 			<v-card-text>
-				<v-container>
-					<v-row>
-						<v-col>
-						<v-text-field
-							v-model="search"
-							label="Search"
-						/>
-
-						</v-col>
-					</v-row>
-					<v-row class="ma-2">
-						<v-col 
-							v-for="(classroom, index) in classroomsData" 
-							cols="12" lg="3" md="6"
-							:key="index">
-							<SubjectsList :filter="{ classroom: classroom.id }" :title="classroom.name"/>
-						</v-col>
-					</v-row>
-
-				</v-container>
+				<v-row>
+					<v-col>
+					<v-text-field
+						v-model="search"
+						label="Search for your classroom"
+						density="comfortable"
+					/>
+					</v-col>
+				</v-row>
+				<v-row>
+					<v-col 
+						v-for="(classroom, index) in classroomsData.slice(0,4)" 
+						cols="12" lg="6"
+						:key="index">
+						<SubjectsList :filter="{ classroom: classroom.id }" :title="classroom.name"/>
+					</v-col>
+				</v-row>
 			</v-card-text>
 		</v-card>
 	</v-container>

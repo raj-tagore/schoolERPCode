@@ -8,7 +8,8 @@
 						<v-col>
 						<v-text-field
 							v-model="search"
-							label="Search"
+							label="Search for your classroom"
+                            density="comfortable"
 						/>
 
 						</v-col>

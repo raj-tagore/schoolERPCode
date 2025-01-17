@@ -1,5 +1,9 @@
 <template>
-    <AllSubjectsCard />
+	<v-row>
+		<v-col lg="6">
+			<AllSubjectsCard />
+		</v-col>
+	</v-row>
 </template>
 
 <script>
