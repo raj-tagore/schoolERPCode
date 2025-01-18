@@ -25,7 +25,12 @@ class AllParents(ListAPIView):
         queryset = super().get_queryset()
         request = self.request
 
-        # filter parents of student here
+        name = request.query_params.get('name')
+        if name: 
+            queryset = queryset.filter(
+                Q(user__first_name__icontains=name) | Q(user__last_name__icontains=name)
+            )
+
         return queryset
 
 class AnyParent(RetrieveUpdateDestroyAPIView):
@@ -52,6 +57,7 @@ class AllTeachers(ListAPIView):
         classrooms_leading = request.query_params.get('classrooms_leading')
         classrooms_assisting = request.query_params.get('classrooms_assisting')
         classrooms = request.query_params.get('classrooms')
+        name = request.query_params.get('name')
 
         if id:
             queryset = queryset.filter(id=id)
@@ -63,8 +69,11 @@ class AllTeachers(ListAPIView):
             queryset = queryset.filter(
                 Q(classrooms_leading__id=classrooms) | Q(classrooms_assisting__id=classrooms)
             ).distinct()
+        if name: 
+            queryset = queryset.filter(
+                Q(user__first_name__icontains=name) | Q(user__last_name__icontains=name)
+            )
 
-        # filter parents of student here
         return queryset
 
 class AnyTeacher(RetrieveUpdateDestroyAPIView):
@@ -90,13 +99,17 @@ class AllStudents(ListAPIView):
 
         id = request.query_params.get('id')
         classrooms = request.query_params.get('classroom')
+        name = request.query_params.get('name')
 
         if id:
             queryset = queryset.filter(id=id)
         if classrooms:
             queryset = queryset.filter(classrooms__id=classrooms)
+        if name: 
+            queryset = queryset.filter(
+                Q(user__first_name__icontains=name) | Q(user__last_name__icontains=name)
+            )
 
-        # filter parents of student here
         return queryset
 
 class AnyStudent(RetrieveUpdateDestroyAPIView):
