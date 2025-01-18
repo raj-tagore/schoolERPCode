@@ -68,8 +68,8 @@ import AnnouncementsList from "@/apps/announcements/components/AnnouncementsList
 import SubjectsList from "@/apps/subjects/components/SubjectsList.vue";
 import StudentsTable from "@/apps/users/components/StudentsTable.vue";
 import TeachersTable from "@/apps/users/components/TeachersTable.vue";
-import ClassroomCard from "@/apps/classrooms/components/ClassroomCard.vue"
-import ClassroomSettings from "@/apps/classrooms/components/ClassroomSettings.vue"
+import ClassroomCard from "@/apps/classrooms/components/ClassroomCard.vue";
+import ClassroomSettings from "@/apps/classrooms/components/ClassroomSettings.vue";
 
 classroom = await getClassroom(props.classroomId);
 </script>
