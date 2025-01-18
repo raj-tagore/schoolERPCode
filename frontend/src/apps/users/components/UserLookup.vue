@@ -3,6 +3,7 @@
         <v-text-field
         v-model="searchQuery"
         label="Click here to search"
+        @input="fetchAccounts"
         outlined
         density="comfortable"
         ></v-text-field>
