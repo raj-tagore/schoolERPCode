@@ -15,7 +15,10 @@
                         </v-list-item-subtitle>
                     </v-list-item-content>
                     <template v-slot:append>
-                        <v-btn :to="{ name: 'Subject', params: { subjectId: subject.id } }">
+                        <v-btn 
+                        :to="{ name: 'Subject', 
+                        params: { subjectId: subject.id } }"
+                        >
                             Enter
                         </v-btn>
                     </template>

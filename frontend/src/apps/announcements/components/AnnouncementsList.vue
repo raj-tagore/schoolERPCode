@@ -1,6 +1,8 @@
 <template>
+    <v-container>
     <v-card>
-        <v-card-title>Announcements</v-card-title>
+        <v-card-title>{{ title || 'Announcements' }}</v-card-title>
+        <v-card-subtitle>{{ subtitle || 'Click to view' }}</v-card-subtitle>
         <v-card-text>
             <v-list lines="two" density="default">
                 <v-list-item 
@@ -15,10 +17,19 @@
                             <p>Signed by: {{ announcement.signed_by.user.full_name }}</p>
                         </v-list-item-text>
                     </v-list-item-content>
+                    <template v-slot:append>
+                        <v-btn 
+                            icon="mdi-arrow-right"
+                            variant="flat"
+                            border
+                            density="comfortable"
+                        ></v-btn>
+                    </template>
                 </v-list-item>
             </v-list>
         </v-card-text>
     </v-card>
+    </v-container>
 </template>
 
 <script setup>
@@ -27,7 +38,9 @@ import api from '@/services/api';
 
 // Props
 const props = defineProps({
-    url: String, // URL for fetching announcements
+    url: String,
+    title: String,
+    subtitle: String,
 });
 
 const AnnouncementsData = ref([]); // Reactive data for announcements

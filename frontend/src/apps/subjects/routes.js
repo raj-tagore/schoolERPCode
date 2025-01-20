@@ -6,7 +6,7 @@ import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue"
 
 export default [
     {
-        path: "subject/",
+        path: "subjects/",
         component: AppTopBarLayout,
         meta: {
             getDisplayName: () => "Subjects",

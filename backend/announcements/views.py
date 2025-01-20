@@ -21,6 +21,7 @@ class AllAnnouncements(ListAPIView):
         title = request.query_params.get('title')
         classroom = request.query_params.get('classroom') 
         subject = request.query_params.get('subject') 
+        is_school_wide = request.query_params.get('is_school_wide')
 
         if id:
             queryset = queryset.filter(id=id)
@@ -30,6 +31,8 @@ class AllAnnouncements(ListAPIView):
             queryset = queryset.filter(classrooms__id=classroom)
         if subject:
             queryset = queryset.filter(subjects__id=subject)
+        if is_school_wide:
+            queryset = queryset.filter(is_school_wide=is_school_wide)
 
         return queryset
 

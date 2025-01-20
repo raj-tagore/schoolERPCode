@@ -11,6 +11,7 @@ import LoginPage from "@/views/LoginPage.vue";
 import classroomsRoutes from "@/apps/classrooms/routes";
 import subjectsRoutes from "@/apps/subjects/routes"
 import usersRoutes from "@/apps/users/routes"
+import announcementsRoutes from "@/apps/announcements/routes"
 
 const routes = [
     {
@@ -42,6 +43,7 @@ const routes = [
             ...classroomsRoutes,
             ...subjectsRoutes,
             ...usersRoutes,
+            ...announcementsRoutes,
         ],
     },
 ];
