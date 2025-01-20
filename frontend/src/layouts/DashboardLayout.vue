@@ -7,9 +7,9 @@
           <v-card class="pa-2 ma-2" 
           :title="user.first_name + ' ' + user.last_name"
           :subtitle="user.account?.type || 'No linked account'">
-          <v-card-actions>
-            <v-btn @click="logoutHandler">Logout</v-btn>
-          </v-card-actions>
+          <template v-slot:append>
+            <v-btn icon="mdi-logout" @click="logoutHandler" size="small" variant="text"/>
+          </template>
           </v-card>
         </v-list-item>
 

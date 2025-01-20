@@ -1,8 +1,7 @@
 <template>
-    <v-container>
     <v-card>
         <v-card-title>{{ title || 'Announcements' }}</v-card-title>
-        <v-card-subtitle>{{ subtitle || 'Click to view' }}</v-card-subtitle>
+        <v-card-subtitle v-if="subtitle">{{ subtitle }}</v-card-subtitle>
         <v-card-text>
             <v-list lines="two" density="default">
                 <v-list-item 
@@ -29,7 +28,6 @@
             </v-list>
         </v-card-text>
     </v-card>
-    </v-container>
 </template>
 
 <script setup>

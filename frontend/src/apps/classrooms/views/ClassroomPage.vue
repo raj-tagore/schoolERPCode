@@ -35,10 +35,10 @@
 				</v-tabs-window-item>
 				<v-tabs-window-item>
 					<v-row>
-						<v-col cols="12" lg="6">
+						<v-col cols="12" lg="4">
 							<TeachersTable :filter="{ classrooms: classroom.id }" />
 						</v-col>
-						<v-col cols="12" lg="6">
+						<v-col cols="12" lg="4">
 							<StudentsTable :filter="{ classrooms: classroom.id }" />
 						</v-col>
 					</v-row>
@@ -69,7 +69,7 @@ import SubjectsList from "@/apps/subjects/components/SubjectsList.vue";
 import StudentsTable from "@/apps/users/components/StudentsTable.vue";
 import TeachersTable from "@/apps/users/components/TeachersTable.vue";
 import ClassroomCard from "@/apps/classrooms/components/ClassroomCard.vue";
-import ClassroomSettings from "@/apps/classrooms/components/ClassroomSettings.vue";
+import ClassroomSettings from "@/apps/classrooms/components/ClassroomSettingsCard.vue";
 
 classroom = await getClassroom(props.classroomId);
 </script>

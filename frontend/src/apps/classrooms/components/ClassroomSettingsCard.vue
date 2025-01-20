@@ -38,11 +38,11 @@
   import { getClassroom, updateClassroom as apiUpdateClassroom } from "@/apps/classrooms/api";
   
   const props = defineProps({
-    classroomId: Number, // Accept only classroomId as a prop
+    classroomId: Number, 
   });
   
   const classroom = ref(null);
-  const teachers = ref([]); // Fetch or manage teacher data if needed
+  const teachers = ref([]); 
   
   const fetchClassroom = async () => {
     try {
