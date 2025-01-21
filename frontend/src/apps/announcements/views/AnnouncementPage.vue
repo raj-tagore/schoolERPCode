@@ -11,12 +11,26 @@
         </v-card>
         <v-tabs-window v-model="tabs">
           <v-tabs-window-item>
-            <v-row class="ma-2">
-              <v-col lg="6">
+            <v-row class="ma-2 flex justify-center">
+              <v-col lg="4">
                 <v-card>
                   <v-card-title>{{ announcement?.title }}</v-card-title>
-                  <v-card-subtitle>{{ announcement?.signed_by?.user?.full_name }}</v-card-subtitle>
-                  <v-card-text>{{ announcement?.description }}</v-card-text>
+                  <v-card-text>
+                    {{ announcement?.description }}
+                    <h4 class="text-subtitle-1 mt-4">Signed by:</h4>
+                    <v-list lines="2">
+                      <v-list-item 
+                        :title="announcement?.signed_by?.user.full_name"
+                        :subtitle="announcement?.signed_by?.user.email"
+                        :variant="'flat'"
+                        rounded="lg"
+                        :to="'#'"
+                      />
+                    </v-list>
+                    <h4 class="text-subtitle-1 mt-4">Dates:</h4>
+                    <v-chip color="primary">Release: {{ formatDate(announcement.release_at) }}</v-chip>
+                    <v-chip color="red">Expiry: {{ formatDate(announcement.expiry_at) }}</v-chip>
+                  </v-card-text>
                 </v-card>
               </v-col>
             </v-row>
@@ -40,6 +54,17 @@ const props = defineProps({
 const getAnnouncement = async () => {
   announcement.value = (await api.get(`api/announcements/${props.announcementId}`)).data
 }
+
+const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+};
 
 onMounted(
   async () => {

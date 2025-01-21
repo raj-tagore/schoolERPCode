@@ -14,30 +14,22 @@
     </v-card>
 </template>
 
-<script>
-
+<script setup>
 import { ref, onMounted } from 'vue';
 import api from '@/services/api';
 
-export default {
-  name: 'AnnouncementsCard',
-  props: ['url'],
-  setup(props) {
-    const AnnouncementsData = ref([]);
-    const getAnnouncementsData = async () => {
-      const response = await api.get(props.url);
-      AnnouncementsData.value = response.data;
-    };
+const props = defineProps({
+  url: String
+});
 
-    onMounted(() => {
-      getAnnouncementsData();
-    });
+const AnnouncementsData = ref([]);
 
-    return {
-      AnnouncementsData,
-      getAnnouncementsData,
-    };
-  },
+const getAnnouncementsData = async () => {
+  const response = await api.get(props.url);
+  AnnouncementsData.value = response.data;
 };
 
+onMounted(() => {
+  getAnnouncementsData();
+});
 </script>
