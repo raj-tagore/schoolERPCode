@@ -24,7 +24,6 @@ export default {
   props: ['url'],
   setup(props) {
     const AnnouncementsData = ref([]);
-
     const getAnnouncementsData = async () => {
       const response = await api.get(props.url);
       AnnouncementsData.value = response.data;

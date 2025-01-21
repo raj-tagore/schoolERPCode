@@ -16,11 +16,15 @@
                 </v-card>
                 <v-tabs-window v-model="tabs">
                     <v-tabs-window-item>
-                        <v-container>
+                        <v-row class="ma-2">
+                            <v-col lg="6">
                             <v-card>
                                 <v-card-title>{{ announcement?.title }}</v-card-title>
+                                <v-card-subtitle>{{ announcement?.signed_by?.user?.full_name }}</v-card-subtitle>
+                                <v-card-text>{{ announcement?.description }}</v-card-text>
                             </v-card>
-                        </v-container>
+                            </v-col>
+                        </v-row>
                     </v-tabs-window-item>
                 </v-tabs-window>
             </v-col>
@@ -29,18 +33,22 @@
 </template>
 
 <script setup>
-import { getAnnouncement } from '../api';
 import { onMounted, ref } from "vue";
+import api from "@/services/api";
 
-let announcement = ref(null);
-
+let announcement = ref({});
+const tabs = ref(null);
 const props = defineProps({
     announcementId: Number,
 });
 
+const getAnnouncement = async () => {
+    announcement.value = (await api.get(`api/announcements/${props.announcementId}`)).data
+}
+
 onMounted(
     async () => {
-        announcement.value = await getAnnouncement(props.announcementId);
+        getAnnouncement();
     }
 );
 

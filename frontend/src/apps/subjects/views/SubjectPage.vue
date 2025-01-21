@@ -38,29 +38,29 @@
 	</v-container>
 </template>
   
-  <script setup>
-  import { ref, onMounted } from 'vue';
-  import api from '@/services/api';
-  import SubjectCard from '@/apps/subjects/components/SubjectCard.vue';
-  import AnnouncementsList from '@/apps/announcements/components/AnnouncementsList.vue';
-  import { getTeachers } from '@/apps/users/api';
-  import SubjectSettingsCard from '../components/SubjectSettingsCard.vue';
-  
-  const props = defineProps({ 
-	subjectId: String,
-  });
-  
-  const tabs = ref(null);
-  const teachers = ref([]);
-  const subject = ref({});
-  
-  const getSubjectData = async () => {
-	subject.value = (await api.get(`api/allocation/subjects/${props.subjectId}`)).data;
-  };
-  
-  onMounted(async () => {
-	getSubjectData();
-	teachers.value = await getTeachers();
-  });
-  </script>
+<script setup>
+import { ref, onMounted } from 'vue';
+import api from '@/services/api';
+import SubjectCard from '@/apps/subjects/components/SubjectCard.vue';
+import AnnouncementsList from '@/apps/announcements/components/AnnouncementsList.vue';
+import { getTeachers } from '@/apps/users/api';
+import SubjectSettingsCard from '../components/SubjectSettingsCard.vue';
+
+const props = defineProps({ 
+subjectId: String,
+});
+
+const tabs = ref(null);
+const teachers = ref([]);
+const subject = ref({});
+
+const getSubjectData = async () => {
+subject.value = (await api.get(`api/allocation/subjects/${props.subjectId}`)).data;
+};
+
+onMounted(async () => {
+getSubjectData();
+teachers.value = await getTeachers();
+});
+</script>
   
