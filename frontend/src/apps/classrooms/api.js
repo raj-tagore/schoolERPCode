@@ -6,7 +6,7 @@ const images = [
     require("@/assets/classrooms/classroom1.png"),
     require("@/assets/classrooms/classroom2.png"),
     require("@/assets/classrooms/classroom3.png"),
-];
+]; 
 
 const getClassroom = async (classroomId) =>
     (await api.get(`api/allocation/classrooms/${classroomId}`)).data;

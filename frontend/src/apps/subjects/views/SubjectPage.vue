@@ -46,7 +46,7 @@
   import { getTeachers } from '@/apps/users/api';
   import SubjectSettingsCard from '../components/SubjectSettingsCard.vue';
   
-  const props = defineProps({
+  const props = defineProps({ 
 	subjectId: String,
   });
   

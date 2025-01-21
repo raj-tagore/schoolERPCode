@@ -1,6 +1,7 @@
 import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import AnnouncementsPage from "./views/AnnouncementsPage.vue";
+import AnnouncementPage from "./views/AnnouncementPage.vue";
 
 
 export default [
@@ -19,7 +20,7 @@ export default [
             },
             {
                 path: ":announcementId/",
-                component: EmptyLayout,
+                component: AnnouncementPage,
                 name: "Announcement",
                 props: true,
                 meta: {

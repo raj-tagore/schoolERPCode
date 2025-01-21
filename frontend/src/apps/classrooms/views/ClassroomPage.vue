@@ -31,7 +31,11 @@
 					</v-row>
 				</v-tabs-window-item>
 				<v-tabs-window-item>
-					<ClassroomSettings :classroomId="classroomId" />
+					<v-row class="ma-2">
+						<v-col lg="4">
+							<ClassroomSettings :classroomId="classroomId" />
+						</v-col>
+					</v-row>
 				</v-tabs-window-item>
 				<v-tabs-window-item>
 					<v-row>
@@ -50,10 +54,7 @@
 </template>
 
 <script setup>
-import {
-	getClassroom,
-} from "@/apps/classrooms/api";
-
+import { getClassroom } from "@/apps/classrooms/api";
 import { ref } from "vue";
 
 // biome-ignore lint/style/useConst: Biome does not support vue yet

@@ -22,6 +22,7 @@
                             variant="flat"
                             border
                             density="comfortable"
+                            :to="{ name: 'Announcement', params: { announcementId: announcement.id } }"
                         ></v-btn>
                     </template>
                 </v-list-item>

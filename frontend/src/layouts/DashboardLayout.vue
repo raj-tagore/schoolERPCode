@@ -1,10 +1,11 @@
 <template>
   <v-app>
-    <v-navigation-drawer app v-model="drawer" color="grey lighten-4">
+    <v-navigation-drawer app v-model="drawer" 
+    color="grey lighten-4">
       <v-list dense>
         <!-- User Info -->
         <v-list-item>
-          <v-card class="pa-2 ma-2" 
+          <v-card class="ma-2" 
           :title="user.first_name + ' ' + user.last_name"
           :subtitle="user.account?.type || 'No linked account'">
           <template v-slot:append>
@@ -53,10 +54,6 @@
     <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>School ERP Dashboard</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn icon @click="logoutHandler">
-        <v-icon>mdi-logout</v-icon>
-      </v-btn>
     </v-app-bar>
 
   <Suspense>
@@ -77,22 +74,18 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth"; // Pinia store
 // import ExpandableListItem from '@/components/c-expandable-list-item.vue'
+import { useDisplay } from "vuetify/lib/framework.mjs";
 
-const drawer = ref(false);
 
+const { mdAndUp, smAndDown } = useDisplay();
+const drawer = ref(mdAndUp.value);
 const router = useRouter();
 const authStore = useAuthStore();
 
 const user = computed(() => authStore.user);
 
-// Actions
 function logoutHandler() {
 	router.push({ name: "Login" });
 	authStore.logout();
 }
 </script>
-
-
-<style>
-/* Add any custom styles if necessary */
-</style>
