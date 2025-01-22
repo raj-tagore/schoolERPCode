@@ -1,6 +1,6 @@
 <template>
 	<v-row>
-		<v-col lg="6">
+		<v-col>
 			<AllSubjectsCard />
 		</v-col>
 	</v-row>

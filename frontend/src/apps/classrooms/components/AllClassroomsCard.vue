@@ -1,11 +1,11 @@
 <template>
 <v-container>
-    <v-card class="mb-5">
-        <v-card-title class="text-h5">Classes</v-card-title>
+    <v-card class="mb-5" variant="flat">
+        <!-- <v-card-title class="text-h5">Classes</v-card-title> -->
         <v-card-text>
 				<container>
 					<v-row>
-						<v-col>
+						<v-col lg="4">
 						<v-text-field
 							v-model="search"
 							label="Search for your classroom"
