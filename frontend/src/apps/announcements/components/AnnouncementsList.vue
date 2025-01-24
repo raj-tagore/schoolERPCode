@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <v-card-title>{{ title || 'Announcements' }}</v-card-title>
+        <v-card-title >{{ title || 'Announcements' }}</v-card-title>
         <v-card-subtitle v-if="subtitle">{{ subtitle }}</v-card-subtitle>
         <v-card-text>
             <v-list lines="two" density="default">

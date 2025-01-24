@@ -22,7 +22,7 @@
 						<v-col cols="12" lg="4">
 							<ClassroomCard :classroomId="classroomId" />
 						</v-col>
-						<v-col cols="12" lg="4">
+						<v-col cols="12" lg="3">
 							<SubjectsList :filter="{ classroom: classroom.id }" />
 						</v-col>
 						<v-col cols="12" lg="4">

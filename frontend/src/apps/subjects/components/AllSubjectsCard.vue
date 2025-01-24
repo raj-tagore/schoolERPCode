@@ -14,7 +14,7 @@
 				</v-row>
 				<v-row>
 					<v-col 
-						v-for="(classroom, index) in classroomsData.slice(0,4)"
+						v-for="(classroom, index) in classroomsData"
 						:key="index" lg="3">
 						<SubjectsList :filter="{ classroom: classroom.id }" :title="classroom.name"/>
 					</v-col>

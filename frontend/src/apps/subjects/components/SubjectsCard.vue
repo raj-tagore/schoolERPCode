@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <v-card-title >Subjects</v-card-title>
+        <v-card-title>Subjects</v-card-title>
         <v-card-text>
             <v-row>
             <v-col 
