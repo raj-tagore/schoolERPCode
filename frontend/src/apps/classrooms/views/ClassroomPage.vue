@@ -13,7 +13,6 @@
 				>
 					<v-tab>Student View</v-tab>
 					<v-tab>Settings</v-tab>
-					<v-tab>Members</v-tab>
 				</v-tabs>
 			</v-card>
 			<v-tabs-window v-model="tabs">
@@ -31,14 +30,10 @@
 					</v-row>
 				</v-tabs-window-item>
 				<v-tabs-window-item>
-					<v-row class="ma-2">
+					<v-row>
 						<v-col lg="4">
 							<ClassroomSettings :classroomId="classroomId" />
 						</v-col>
-					</v-row>
-				</v-tabs-window-item>
-				<v-tabs-window-item>
-					<v-row>
 						<v-col cols="12" lg="4">
 							<TeachersTable :filter="{ classrooms: classroom.id }" />
 						</v-col>

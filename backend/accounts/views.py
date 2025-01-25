@@ -37,7 +37,7 @@ class AnyParent(RetrieveUpdateDestroyAPIView):
     serializer_class = ParentSerializer
     permission_classes = [IsAuthenticated]
     queryset = Parent.objects.all()
-    lookup_field = 'id'  # or 'pk' if you prefer
+    lookup_field = 'id' 
 
 class CreateParent(CreateAPIView):
     serializer_class = ParentSerializer

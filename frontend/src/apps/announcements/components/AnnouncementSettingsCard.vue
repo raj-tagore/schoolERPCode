@@ -95,6 +95,7 @@
 </template>
 
 <script setup>
+
 import { ref, onMounted } from 'vue';
 import { getAnnouncement, updateAnnouncement } from "../api";
 import { getTeachers, getTeacherInfoFromObj } from '@/apps/users/api';
@@ -129,4 +130,5 @@ onMounted(async () => {
   classrooms.value = await getClassrooms();
   subjects.value = await getSubjects();
 });
+
 </script>
