@@ -18,7 +18,12 @@
 						/>
 					</template>
 					<template #[`item.id`]="{ item }">
-						<v-btn class="mx-2" size="x-small" icon="mdi-eye" :to="{ name: 'Dashboard', params: { id: item} }"></v-btn>
+						<v-btn 
+							icon="mdi-arrow-right"
+							size="x-small"
+							variant="outlined"
+							:to="{ name: 'Dashboard', params: { id: item} }"
+						></v-btn>
 					</template>
 				</v-data-table>
 			</v-card-text>

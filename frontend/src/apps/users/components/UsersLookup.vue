@@ -1,8 +1,8 @@
 <template>
-    <v-card>
+    <v-card variant="flat">
         <v-text-field
         v-model="searchQuery"
-        label="Click here to search"
+        label="Click here to search by name"
         @input="fetchAccounts"
         outlined
         density="comfortable"
@@ -13,7 +13,12 @@
             class="elevation-1"
         >
         <template #item.actions="{ item }">
-          <v-btn @click="viewAccount(item)">View</v-btn>
+          <v-btn
+            icon="mdi-arrow-right"
+            size="small"
+            variant="outlined"
+            @click="viewAccount(item)"
+          ></v-btn>
         </template>
         </v-data-table>
     </v-card>

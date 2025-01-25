@@ -1,7 +1,5 @@
 import api from "@/services/api";
 
-// Any requests that need to be called multiple times can be defined here
-
 const images = [
     require("@/assets/classrooms/classroom1.png"),
     require("@/assets/classrooms/classroom2.png"),
@@ -11,8 +9,12 @@ const images = [
 const getClassroom = async (classroomId) =>
     (await api.get(`api/allocation/classrooms/${classroomId}`)).data;
 
-const getClassrooms = async () =>
-    (await api.get("api/allocation/classrooms/all")).data;
+const getClassrooms = async (filter) => 
+    (
+        await api.get(
+            `api/allocation/classrooms/all/${filter ? "?" : ""}${filter ? new URLSearchParams(filter) : ""}`,
+        )
+    ).data;
 
 
 const updateClassroom = async (classroom) => {
@@ -49,7 +51,7 @@ const removeStudentFromClassroom = async (classroom, studentId) => {
 
 const getClassroomInfoFromObj = (item) => ({
   title: item.name,
-  subtitle: `Grade ${item.grade}`,
+  subtitle: `Grade ${item.standard}`,
   value: item.id,
 });
 

@@ -26,7 +26,7 @@
 							<SubjectsList :filter="{ classroom: classroom.id }" />
 						</v-col>
 						<v-col cols="12" lg="4">
-							<AnnouncementsList :url="`api/announcements/all/?classroom=${classroom.id}`" />
+							<AnnouncementsList :filter="{ classroom: classroom.id }" />
 						</v-col>
 					</v-row>
 				</v-tabs-window-item>

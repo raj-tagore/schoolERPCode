@@ -16,11 +16,11 @@
                     </v-list-item-content>
                     <template v-slot:append>
                         <v-btn 
-                        :to="{ name: 'Subject', 
-                        params: { subjectId: subject.id } }"
-                        >
-                            Enter
-                        </v-btn>
+                        :to="{ name: 'Subject', params: { subjectId: subject.id } }"
+                        icon="mdi-arrow-right"
+                        size="small"
+                        variant="outlined"
+                        ></v-btn>
                     </template>
                 </v-list-item>
             </v-list>

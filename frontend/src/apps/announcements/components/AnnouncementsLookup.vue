@@ -1,16 +1,18 @@
 <template>
-  <v-card>
+  <v-card variant="flat">
     <v-card-title>
+      <!-- Search filters -->
       <v-row>
-        <v-col cols="4">
+        <v-col cols="12" md="4" lg="3">
           <v-text-field
             v-model="filters.title"
             label="Search by title"
             density="comfortable"
             @input="fetchAnnouncements"
+            hide-details
           ></v-text-field>
         </v-col>
-        <v-col cols="4">
+        <v-col cols="12" md="4" lg="3">
           <v-autocomplete
             v-model="filters.classroom"
             :items="classrooms"
@@ -18,9 +20,10 @@
             :item-props="getClassroomInfoFromObj"
             clearable
             @update:model-value="fetchAnnouncements"
+            hide-details
           ></v-autocomplete>
         </v-col>
-        <v-col cols="4">
+        <v-col cols="12" md="4" lg="3">
           <v-autocomplete
             v-model="filters.subject"
             :items="subjects"
@@ -28,11 +31,10 @@
             :item-props="getSubjectInfoFromObj"
             clearable
             @update:model-value="fetchAnnouncements"
+            hide-details
           ></v-autocomplete>
         </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="6">
+        <v-col cols="12" md="4" lg="3">
           <v-autocomplete
             v-model="filters.signed_by"
             :items="teachers"
@@ -40,9 +42,10 @@
             :item-props="getTeacherInfoFromObj"
             clearable
             @update:model-value="fetchAnnouncements"
+            hide-details
           ></v-autocomplete>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="12" md="4" lg="3">
           <v-select
             v-model="filters.is_school_wide"
             :items="[
@@ -52,16 +55,54 @@
             ]"
             label="School Wide Filter"
             @update:model-value="fetchAnnouncements"
+            hide-details
           ></v-select>
         </v-col>
       </v-row>
     </v-card-title>
 
+    <!-- Mobile view: Cards -->
+    <div class="d-md-none">
+      <v-card
+        v-for="item in announcements"
+        :key="item.id"
+        class="ma-2 pa-2"
+        variant="outlined"
+      >
+        <div class="d-flex align-center justify-space-between">
+          <v-card-title class="text-subtitle-1">{{ item.title }}</v-card-title>
+          <v-btn
+            icon="mdi-arrow-right"
+            size="small"
+            variant="outlined"
+            :to="{ name: 'Announcement', params: { announcementId: item.id }}"
+          ></v-btn>
+        </div>
+        <v-card-text>
+          <div class="d-flex flex-column gap-1">
+            <div class="d-flex align-center justify-space-between">
+              <span class="text-caption">Release:</span>
+              <span>{{ formatDate(item.release_at) }}</span>
+            </div>
+            <div class="d-flex align-center justify-space-between">
+              <span class="text-caption">Expiry:</span>
+              <span>{{ formatDate(item.expiry_at) }}</span>
+            </div>
+            <div class="d-flex align-center justify-space-between">
+              <span class="text-caption">Signed By:</span>
+              <span>{{ item.signed_by?.user.full_name }}</span>
+            </div>
+          </div>
+        </v-card-text>
+      </v-card>
+    </div>
+
+    <!-- Desktop view: Data Table -->
     <v-data-table
+      class="d-none d-md-block"
       :headers="headers"
       :items="announcements"
       :loading="loading"
-      class="elevation-1"
     >
       <template #item.release_at="{ item }">
         {{ formatDate(item.release_at) }}
@@ -74,9 +115,9 @@
       </template>
       <template #item.actions="{ item }">
         <v-btn
-          icon="mdi-eye"
+          icon="mdi-arrow-right"
           size="small"
-          variant="text"
+          variant="outlined"
           :to="{ name: 'Announcement', params: { announcementId: item.id }}"
         ></v-btn>
       </template>
