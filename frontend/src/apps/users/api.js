@@ -14,5 +14,10 @@ const getStudents = async (filter) =>
         )
     ).data;
 
+const getTeacherInfoFromObj = (item) => ({
+    title: `${item.user.full_name}`,
+    subtitle: item.identifier,
+    value: item.id,
+});
 
-export { getTeachers, getStudents };
+export { getTeachers, getStudents, getTeacherInfoFromObj };

@@ -33,7 +33,47 @@
                     <h4 class="text-subtitle-1 mt-4">Dates:</h4>
                     <v-chip color="primary">Release: {{ formatDate(announcement.release_at) }}</v-chip>
                     <v-chip color="red">Expiry: {{ formatDate(announcement.expiry_at) }}</v-chip>
+                    
+                    <h4 class="text-subtitle-1 mt-4">Assigned to:</h4>
+                    <div v-if="announcement?.is_school_wide">
+                      <v-chip color="success">The whole school</v-chip>
+                    </div>
+                    <div v-else>
+                      <div v-if="announcement?.classrooms?.length > 0">
+                        <h5 class="text-subtitle-2 mt-2">Classrooms:</h5>
+                        <v-chip-group>
+                          <v-chip
+                            v-for="classroom in classroomDetails"
+                            :key="classroom.id"
+                            color="primary"
+                            variant="outlined"
+                          >
+                            {{ classroom.name }}
+                          </v-chip>
+                        </v-chip-group>
+                      </div>
+                      <div v-if="announcement?.subjects?.length > 0">
+                        <h5 class="text-subtitle-2 mt-2">Subjects:</h5>
+                        <v-chip-group>
+                          <v-chip
+                            v-for="subject in subjectDetails"
+                            :key="subject.id"
+                            color="secondary"
+                            variant="outlined"
+                          >
+                            {{ subject.name }}
+                          </v-chip>
+                        </v-chip-group>
+                      </div>
+                    </div>
                 </v-card>
+              </v-col>
+            </v-row>
+          </v-tabs-window-item>
+          <v-tabs-window-item>
+            <v-row class="ma-2">
+              <v-col lg="6">
+                <AnnouncementSettingsCard :announcement-id="announcementId" />
               </v-col>
             </v-row>
           </v-tabs-window-item>
@@ -45,17 +85,18 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import api from "@/services/api";
+import { getAnnouncement } from "../api";
+import { getClassroom } from "@/apps/classrooms/api";
+import { getSubject } from "@/apps/subjects/api";
+import AnnouncementSettingsCard from "../components/AnnouncementSettingsCard.vue";
 
 let announcement = ref({});
+const classroomDetails = ref([]);
+const subjectDetails = ref([]);
 const tabs = ref(null);
 const props = defineProps({
   announcementId: Number,
 });
-
-const getAnnouncement = async () => {
-  announcement.value = (await api.get(`api/announcements/${props.announcementId}`)).data
-}
 
 const formatDate = (dateString) => {
   return new Date(dateString).toLocaleString('en-US', {
@@ -68,10 +109,23 @@ const formatDate = (dateString) => {
   });
 };
 
-onMounted(
-  async () => {
-    getAnnouncement();
+const fetchDetails = async () => {
+  announcement.value = await getAnnouncement(props.announcementId);
+  
+  // Fetch classroom details
+  if (announcement.value.classrooms?.length > 0) {
+    classroomDetails.value = await Promise.all(
+      announcement.value.classrooms.map(id => getClassroom(id))
+    );
   }
-);
 
+  // Fetch subject details
+  if (announcement.value.subjects?.length > 0) {
+    subjectDetails.value = await Promise.all(
+      announcement.value.subjects.map(id => getSubject(id))
+    );
+  }
+};
+
+onMounted(fetchDetails);
 </script>

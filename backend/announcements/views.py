@@ -22,6 +22,7 @@ class AllAnnouncements(ListAPIView):
         classroom = request.query_params.get('classroom') 
         subject = request.query_params.get('subject') 
         is_school_wide = request.query_params.get('is_school_wide')
+        signed_by = request.query_params.get('signed_by')
 
         if id:
             queryset = queryset.filter(id=id)
@@ -33,6 +34,8 @@ class AllAnnouncements(ListAPIView):
             queryset = queryset.filter(subjects__id=subject)
         if is_school_wide:
             queryset = queryset.filter(is_school_wide=is_school_wide)
+        if signed_by:
+            queryset = queryset.filter(signed_by__id=signed_by)
 
         return queryset
 

@@ -2,12 +2,12 @@
     <v-card>
         <v-card-title>Announcements</v-card-title>
         <v-card-text>
-            <v-card v-for="(Announcement, index) in AnnouncementsData"
+            <v-card v-for="(announcement, index) in announcementsData"
             :key="index" class="my-4">
-                <v-card-title class="text-body-2">{{ Announcement.title }}</v-card-title>
-                <v-card-subtitle>{{ Announcement.description }}</v-card-subtitle>
+                <v-card-title class="text-body-2">{{ announcement.title }}</v-card-title>
+                <v-card-subtitle>{{ announcement.description }}</v-card-subtitle>
                 <v-card-text class="text-grey-darken-2">
-                    <p>Signed by: {{ Announcement.signed_by.user.full_name }}</p>
+                    <p>Signed by: {{ announcement.signed_by.user.full_name }}</p>
                 </v-card-text>
             </v-card>
         </v-card-text>
@@ -16,20 +16,18 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import api from '@/services/api';
+import { getAnnouncements } from '@/apps/announcements/api';
 
 const props = defineProps({
-  url: String
+  filter: {
+    type: Object,
+    default: () => ({})
+  }
 });
 
-const AnnouncementsData = ref([]);
+const announcementsData = ref([]);
 
-const getAnnouncementsData = async () => {
-  const response = await api.get(props.url);
-  AnnouncementsData.value = response.data;
-};
-
-onMounted(() => {
-  getAnnouncementsData();
+onMounted(async () => {
+  announcementsData.value = await getAnnouncements(props.filter);
 });
 </script>

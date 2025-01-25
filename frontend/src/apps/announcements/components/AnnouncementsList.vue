@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <v-card-title >{{ title || 'Announcements' }}</v-card-title>
+        <v-card-title>{{ title || 'Announcements' }}</v-card-title>
         <v-card-subtitle v-if="subtitle">{{ subtitle }}</v-card-subtitle>
         <v-card-text>
             <v-list lines="two" density="default">
@@ -10,7 +10,7 @@
                     class="ma-2 pa-2 border"
                 >
                     <v-list-item-content>
-                        <v-list-item-title >{{ announcement.title }}</v-list-item-title>
+                        <v-list-item-title>{{ announcement.title }}</v-list-item-title>
                         <v-list-item-subtitle class="mb-2">{{ announcement.description }}</v-list-item-subtitle>
                         <v-list-item-text class="text-end">
                             <p>Signed by: {{ announcement.signed_by.user.full_name }}</p>
@@ -33,25 +33,20 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import api from '@/services/api';
+import { getAnnouncements } from '@/apps/announcements/api';
 
-// Props
 const props = defineProps({
-    url: String,
+    filter: {
+        type: Object,
+        default: () => ({})
+    },
     title: String,
     subtitle: String,
 });
 
-const AnnouncementsData = ref([]); // Reactive data for announcements
+const AnnouncementsData = ref([]);
 
-const getAnnouncementsData = async () => {
-    try {
-        const response = await api.get(props.url);
-        AnnouncementsData.value = response.data;
-    } catch (error) {
-        console.error("Error fetching announcements:", error);
-    }
-};
-
-onMounted(getAnnouncementsData);
+onMounted(async () => {
+    AnnouncementsData.value = await getAnnouncements(props.filter);
+});
 </script>

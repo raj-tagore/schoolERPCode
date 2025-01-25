@@ -47,6 +47,12 @@ const removeStudentFromClassroom = async (classroom, studentId) => {
 	updateClassroom();
 }
 
+const getClassroomInfoFromObj = (item) => ({
+  title: item.name,
+  subtitle: `Grade ${item.grade}`,
+  value: item.id,
+});
+
 export {
     getClassroom,
     getClassrooms,
@@ -56,4 +62,5 @@ export {
 	removeTeacherFromClassroom,
 	addStudentToClassroom,
 	removeStudentFromClassroom,
+    getClassroomInfoFromObj,
 };

@@ -5,7 +5,7 @@
             class="custom-img"
         ></v-img>
         <v-card-title>
-            {{classroom.name}}
+            {{ classroom.name }}
         </v-card-title>
         <v-card-subtitle>
             <p class="text-body-2 pb-4">

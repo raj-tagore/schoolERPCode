@@ -7,4 +7,13 @@ const getSubjects = async (filter) =>
         )
     ).data;
 
-export { getSubjects };
+const getSubject = async (id) =>
+    (await api.get(`api/allocation/subjects/${id}`)).data;
+
+const getSubjectInfoFromObj = (item) => ({
+    title: item.name,
+    subtitle: item.classroom_details ? item.classroom_details.name : 'classroom loading...',
+    value: item.id,
+});
+
+export { getSubjects, getSubject, getSubjectInfoFromObj };

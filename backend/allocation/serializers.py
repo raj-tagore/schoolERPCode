@@ -52,6 +52,7 @@ class SubjectSerializer(serializers.ModelSerializer):
     classroom = serializers.PrimaryKeyRelatedField(queryset=Classroom.objects.all(), required=False)
     teacher = serializers.PrimaryKeyRelatedField(queryset=Teacher.objects.all(), required=False)
     teacher_details = TeacherSerializer(source="teacher", read_only=True)
+    classroom_details = ClassroomSerializer(source="classroom", read_only=True)
 
     class Meta:
         model = Subject
@@ -62,5 +63,6 @@ class SubjectSerializer(serializers.ModelSerializer):
             "description",
             "classroom",
             "teacher",
-            "teacher_details"
+            "teacher_details",
+            "classroom_details"
         ]

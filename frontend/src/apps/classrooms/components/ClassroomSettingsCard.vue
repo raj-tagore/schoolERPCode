@@ -23,7 +23,15 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-btn @click="updateClassroom(classroom)" color="primary">Update</v-btn>
+            <v-btn
+              @click="updateClassroomHandler(classroom)"
+              color="primary"
+              :loading="isUpdating"
+              :disabled="isUpdating"
+              :append-icon="isSuccess ? 'mdi-check' : ''"
+            >
+              {{ isSuccess ? 'Updated!' : 'Update' }}
+            </v-btn>
           </v-col>
         </v-row>
       </v-card-text>
@@ -43,6 +51,22 @@
   
   const classroom = ref(null);
   const teachers = ref([]); 
+  const isUpdating = ref(false);
+  const isSuccess = ref(false);
+  
+  const updateClassroomHandler = async (classroom) => {
+    isUpdating.value = true;
+    isSuccess.value = false;
+    
+    try {
+      await updateClassroom(classroom);
+      isSuccess.value = true;
+    } catch (error) {
+      console.error('Failed to update classroom:', error);
+    } finally {
+      isUpdating.value = false;
+    }
+  };
   
   onMounted(async () => {
     classroom.value = await getClassroom(props.classroomId)
