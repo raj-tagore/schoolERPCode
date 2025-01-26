@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <v-card>
-          <v-tabs>
+          <v-tabs v-model="tabs">
             <v-tab>Overview</v-tab>
             <v-tab>Settings</v-tab>
           </v-tabs>
