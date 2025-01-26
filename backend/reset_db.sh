@@ -9,9 +9,9 @@ find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
 
 touch {tenants,attachments,assessments,assignments,attendance,accounts,users,announcements,allocation}/migrations/__init__.py
 
-doas -u postgres psql -c "DROP DATABASE \"schoolERPDB\";"
+sudo -u postgres psql -c "DROP DATABASE \"schoolERPDB\";"
 
-doas -u postgres psql -c "CREATE DATABASE \"schoolERPDB\";"
+sudo -u postgres psql -c "CREATE DATABASE \"schoolERPDB\";"
 
 python manage.py makemigrations
 
@@ -28,10 +28,10 @@ export DJANGO_SETTINGS_MODULE=schoolERPCode.settings
 
 python manage.py createsuperuser --noinput
 
-doas -u postgres psql -c "INSERT INTO auth_group VALUES (1, 'Admin')" "schoolERPDB"
-doas -u postgres psql -c "INSERT INTO auth_group VALUES (2, 'Teacher')" "schoolERPDB"
-doas -u postgres psql -c "INSERT INTO auth_group VALUES (3, 'Student')" "schoolERPDB"
-doas -u postgres psql -c "INSERT INTO auth_group VALUES (4, 'Parent')" "schoolERPDB"
+sudo -u postgres psql -c "INSERT INTO auth_group VALUES (1, 'Admin')" "schoolERPDB"
+sudo -u postgres psql -c "INSERT INTO auth_group VALUES (2, 'Teacher')" "schoolERPDB"
+sudo -u postgres psql -c "INSERT INTO auth_group VALUES (3, 'Student')" "schoolERPDB"
+sudo -u postgres psql -c "INSERT INTO auth_group VALUES (4, 'Parent')" "schoolERPDB"
 
 python <<HEREDOC
 import csv
