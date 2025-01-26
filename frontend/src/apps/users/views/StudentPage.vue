@@ -67,7 +67,7 @@
             </v-container>
           </v-tabs-window-item>
           <v-tabs-window-item>
-            <!-- Settings tab content will go here -->
+			<StudentSettingsCard :studentId="student.id"></StudentSettingsCard>
           </v-tabs-window-item>
         </v-tabs-window>
       </v-col>
@@ -79,6 +79,7 @@
 import { onMounted, ref } from "vue";
 import { getClassroomImage, getClassrooms } from "@/apps/classrooms/api";
 import { getStudent } from "@/apps/users/api";
+import StudentSettingsCard from "@/apps/users/components/StudentSettingsCard";
 
 const student = ref({});
 const studentClassrooms = ref([]);
