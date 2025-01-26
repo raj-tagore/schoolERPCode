@@ -29,9 +29,19 @@
           <v-list-item-title>Subjects</v-list-item-title>
         </v-list-item>
 
-        <v-list-item :to="{name: 'Users'}">
-          <v-list-item-title>Users</v-list-item-title>
-        </v-list-item>
+        <ExpandableListItem title="Users">
+          <v-list dense>
+            <v-list-item :to="{name: 'Students'}">
+              <v-list-item-title>Students</v-list-item-title>
+            </v-list-item>
+            <v-list-item :to="{name: 'Teachers'}">
+              <v-list-item-title>Teachers</v-list-item-title>
+            </v-list-item>
+            <v-list-item :to="{name: 'Parents'}">
+              <v-list-item-title>Parents</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </ExpandableListItem>
 
         <v-list-item :to="{name: 'Announcements'}">
           <v-list-item-title>Announcements</v-list-item-title>
@@ -73,7 +83,7 @@
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth"; // Pinia store
-// import ExpandableListItem from '@/components/c-expandable-list-item.vue'
+import ExpandableListItem from '@/components/c-expandable-list-item.vue'
 import { useDisplay } from "vuetify/lib/framework.mjs";
 
 
