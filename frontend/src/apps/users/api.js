@@ -20,6 +20,10 @@ const getStudents = async (filter) =>
 const getStudent = async (id) =>
     (await api.get(`api/accounts/students/${id}`)).data;
 
+const updateStudent = async (student) => {
+    await api.put(`api/accounts/students/${student.id}/`, student);
+};
+
 const getParents = async (filter) => 
     (
         await api.get(
@@ -29,6 +33,13 @@ const getParents = async (filter) =>
 
 const getParent = async (id) =>
     (await api.get(`api/accounts/parents/${id}`)).data;
+
+const getUser = async (id) =>
+    (await api.get(`api/users/${id}`)).data;
+
+const updateUser = async (user) => {
+    await api.put(`api/users/${user.id}/`, user);
+};
 
 const getTeacherInfoFromObj = (item) => ({
     title: `${item.user.full_name}`,
@@ -49,6 +60,9 @@ export {
     getStudent,
     getParents,
     getParent,
+	getUser,
     getTeacherInfoFromObj,
     getStudentInfoFromObj,
+	updateStudent,
+	updateUser,
 };
