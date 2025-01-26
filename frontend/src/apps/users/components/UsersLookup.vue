@@ -7,64 +7,128 @@
         outlined
         density="comfortable"
         ></v-text-field>
-        <v-data-table
-            :headers="headers"
-            :items="results"
-            class="elevation-1"
-        >
-        <template #item.actions="{ item }">
-          <v-btn
-            icon="mdi-arrow-right"
-            size="small"
-            variant="outlined"
-            @click="viewAccount(item)"
-          ></v-btn>
-        </template>
-        </v-data-table>
+        <v-container>
+        <v-row>
+          <v-col cols="12" md="3" v-if="teacherResults.length > 0">
+            <v-card>
+              <v-card-title>Staff</v-card-title>
+              <v-list lines="two">
+                <v-list-item
+                  v-for="item in teacherResults.slice(0, 10)"
+                  :key="item.id"
+                  :title="item.user.full_name"
+                  :subtitle="item.identifier"
+                  class="ma-1 border"
+                  density="compact"
+                >
+                  <template v-slot:append>
+                    <v-btn
+                      icon="mdi-arrow-right"
+                      size="x-small"
+                      variant="outlined"
+                      @click="viewAccount(item)"
+                    ></v-btn>
+                  </template>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-col>
+
+          <v-col cols="12" md="3" v-if="studentResults.length > 0">
+            <v-card>
+              <v-card-title>Students</v-card-title>
+              <v-list lines="two">
+                <v-list-item
+                  v-for="item in studentResults.slice(0, 10)"
+                  :key="item.id"
+                  :title="item.user.full_name"
+                  :subtitle="'ID: ' + item.id"
+                  class="ma-1 border"
+                  density="compact"
+                >
+                  <template v-slot:append>
+                    <v-btn
+                      icon="mdi-arrow-right"
+                      size="x-small"
+                      variant="outlined"
+                      @click="viewAccount(item)"
+                    ></v-btn>
+                  </template>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-col>
+
+          <v-col cols="12" md="3" v-if="parentResults.length > 0">
+            <v-card>
+              <v-card-title>Parents</v-card-title>
+              <v-list lines="two">
+                <v-list-item
+                  v-for="item in parentResults.slice(0, 10)"
+                  :key="item.id"
+                  :title="item.user.full_name"
+                  :subtitle="'ID: ' + item.id"
+                  class="ma-1 border"
+                  density="compact"
+                >
+                  <template v-slot:append>
+                    <v-btn
+                      icon="mdi-arrow-right"
+                      size="x-small"
+                      variant="outlined"
+                      @click="viewAccount(item)"
+                    ></v-btn>
+                  </template>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-col>
+        </v-row>
+        </v-container>
     </v-card>
   </template>
   
   <script setup>
   import { ref } from "vue";
-  import api from "@/services/api"
+  import { getTeachers, getStudents, getParents } from "@/apps/users/api";
+  import { useRouter } from 'vue-router';
   
+  const router = useRouter();
   const searchQuery = ref("");
-  const results = ref([]);
-  const headers = ref([
-    { title: "Name", value: "user.full_name" },
-    { title: "Type", value: "type" },
-    { title: "Actions", value: "actions", sortable: false },
-  ]);
+  const teacherResults = ref([]);
+  const studentResults = ref([]);
+  const parentResults = ref([]);
   
   const fetchAccounts = async () => {
     if (!searchQuery.value) {
-      results.value = [];
+      teacherResults.value = [];
+      studentResults.value = [];
+      parentResults.value = [];
       return;
     }
   
-    const endpoints = [
-      { url: "/api/accounts/students/all", type: "Student" },
-      { url: "/api/accounts/teachers/all", type: "Teacher" },
-      { url: "/api/accounts/parents/all", type: "Parent" },
-    ];
-  
     try {
-      results.value = []; // Clear existing results
-      const requests = endpoints.map(async (endpoint) => {
-        const response = await api.get(endpoint.url, {
-          params: { name: searchQuery.value },
-        });
-        return response.data.map((account) => ({
-          ...account,
-          type: endpoint.type,
-        }));
-      });
-  
-      const resolvedResults = await Promise.all(requests);
-      results.value = resolvedResults.flat();
+      const filter = { name: searchQuery.value };
+      
+      const [teachers, students, parents] = await Promise.all([
+        getTeachers(filter),
+        getStudents(filter),
+        getParents(filter)
+      ]);
+
+      teacherResults.value = teachers;
+      studentResults.value = students;
+      parentResults.value = parents;
     } catch (error) {
       console.error("Error fetching accounts:", error);
     }
+  };
+
+  const viewAccount = (item) => {
+    if (studentResults.value.includes(item)) {
+      router.push({ name: 'Student', params: { studentId: item.id }});
+    }
+    // TODO: Add routing for teachers and parents when those routes are created
   };
   </script>
   

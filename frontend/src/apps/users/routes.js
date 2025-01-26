@@ -1,6 +1,7 @@
 import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue"
 import EmptyLayout from "@/layouts/EmptyLayout.vue"
 import UsersPage from "./views/UsersPage.vue"
+import StudentPage from "./views/StudentPage.vue"
 
 export default [
     {
@@ -17,14 +18,14 @@ export default [
                 name: "Users",
             },
             {
-                path: ":userId",
-                component: EmptyLayout,
-                name: "User",
+                path: "student/:studentId",
+                component: StudentPage,
+                name: "Student",
                 props: true,
                 meta: {
-                    defaultRoute: "User",
+                    defaultRoute: "Student",
                     getDisplayName: async (params) => 
-                    (await api.get(`api/users/${params.userId}/`)).data.full_name,
+                    (await api.get(`api/students/${params.studentId}/`)).data.user.full_name,
                 },
             },
         ],

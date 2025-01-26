@@ -18,6 +18,7 @@ class AllClassrooms(ListAPIView):
         name = request.query_params.get('name')
         standard = request.query_params.get('standard')
         class_teacher = request.query_params.get('class_teacher')
+        student = request.query_params.get('student')
 
         if id:
             queryset = queryset.filter(id=id)
@@ -27,6 +28,8 @@ class AllClassrooms(ListAPIView):
             queryset = queryset.filter(standards__id=standard)
         if class_teacher:
             queryset = queryset.filter(class_teacher__id=class_teacher)
+        if student:
+            queryset = queryset.filter(students__id=student)
 
         return queryset
 

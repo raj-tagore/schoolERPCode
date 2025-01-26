@@ -1,31 +1,24 @@
 <template>
-  This is the Dashboard
-  <!-- <v-container>
-    <v-row>
-      <v-col cols="12" lg="6">
-        <StudentsList />
-      </v-col>
-    </v-row>
-
-    <TabComp :tabs="['Home', 'About', 'Contact']">
-      <template #Home>
-        <div>Welcome to the Home page!</div>
-      </template>
-      <template #About>
-        <div>About us information goes here.</div>
-      </template>
-      <template #Contact>
-        <div>Contact us at example@example.com.</div>
-      </template>
-    </TabComp>
-
-  </v-container> -->
+  <v-row>
+    <v-col cols="12" lg="4">
+      <AnnouncementsList 
+      title="School-wide Announcements"
+      subtitle="Important announcements for all students and staff"
+      :filter="{ 'is_school_wide': 'True' }"
+    />
+    </v-col>
+  </v-row>
+  
 </template>
 
 <script>
 import { defineComponent } from 'vue';
+import AnnouncementsList from '@/apps/announcements/components/AnnouncementsList.vue';
 
 export default defineComponent({
+  components: {
+    AnnouncementsList,
+  },
   setup() {
     return {};
   },

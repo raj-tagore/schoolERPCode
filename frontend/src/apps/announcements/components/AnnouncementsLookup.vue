@@ -12,7 +12,7 @@
             hide-details
           ></v-text-field>
         </v-col>
-        <v-col cols="12" md="4" lg="3">
+        <v-col cols="12" md="4" lg="2">
           <v-autocomplete
             v-model="filters.classroom"
             :items="classrooms"
@@ -21,9 +21,10 @@
             clearable
             @update:model-value="fetchAnnouncements"
             hide-details
+            density="comfortable"
           ></v-autocomplete>
         </v-col>
-        <v-col cols="12" md="4" lg="3">
+        <v-col cols="12" md="4" lg="2">
           <v-autocomplete
             v-model="filters.subject"
             :items="subjects"
@@ -32,6 +33,7 @@
             clearable
             @update:model-value="fetchAnnouncements"
             hide-details
+            density="comfortable"
           ></v-autocomplete>
         </v-col>
         <v-col cols="12" md="4" lg="3">
@@ -43,9 +45,10 @@
             clearable
             @update:model-value="fetchAnnouncements"
             hide-details
+            density="comfortable"
           ></v-autocomplete>
         </v-col>
-        <v-col cols="12" md="4" lg="3">
+        <v-col cols="12" md="4" lg="2">
           <v-select
             v-model="filters.is_school_wide"
             :items="[
@@ -56,6 +59,7 @@
             label="School Wide Filter"
             @update:model-value="fetchAnnouncements"
             hide-details
+            density="comfortable"
           ></v-select>
         </v-col>
       </v-row>

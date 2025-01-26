@@ -5,16 +5,10 @@ from .models import Classroom, Subject
 from accounts.models import Student, Teacher
 from accounts.serializers import TeacherSerializer
 
-
 class ClassroomSerializer(serializers.ModelSerializer):
     students = serializers.PrimaryKeyRelatedField(many=True,queryset=Student.objects.all(),required=False)
-    class_teacher = serializers.PrimaryKeyRelatedField(queryset=Teacher.objects.all(), required=False)
+    class_teacher = TeacherSerializer(required=False)
     other_teachers = serializers.PrimaryKeyRelatedField(many=True,queryset=Teacher.objects.all(),required=False)
-
-    # Fields for read operations
-    # students_details = UserSerializer(source="students", many=True, read_only=True)
-    class_teacher_details = TeacherSerializer(source="class_teacher", read_only=True)
-
 
     class Meta:
         model = Classroom
@@ -25,7 +19,6 @@ class ClassroomSerializer(serializers.ModelSerializer):
             "standard",
             "students",
             "class_teacher",
-            "class_teacher_details",
             "other_teachers",
         ]
 
@@ -49,10 +42,8 @@ class ClassroomSerializer(serializers.ModelSerializer):
 
 
 class SubjectSerializer(serializers.ModelSerializer):
-    classroom = serializers.PrimaryKeyRelatedField(queryset=Classroom.objects.all(), required=False)
-    teacher = serializers.PrimaryKeyRelatedField(queryset=Teacher.objects.all(), required=False)
-    teacher_details = TeacherSerializer(source="teacher", read_only=True)
-    classroom_details = ClassroomSerializer(source="classroom", read_only=True)
+    classroom = ClassroomSerializer(required=False)
+    teacher = TeacherSerializer(required=False)
 
     class Meta:
         model = Subject
@@ -63,6 +54,4 @@ class SubjectSerializer(serializers.ModelSerializer):
             "description",
             "classroom",
             "teacher",
-            "teacher_details",
-            "classroom_details"
         ]
