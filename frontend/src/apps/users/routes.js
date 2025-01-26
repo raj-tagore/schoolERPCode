@@ -3,6 +3,7 @@ import EmptyLayout from "@/layouts/EmptyLayout.vue"
 import UsersPage from "./views/UsersPage.vue"
 import StudentPage from "./views/StudentPage.vue"
 import StudentsPage from "./views/StudentsPage.vue"
+import api from "@/services/api";
 
 export default [
     {
@@ -41,7 +42,7 @@ export default [
                 meta: {
                     defaultRoute: "Student",
                     getDisplayName: async (params) => 
-                    (await api.get(`api/students/${params.studentId}/`)).data.user.full_name,
+                    (await api.get(`api/accounts/students/${params.studentId}/`)).data.user.full_name,
                 },
             },
         ],

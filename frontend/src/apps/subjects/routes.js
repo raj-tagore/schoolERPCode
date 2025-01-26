@@ -1,4 +1,3 @@
-import EmptyLayout from "@/layouts/EmptyLayout.vue"
 import SubjectPage from "@/apps/subjects/views/SubjectPage.vue"
 import api from "@/services/api"
 import SubjectsPage from "./views/SubjectsPage.vue"
