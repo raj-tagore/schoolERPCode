@@ -2,6 +2,7 @@ import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue"
 import EmptyLayout from "@/layouts/EmptyLayout.vue"
 import UsersPage from "./views/UsersPage.vue"
 import StudentPage from "./views/StudentPage.vue"
+import StudentsPage from "./views/StudentsPage.vue"
 
 export default [
     {
@@ -16,6 +17,21 @@ export default [
                 path: "",
                 component: UsersPage,
                 name: "Users",
+            },
+            {
+                path: "students",
+                component: StudentsPage,
+                name: "Students",
+            },
+            {
+                path: "teachers",
+                component: EmptyLayout,
+                name: "Teachers",
+            },
+            {
+                path: "parents",
+                component: EmptyLayout,
+                name: "Parents",
             },
             {
                 path: "student/:studentId",
