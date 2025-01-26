@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from accounts.models import Student, Teacher
 
@@ -23,6 +24,8 @@ class Classroom(models.Model):
         related_name="classrooms_assisting",
         blank=True,
     )
+
+    join_code = models.UUIDField(unique=True, default=uuid.uuid4, null=False)
 
     def __str__(self):
         return self.name

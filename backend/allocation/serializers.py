@@ -1,5 +1,6 @@
 # serializers.py
 
+import uuid
 from rest_framework import serializers
 from .models import Classroom, Subject
 from accounts.models import Student, Teacher
@@ -20,6 +21,7 @@ class ClassroomSerializer(serializers.ModelSerializer):
             "students",
             "class_teacher",
             "other_teachers",
+            "join_code",
         ]
 
     def create(self, validated_data):
@@ -33,11 +35,17 @@ class ClassroomSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         students = validated_data.pop("students", None)
         other_teachers = validated_data.pop("other_teachers", None)
+        join_code = validated_data.pop("join_code", None)
+        if join_code is not None:
+            instance.join_code = join_code
+        else:
+            instance.join_code = uuid.uuid4()
         instance = super().update(instance, validated_data)
         if students is not None:
             instance.students.set(students)
         if other_teachers is not None:
             instance.other_teachers.set(other_teachers)
+
         return instance
 
 

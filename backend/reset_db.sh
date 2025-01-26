@@ -7,6 +7,8 @@ cd "$(dirname "$0")"
 
 find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
 
+touch {tenants,attachments,assessments,assignments,attendance,accounts,users,announcements,allocation}/migrations/__init__.py
+
 doas -u postgres psql -c "DROP DATABASE \"schoolERPDB\";"
 
 doas -u postgres psql -c "CREATE DATABASE \"schoolERPDB\";"
