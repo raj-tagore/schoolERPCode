@@ -1,8 +1,11 @@
-from rest_framework import viewsets
+from django.views.generic import UpdateView
+from rest_framework import status, viewsets
+from rest_framework.request import Request
+from rest_framework.response import Response
 from .models import Classroom, Subject
 from .serializers import ClassroomSerializer, SubjectSerializer
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView, CreateAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView, CreateAPIView, UpdateAPIView
 from .permissions import ClassroomPermissions, SubjectPermissions
 
 class AllClassrooms(ListAPIView):
@@ -44,6 +47,25 @@ class CreateClassroom(CreateAPIView):
     serializer_class = ClassroomSerializer
     permission_classes = [DjangoModelPermissions]
 
+
+
+class JoinClassroomView(UpdateAPIView):
+    queryset = Classroom.objects.all()
+    serializer_class = ClassroomSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'join_code'
+
+    def partial_update(self, request, *args, **kwargs):
+        classroom = self.get_object()
+
+        student = getattr(request.user, "student_account", None)
+        if student is None:
+            return Response({"message": "You are not a student"}, status=status.HTTP_400_BAD_REQUEST)
+        if student in classroom.students.all():
+            return Response({"message": "You are already in"}, status=status.HTTP_400_BAD_REQUEST)
+        classroom.students.add(student)
+        classroom.save()
+        return Response({"message": "Successfully joined the classroom"}, status=status.HTTP_200_OK)
 
 class AllSubjects(ListAPIView):
     queryset = Subject.objects.all()
