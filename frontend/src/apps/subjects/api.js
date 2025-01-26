@@ -16,4 +16,10 @@ const getSubjectInfoFromObj = (item) => ({
     value: item.id,
 });
 
-export { getSubjects, getSubject, getSubjectInfoFromObj };
+const updateSubject = async (subject) => {
+    const { classroom, teacher, ...cleanSubject } = JSON.parse(JSON.stringify(subject));
+    // Need to figure out how to send the classroom and teacher objects
+    await api.put(`api/allocation/subjects/${subject.id}/`, cleanSubject);
+};
+
+export { getSubjects, getSubject, getSubjectInfoFromObj, updateSubject };
