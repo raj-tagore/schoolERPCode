@@ -67,7 +67,10 @@
             </v-container>
           </v-tabs-window-item>
           <v-tabs-window-item>
-			<StudentSettingsCard :studentId="student.id"></StudentSettingsCard>
+            <StudentSettingsCard 
+              :student="student" 
+              :user="student.user" 
+            />
           </v-tabs-window-item>
         </v-tabs-window>
       </v-col>

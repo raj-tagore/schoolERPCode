@@ -48,38 +48,29 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import {
-	getStudent,
-	getUser,
-	updateStudent,
-	updateUser,
-} from "@/apps/users/api";
-
-const student = ref(null);
-
-const user = ref(null);
+import { ref } from "vue";
+import FormCard from "@/components/FormCard.vue";
+import { updateStudent, updateUser } from "@/apps/users/api";
 
 const props = defineProps({
-	studentId: {
-		type: Number,
-		required: true,
+	student: {
+		type: Object,
+		required: true
 	},
+	user: {
+		type: Object,
+		required: true
+	}
 });
 
 const handleUpdate = async () => {
 	try {
-		await updateStudent(student.value);
-		await updateUser(user.value);
+		await updateStudent(props.student);
+		await updateUser(props.user);
 		return { success: true };
 	} catch (error) {
 		console.error("Failed to update student:", error);
 		return { success: false, error };
 	}
 };
-
-onMounted(async () => {
-	student.value = await getStudent(props.studentId);
-	user.value = await getUser(student.value.id);
-});
 </script>
