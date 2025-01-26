@@ -1,85 +1,102 @@
 <template>
 	<v-container>
-		<FormCard 
-			title="Students Settings"
-			:onSubmit="handleUpdate">
-			<v-row v-if="user">
-				<v-col>
-					<v-text-field 
-						label="First Name" 
-						v-model="user.first_name"
-						:rules="[v => !!v || 'First Name is required']"
-						required
-					></v-text-field>
-					<v-text-field 
-						label="Last Name" 
-						v-model="user.last_name"
-						:rules="[v => !!v || 'Last Name is required']"
-						required
-					></v-text-field>
-				</v-col>
-			</v-row>
-			<v-row v-if="user">
-				<v-col>
-					<v-text-field 
-						label="E-Mail" 
-						v-model="user.email"
-						:rules="[v => !!v || 'E-Mail is required']"
-						required
-					></v-text-field>
-				</v-col>
-			</v-row>
-			<v-row v-if="user">
-				<v-col>
-					<v-checkbox 
-						label="Is Active" 
-						v-model="user.is_active"
-					></v-checkbox>
-				</v-col>
-				<v-col>
-					<v-checkbox 
-						label="Is Approved" 
-						v-model="user.is_approved"
-					></v-checkbox>
-				</v-col>
-			</v-row>
-		</FormCard>
+		<v-card variant="flat">
+			<v-card-title>
+				<!-- Search filters -->
+				<v-row>
+					<v-col cols="12" md="6">
+						<v-text-field
+							v-model="filters.name"
+							label="Search by name"
+							density="comfortable"
+							@input="fetchStudents"
+							hide-details
+						></v-text-field>
+					</v-col>
+					<v-col cols="12" md="6">
+						<v-autocomplete
+							v-model="filters.classroom"
+							:items="classrooms"
+							label="Filter by classroom"
+							:item-props="getClassroomInfoFromObj"
+							density="comfortable"
+							clearable
+							@update:model-value="fetchStudents"
+							hide-details
+						></v-autocomplete>
+					</v-col>
+				</v-row>
+			</v-card-title>
+
+			<v-data-table
+				:headers="headers"
+				:items="students"
+				:loading="loading"
+			>
+				<template #item="{ item }">
+					<tr>
+						<td>{{ item.user.full_name }}</td>
+						<td>{{ item.student_no }}</td>
+						<td> 
+							<v-checkbox
+								v-model="item.user.is_approved"
+							></v-checkbox>
+						</td>
+						<td>
+							<v-checkbox
+								v-model="item.user.is_active"
+							></v-checkbox>
+						</td>
+					</tr>
+				</template>
+			</v-data-table>
+		</v-card>
 	</v-container>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import {
-	getStudent,
-	getUser,
-	updateStudent,
-	updateUser,
-} from "@/apps/users/api";
+import { ref, watch, onMounted } from "vue";
+import { getStudents } from "@/apps/users/api";
+import { getClassrooms, getClassroomInfoFromObj } from "@/apps/classrooms/api";
 
-const student = ref(null);
+const students = ref([]);
+const classrooms = ref([]);
+const loading = ref(false);
 
-const user = ref(null);
-
-const props = defineProps({
-	studentId: {
-		type: Number,
-		required: true,
-	},
+const filters = ref({
+	name: "",
+	classroom: null,
 });
 
-const handleUpdate = async () => {
+const headers = [
+	{ title: "Name", key: "user.full_name" },
+	{ title: "Student No", key: "student_no" },
+	{ title: "Approved", key: "user.is_approved" },
+	{ title: "Active", key: "user.is_active" },
+	{ title: "", key: "actions", align: "end", sortable: false },
+];
+
+const fetchStudents = async () => {
+	loading.value = true;
 	try {
-		await updateStudent(student.value);
-		await updateUser(user.value);
-		return { success: true };
+		const filter = {};
+		if (filters.value.name) filter.name = filters.value.name;
+		if (filters.value.classroom) filter.classroom = filters.value.classroom;
+
+		students.value = await getStudents(filter);
 	} catch (error) {
-		console.error("Failed to update student:", error);
-		return { success: false, error };
+		console.error("Error fetching students:", error);
+	} finally {
+		loading.value = false;
 	}
 };
 
 onMounted(async () => {
-	student.value = await getStudent(props.studentId);
-	user.value = await getUser(student.value.id);
+	classrooms.value = await getClassrooms();
 });
+
+watch(() => filters.value, fetchStudents, { deep: true });
+
+// Initial fetch
+fetchStudents();
 </script>

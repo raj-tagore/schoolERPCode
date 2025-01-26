@@ -20,5 +20,5 @@ class UserReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'id', 'full_name', 'email', 'username'
+            'id', 'full_name', 'email', 'username', "is_approved", "is_active"
         ]
