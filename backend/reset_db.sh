@@ -41,7 +41,7 @@ $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (2, 'Teacher')" "schoo
 $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (3, 'Student')" "schoolERPDB"
 $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (4, 'Parent')" "schoolERPDB"
 
-python <<HEREDOC
+python 2> /dev/null <<HEREDOC
 import csv
 import sys
 from django.contrib.auth.hashers import make_password
@@ -64,6 +64,7 @@ def process_csv(input_file, Model):
 	fieldnames = reader.fieldnames
 
 
+	print(Model)
 	for row in reader:
 		m2m_fields = []
 		temp_row = row.copy()
@@ -81,10 +82,10 @@ def process_csv(input_file, Model):
 		with tenant_context(tenant):
 			obj = Model.objects.create(**row)
 			for field in m2m_fields:
-				try:
-					getattr(obj, field[0]).set([int(num) for num in field[1].split(",")])
-				except:
-					print("M2M setting error")
+				int_str = field[1].translate({ord('['): None, ord(']'): None}).split(",")
+				if len(int_str) == 1 and int_str[0] == '':
+					continue
+				getattr(obj, field[0]).set([int(num) for num in int_str])
 
 dummy_files = [
 	("dummy_data/User.csv", User),
@@ -101,4 +102,4 @@ dummy_files = [
 for input_csv_path, Model in dummy_files:
 	with open(input_csv_path, mode='r', newline='', encoding='utf-8') as input_file:
 		process_csv(input_file, Model)
-HEREDOC
+HEREDOC 
