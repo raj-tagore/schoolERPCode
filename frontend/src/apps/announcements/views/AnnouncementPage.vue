@@ -90,7 +90,7 @@ import { getClassroom } from "@/apps/classrooms/api";
 import { getSubject } from "@/apps/subjects/api";
 import AnnouncementSettingsCard from "../components/AnnouncementSettingsCard.vue";
 
-let announcement = ref({});
+const announcement = ref({});
 const classroomDetails = ref([]);
 const subjectDetails = ref([]);
 const tabs = ref(null);

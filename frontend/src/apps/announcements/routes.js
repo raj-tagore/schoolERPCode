@@ -1,5 +1,4 @@
 import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
-import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import AnnouncementsPage from "./views/AnnouncementsPage.vue";
 import AnnouncementPage from "./views/AnnouncementPage.vue";
 

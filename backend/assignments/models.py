@@ -6,19 +6,13 @@ class Assignment(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
     is_active = models.BooleanField(default=True)
-    release_datetime = models.DateTimeField()
-    due_datetime = models.DateTimeField()
+    release_at = models.DateTimeField()
+    due_at = models.DateTimeField()
     subject = models.ForeignKey(
         "allocation.Subject",
         on_delete=models.CASCADE,
         null=False,
         related_name="assignments",
-    )
-    classroom = models.ForeignKey(
-        "allocation.Classroom",
-        on_delete=models.CASCADE,
-        null=False,
-        related_name="classrooms",
     )
 
     def __str__(self):

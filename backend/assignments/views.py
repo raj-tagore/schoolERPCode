@@ -29,8 +29,8 @@ class AllAssignments(ListAPIView):
         title = request.query_params.get("title")
         description = request.query_params.get("description")
         is_active = request.query_params.get("is_active")
-        release_datetime = request.query_params.get("release_datetime")
-        due_datetime = request.query_params.get("due_datetime")
+        release_at = request.query_params.get("release_at")
+        due_at = request.query_params.get("due_at")
         subject = request.query_params.get("subject")
 
         if id:
@@ -41,10 +41,10 @@ class AllAssignments(ListAPIView):
             queryset = queryset.filter(description__icontains=description)
         if is_active:
             queryset = queryset.filter(is_active=is_active)
-        if release_datetime:
-            queryset = queryset.filter(release_datetime=release_datetime)
-        if due_datetime:
-            queryset = queryset.filter(due_datetime=due_datetime)
+        if release_at:
+            queryset = queryset.filter(release_at=release_at)
+        if due_at:
+            queryset = queryset.filter(due_at=due_at)
         if subject:
             queryset = queryset.filter(subject__id=subject)
         return queryset
