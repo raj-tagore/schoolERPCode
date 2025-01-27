@@ -1,9 +1,11 @@
 <template>
   <v-container>
-    <FormCard 
-      title="Classroom Settings"
-      :onSubmit="handleUpdate"
-    >
+    <v-card>
+      <v-card-title>
+        Classroom Settings
+      </v-card-title>
+    <v-card-text>
+
       <v-row v-if="classroom">
         <v-col>
           <v-text-field 
@@ -37,7 +39,11 @@
           ></v-checkbox>
         </v-col>
       </v-row>
-    </FormCard>
+    <SubmitButton 
+      :onSubmit="handleUpdate"
+    ></SubmitButton>
+    </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
@@ -46,30 +52,31 @@ import { ref, onMounted } from "vue";
 import { getClassroom, updateClassroom } from "@/apps/classrooms/api";
 import { getTeachers, getTeacherInfoFromObj } from "@/apps/users/api";
 import FormCard from "@/components/FormCard.vue";
+import SubmitButton from "@/components/SubmitButton.vue";
 
 const props = defineProps({
-  classroomId: {
-    type: Number,
-    required: true
-  }
+	classroomId: {
+		type: Number,
+		required: true,
+	},
 });
 
 const classroom = ref(null);
 const teachers = ref([]);
 
 const handleUpdate = async () => {
-  try {
-    await updateClassroom(classroom.value);
-    return { success: true };
-  } catch (error) {
-    console.error('Failed to update classroom:', error);
-    return { success: false, error };
-  }
+	try {
+		await updateClassroom(classroom.value);
+		return { success: true };
+	} catch (error) {
+		console.error("Failed to update classroom:", error);
+		return { success: false, error };
+	}
 };
 
 onMounted(async () => {
-  classroom.value = await getClassroom(props.classroomId);
-  teachers.value = await getTeachers();
+	classroom.value = await getClassroom(props.classroomId);
+	teachers.value = await getTeachers();
 });
 </script>
   

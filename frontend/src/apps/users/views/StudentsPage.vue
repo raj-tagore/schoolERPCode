@@ -13,7 +13,7 @@
 				<StudentsLookup />
               </v-tabs-window-item>
 			  <v-tabs-window-item>
-
+                <StudentsSettingsCard></StudentsSettingsCard>
               </v-tabs-window-item>
             </v-tabs-window>
         </v-col>
@@ -23,6 +23,7 @@
 
 <script setup>
 import StudentsLookup from "@/apps/users/components/StudentsLookup.vue";
+import StudentsSettingsCard from "@/apps/users/components/StudentsSettingsCard.vue";
 import { ref } from "vue";
 
 const tabs = ref(null);
