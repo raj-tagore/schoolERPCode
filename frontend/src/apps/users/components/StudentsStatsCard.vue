@@ -9,7 +9,17 @@
     </v-card-item>
 
     <v-card-text>
-      <v-row>
+      <v-row v-if="loading">
+        <v-col cols="12" class="text-center">
+          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        </v-col>
+      </v-row>
+      <v-row v-else-if="error">
+        <v-col cols="12" class="text-center text-error">
+          Failed to load student statistics
+        </v-col>
+      </v-row>
+      <v-row v-else>
         <v-col cols="6">
           <v-card variant="outlined">
             <v-card-item>
@@ -34,16 +44,25 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import { getStudentStats } from '@/apps/users/api';
 
-const stats = ref({});
+const stats = ref({
+  total: 0,
+  pending_approval: 0
+});
+const loading = ref(true);
+const error = ref(false);
 
 onMounted(async () => {
   try {
-    const response = await axios.get('/api/accounts/students/stats/');
-    stats.value = response.data;
+    loading.value = true;
+    error.value = false;
+    stats.value = await getStudentStats();
   } catch (error) {
     console.error('Error fetching student stats:', error);
+    error.value = true;
+  } finally {
+    loading.value = false;
   }
 });
 </script>
