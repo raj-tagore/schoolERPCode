@@ -36,10 +36,7 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
-const stats = ref({
-  total: 0,
-  pending_approval: 0
-});
+const stats = ref({});
 
 onMounted(async () => {
   try {

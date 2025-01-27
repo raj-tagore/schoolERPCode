@@ -132,7 +132,7 @@ class StudentStats(APIView):
     def get(self, request):
         stats = {
             'total': Student.objects.count(),
-            'pending_approval': Student.objects.filter(is_approved=False).count(),
+            'pending_approval': Student.objects.filter(user__is_approved=False).count(),
         }
         return Response(stats)
 
@@ -142,7 +142,7 @@ class ParentStats(APIView):
     def get(self, request):
         stats = {
             'total': Parent.objects.count(),
-            'pending_approval': Parent.objects.filter(is_approved=False).count(),
+            'pending_approval': Parent.objects.filter(user__is_approved=False).count(),
         }
         return Response(stats)
 
@@ -152,6 +152,6 @@ class TeacherStats(APIView):
     def get(self, request):
         stats = {
             'total': Teacher.objects.count(),
-            'pending_approval': Teacher.objects.filter(is_approved=False).count(),
+            'pending_approval': Teacher.objects.filter(user__is_approved=False).count(),
         }
         return Response(stats)
