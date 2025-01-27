@@ -7,6 +7,14 @@ const getAssignments = async (filter) =>
         )
     ).data;
 
+const getAssignment = async (id) =>
+    (
+        await api.get(
+            `api/assignments/${id}`,
+        )
+    ).data;
+
 export {
-	getAssignments
+	getAssignments,
+	getAssignment,
 }

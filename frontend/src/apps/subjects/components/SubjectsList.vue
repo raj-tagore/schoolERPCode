@@ -41,7 +41,7 @@ const props = defineProps({
   },
 });
 
-let subjects = ref([]);
+const subjects = ref([]);
 const fetchSubjects = async () => {
   subjects.value = await getSubjects(props.filter);
 };

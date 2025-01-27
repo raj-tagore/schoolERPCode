@@ -70,7 +70,8 @@
 						icon="mdi-arrow-right"
 						size="small"
 						variant="outlined"
-					></v-btn> <!-- Add router link -->
+						:to="{name: 'Assignment', params: {assignmentId: item.id}}"
+					></v-btn> 
 				</div>
 				<v-card-text>
 					<div class="d-flex flex-column gap-1">
@@ -110,7 +111,8 @@
 					icon="mdi-arrow-right"
 					size="small"
 					variant="outlined"
-				></v-btn><!-- Add router link -->
+					:to="{name: 'Assignment', params: {assignmentId: item.id}}"
+				></v-btn>
 			</template>
 		</v-data-table>
 
@@ -174,14 +176,13 @@ const fetchAssignments = async () => {
 	}
 };
 
-const formatDate = (dateString) => {
-	// Properly parses the date string, Date() constructor doesn't work well with ISO strings
-	return Intl.DateTimeFormat("en-US", {
+// Properly parses the date string, Date() constructor doesn't work well with ISO strings
+const formatDate = (dateString) =>
+	Intl.DateTimeFormat("en-US", {
 		year: "numeric",
 		month: "short",
 		day: "numeric",
 	}).format(Date.parse(dateString));
-};
 
 onMounted(async () => {
 	classrooms.value = await getClassrooms();
