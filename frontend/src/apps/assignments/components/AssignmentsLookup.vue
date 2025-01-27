@@ -136,6 +136,14 @@ const filters = ref({
 	classroom: null,
 });
 
+const headers = [
+  { title: "Title", key: "title" },
+  { title: "Release Date", key: "release_at" },
+  { title: "Due Date", key: "due_at" },
+  { title: "Subject", key: "subject" },
+  { title: "Actions", key: "actions", sortable: false },
+];
+
 const assignments = ref([]);
 
 const classrooms = ref([]);
