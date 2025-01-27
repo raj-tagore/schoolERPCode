@@ -118,15 +118,15 @@ def add_student(student_num: int, standard: int, section: int) -> int:
         {
             "id": user_id,
             "username": "Student {} of Class {}-{}".format(
-                student_num, standard_idx, chr((ord("A") + section_idx))
+                student_num+1, standard_idx+1, chr((ord("A") + section_idx))
             ),
             "email": "student{}of_class{}{}@testerp.shouldnotexist.com".format(
-                student_num, standard_idx, chr((ord("A") + section_idx))
+                student_num+1, standard_idx+1, chr((ord("A") + section_idx))
             ),
             "password": "Pass1234#",
-            "first_name": "Student {}".format(section_idx),
+            "first_name": "Student {}".format(section_idx+1),
             "last_name": "For {}-{}".format(
-                standard_idx, chr((ord("A") + section_idx))
+                standard_idx+1, chr((ord("A") + section_idx))
             ),
             "school": 2,
             "groups": 3,
