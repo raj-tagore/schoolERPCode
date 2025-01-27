@@ -3,9 +3,9 @@ from .models import Assignment, SubmittedAssignment
 
 @admin.register(Assignment)
 class AssignmentAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subject', 'release_datetime', 'due_datetime', 'is_active')
+    list_display = ('title', 'subject', 'release_at', 'due_at', 'is_active')
     search_fields = ('title', 'description')
-    list_filter = ('is_active', 'release_datetime', 'due_datetime')
+    list_filter = ('is_active', 'release_at', 'due_at')
 
 @admin.register(SubmittedAssignment)
 class StudentAssignmentAdmin(admin.ModelAdmin):

@@ -10,10 +10,9 @@ class AssignmentSerializer(serializers.ModelSerializer):
             "title",
             "description",
             "is_active",
-            "release_datetime",
-            "due_datetime",
+            "release_at",
+            "due_at",
             "subject",
-            "classroom",
         ]
 
 
@@ -24,10 +23,9 @@ class BasicAssignmentSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "is_active",
-            "release_datetime",
-            "due_datetime",
+            "release_at",
+            "due_at",
             "subject",
-            "classroom",
         ]
 
 
