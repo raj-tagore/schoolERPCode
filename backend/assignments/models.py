@@ -14,12 +14,6 @@ class Assignment(models.Model):
         null=False,
         related_name="assignments",
     )
-    classroom = models.ForeignKey(
-        "allocation.Classroom",
-        on_delete=models.CASCADE,
-        null=False,
-        related_name="classrooms",
-    )
 
     def __str__(self):
         return self.title
