@@ -46,6 +46,10 @@
         <v-list-item :to="{name: 'Announcements'}">
           <v-list-item-title>Announcements</v-list-item-title>
         </v-list-item>
+
+        <v-list-item :to="{name: 'Assignments'}">
+          <v-list-item-title>Assignments</v-list-item-title>
+        </v-list-item>
         
         <!-- <ExpandableListItem title="Classrooms">
           <v-list dense>

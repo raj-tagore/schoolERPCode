@@ -1,14 +1,15 @@
 from django.contrib import admin
 from .models import Assignment, SubmittedAssignment
+from import_export.admin import ImportExportModelAdmin
 
 @admin.register(Assignment)
-class AssignmentAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subject', 'release_datetime', 'due_datetime', 'is_active')
+class AssignmentAdmin(ImportExportModelAdmin):
+    list_display = ('title', 'subject', 'release_at', 'due_at', 'is_active')
     search_fields = ('title', 'description')
-    list_filter = ('is_active', 'release_datetime', 'due_datetime')
+    list_filter = ('is_active', 'release_at', 'due_at')
 
 @admin.register(SubmittedAssignment)
-class StudentAssignmentAdmin(admin.ModelAdmin):
+class StudentAssignmentAdmin(ImportExportModelAdmin):
     list_display = ('student', 'assignment', 'status', 'submission_datetime')
     search_fields = ('student__user__username', 'assignment__title')
     list_filter = ('status',)
