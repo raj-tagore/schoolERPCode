@@ -1,24 +1,24 @@
 <template>
+    <v-container>
   <v-card variant="flat">
     <v-card-title>
-      <!-- Search filters -->
       <v-row>
-        <v-col cols="12" md="6">
+        <v-col cols="12">
           <v-text-field
             v-model="filters.name"
             label="Search by name"
-            density="comfortable"
+            density="compact"
             @input="fetchStudents"
             hide-details
           ></v-text-field>
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12">
           <v-autocomplete
             v-model="filters.classroom"
             :items="classrooms"
             label="Filter by classroom"
             :item-props="getClassroomInfoFromObj"
-            density="comfortable"
+            density="compact"
             clearable
             @update:model-value="fetchStudents"
             hide-details
@@ -31,6 +31,7 @@
       :headers="headers"
       :items="students"
       :loading="loading"
+      :items-per-page="5"
     >
       <template #item="{ item }">
         <tr>
@@ -47,7 +48,8 @@
         </tr>
       </template>
     </v-data-table>
-  </v-card>
+    </v-card>
+    </v-container>
 </template>
 
 <script setup>

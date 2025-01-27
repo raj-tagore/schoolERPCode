@@ -8,6 +8,9 @@ from rest_framework.generics import (
     CreateAPIView
 )
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.db.models import Count
 
 from .models import Parent, Teacher, Student
 from .serializers import (
@@ -122,3 +125,33 @@ class CreateStudent(CreateAPIView):
     serializer_class = StudentSerializer
     permission_classes = [DjangoModelPermissions]
     queryset = Student.objects.all()
+
+class StudentStats(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        stats = {
+            'total': Student.objects.count(),
+            'pending_approval': Student.objects.filter(is_approved=False).count(),
+        }
+        return Response(stats)
+
+class ParentStats(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        stats = {
+            'total': Parent.objects.count(),
+            'pending_approval': Parent.objects.filter(is_approved=False).count(),
+        }
+        return Response(stats)
+
+class TeacherStats(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        stats = {
+            'total': Teacher.objects.count(),
+            'pending_approval': Teacher.objects.filter(is_approved=False).count(),
+        }
+        return Response(stats)
