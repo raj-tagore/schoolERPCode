@@ -142,7 +142,7 @@ def add_student(student_num: int, standard: int, section: int) -> int:
             "guardian_2": add_guardian(student_id, 2),
         }
     )
-    return user_id
+    return student_id
 
 
 def add_classroom(standard: int, section: int) -> int:
