@@ -6,24 +6,18 @@ const images = [
     require("@/assets/classrooms/classroom3.png"),
 ]; 
 
-const getClassroom = async (classroomId) =>
-    (await api.get(`api/allocation/classrooms/${classroomId}`)).data;
+const getClassroom = async (id) =>
+    (await api.get(`api/allocation/classrooms/${id}`)).data;
 
-const getClassrooms = async (filter) => 
-    (
-        await api.get(
-            `api/allocation/classrooms/all/${filter ? "?" : ""}${filter ? new URLSearchParams(filter) : ""}`,
-        )
-    ).data;
+const getClassrooms = async (filter) =>
+    (await api.get(`api/allocation/classrooms/all`, { params: filter })).data;
 
-
-const updateClassroom = async (classroom) => {
+const updateClassroom = async (classroom) =>
     await api.put(`api/allocation/classrooms/${classroom.id}/`, classroom);
-};
 
 const addTeacherToClassroom = async (classroom, teacherId) => {
     classroom.other_teachers.push(teacherId);
-    updateClassroom();
+    await updateClassroom(classroom);
 };
 
 const getClassroomImage = () => {
@@ -36,23 +30,23 @@ const removeTeacherFromClassroom = async (classroom, teacherId) => {
         classroom.other_teachers.indexOf(teacherId),
         1,
     );
-    updateClassroom();
+    await updateClassroom(classroom);
 };
 
 const addStudentToClassroom = async (classroom, studentId) => {
     classroom.students.push(studentId);
-    updateClassroom();
+    await updateClassroom(classroom);
 };
 
 const removeStudentFromClassroom = async (classroom, studentId) => {
-	classroom.students.splice(classroom.students.indexOf(studentId), 1);
-	updateClassroom();
-}
+    classroom.students.splice(classroom.students.indexOf(studentId), 1);
+    await updateClassroom(classroom);
+};
 
 const getClassroomInfoFromObj = (item) => ({
-  title: item.name,
-  subtitle: `Grade ${item.standard}`,
-  value: item.id,
+    title: item.name,
+    subtitle: `Grade ${item.standard}`,
+    value: item.id,
 });
 
 export {
@@ -61,8 +55,8 @@ export {
     updateClassroom,
     getClassroomImage,
     addTeacherToClassroom,
-	removeTeacherFromClassroom,
-	addStudentToClassroom,
-	removeStudentFromClassroom,
+    removeTeacherFromClassroom,
+    addStudentToClassroom,
+    removeStudentFromClassroom,
     getClassroomInfoFromObj,
 };
