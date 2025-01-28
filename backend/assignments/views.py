@@ -3,7 +3,6 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
     CreateAPIView,
 )
-
 from rest_framework.viewsets import ModelViewSet
 from .models import Assignment, SubmittedAssignment
 from .serializers import (
