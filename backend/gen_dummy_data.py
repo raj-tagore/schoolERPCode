@@ -2,7 +2,8 @@ import csv
 import datetime
 import random
 
-import os 
+import os
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
@@ -112,25 +113,17 @@ def add_guardian(student_id: int, guardian_num: int) -> int:
 
 
 def add_student(student_num: int, standard: int, section: int) -> int:
-    user_id = len(data["user"]) + 2
     student_id = len(data["student"])
-    data["user"].append(
-        {
-            "id": user_id,
-            "username": "Student {} of Class {}-{}".format(
-                student_num+1, standard_idx+1, chr((ord("A") + section_idx))
-            ),
-            "email": "student{}of_class{}{}@testerp.shouldnotexist.com".format(
-                student_num+1, standard_idx+1, chr((ord("A") + section_idx))
-            ),
-            "password": "Pass1234#",
-            "first_name": "Student {}".format(section_idx+1),
-            "last_name": "For {}-{}".format(
-                standard_idx+1, chr((ord("A") + section_idx))
-            ),
-            "school": 2,
-            "groups": 3,
-        }
+    user_id = add_user(
+        "Student {} of Class {}-{}".format(
+            student_num + 1, standard_idx + 1, chr((ord("A") + section_idx))
+        ),
+        "student{}of_class{}{}@testerp.shouldnotexist.com".format(
+            student_num + 1, standard_idx + 1, chr((ord("A") + section_idx))
+        ),
+        "Student {}".format(section_idx + 1),
+        "For {}-{}".format(standard_idx + 1, chr((ord("A") + section_idx))),
+        3,
     )
     data["student"].append(
         {
@@ -164,7 +157,7 @@ def add_classroom(standard: int, section: int) -> int:
                 "name": subject_name,
                 "is_active": len(data["subject"]) % 2 == 0,
                 "description": "Subject {} of Classroom {}{}".format(
-                    subject_name, standard_idx, chr((ord("A") + section_idx))
+                    subject_name, standard_idx + 1, chr((ord("A") + section_idx))
                 ),
                 "classroom": classroom_id,
                 "teacher": teacher,
@@ -182,7 +175,7 @@ def add_classroom(standard: int, section: int) -> int:
         {
             "id": classroom_id,
             "name": "Class {standard}-{section}".format(
-                standard=standard+1, section=chr((ord("A") + section))
+                standard=standard + 1, section=chr((ord("A") + section))
             ),
             "is_active": classroom_id % 2 == 0,
             "standard": standard + 1,
@@ -219,7 +212,12 @@ for subject_idx, subject in enumerate(data["subject"]):
         )
 priorities = ["low", "medium", "high"]
 
-for i in range(announcements_per_classroom * len(data["classroom"]) * announcements_per_subject * len(subject_teachers)):
+for i in range(
+    announcements_per_classroom
+    * len(data["classroom"])
+    * announcements_per_subject
+    * len(subject_teachers)
+):
     data["announcement"].append(
         {
             "id": len(data["announcement"]),
@@ -243,11 +241,15 @@ for i in range(announcements_per_classroom * len(data["classroom"]) * announceme
     )
 
 for classroom in data["classroom"]:
-    for announcement in random.choices(data["announcement"], k=announcements_per_classroom * len(data["classroom"]) * 2):
+    for announcement in random.choices(
+        data["announcement"], k=announcements_per_classroom * len(data["classroom"]) * 2
+    ):
         announcement["classrooms"].append(classroom["id"])
 
 for subject in data["subject"]:
-    for announcement in random.choices(data["announcement"], k=announcements_per_subject * len(data["subject"]) * 2):
+    for announcement in random.choices(
+        data["announcement"], k=announcements_per_subject * len(data["subject"]) * 2
+    ):
         announcement["subjects"].append(subject["id"])
 
 for i in range(announcements_per_school):
@@ -274,7 +276,12 @@ for i in range(announcements_per_school):
     )
 
 for m_name, values in data.items():
-    with open(f"{dir_path}/dummy_data/{m_name.capitalize()}.csv", mode="w", newline="", encoding="utf-8") as output_file:
+    with open(
+        f"{dir_path}/dummy_data/{m_name.capitalize()}.csv",
+        mode="w",
+        newline="",
+        encoding="utf-8",
+    ) as output_file:
         fieldnames = values[0].keys()
         writer = csv.DictWriter(output_file, fieldnames=fieldnames)
         writer.writeheader()
