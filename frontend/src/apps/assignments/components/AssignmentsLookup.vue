@@ -7,7 +7,6 @@
 						v-model="filters.title"
 						label="Search by title"
 						density="comfortable"
-						@input="fetchAssignments"
 						hide-details
 					></v-text-field>
 				</v-col>
@@ -16,7 +15,6 @@
 						v-model="filters.description"
 						label="Search by description"
 						density="comfortable"
-						@input="fetchAssignments"
 						hide-details
 					></v-text-field>
 				</v-col>
@@ -27,7 +25,6 @@
 						label="Filter by classroom"
 						:item-props="getClassroomInfoFromObj"
 						clearable
-						@update:model-value="fetchAssignments"
 						hide-details
 						density="comfortable"
 					></v-autocomplete>
@@ -39,7 +36,6 @@
 						label="Filter by subject"
 						:item-props="getSubjectInfoFromObj"
 						clearable
-						@update:model-value="fetchAssignments"
 						hide-details
 						density="comfortable"
 					></v-autocomplete>
@@ -49,7 +45,6 @@
 						v-model="filters.is_active"
 						label="Filter by Active"
 						clearable
-						@update:model-value="fetchAssignments"
 						hide-details
 						density="comfortable"
 					></v-checkbox>
@@ -57,44 +52,56 @@
 			</v-row>
 		</v-card-title>
 		<!-- Mobile view: Cards -->
-		<div class="d-md-none">
-			<v-card
-				v-for="item in assignments"
-				:key="item.id"
-				class="ma-2 pa-2"
-				variant="outlined"
-			>
-				<div class="d-flex align-center justify-space-between">
-					<v-card-title class="text-subtitle-1">{{ item.title }}</v-card-title>
-					<v-btn
-						icon="mdi-arrow-right"
-						size="small"
-						variant="outlined"
-						:to="{name: 'Assignment', params: {assignmentId: item.id}}"
-					></v-btn> 
-				</div>
-				<v-card-text>
-					<div class="d-flex flex-column gap-1">
-						<div class="d-flex align-center justify-space-between">
-							<span class="text-caption">Release:</span>
-							<span>{{ formatDate(item.release_at) }}</span>
-						</div>
-						<div class="d-flex align-center justify-space-between">
-							<span class="text-caption">Expiry:</span>
-							<span>{{ formatDate(item.due_at) }}</span>
-						</div>
-						<div class="d-flex align-center justify-space-between">
-							<span class="text-caption">Subject:</span>
-							<span>{{ subjects.filter((s) => s.id === item.subject)[0].name }}</span>
-						</div>
+		<v-data-table-server
+			class="d-md-none"
+			:items-length="assignmentLen"
+			:headers="mobileHeaders"
+			:items="assignments"
+			@update:options="fetchAssignments"
+			:search="search"
+			:loading="loading"
+		>
+			<template #headers={}></template>
+			<template #item={item}>
+				<v-card
+					class="ma-2 pa-2"
+					variant="outlined"
+				>
+					<div class="d-flex align-center justify-space-between">
+						<v-card-title class="text-subtitle-1">{{ item.title }}</v-card-title>
+						<v-btn
+							icon="mdi-arrow-right"
+							size="small"
+							variant="outlined"
+							:to="{name: 'Assignment', params: {assignmentId: item.id}}"
+						></v-btn> 
 					</div>
-				</v-card-text>
-			</v-card>
-		</div>
-		<v-data-table
+					<v-card-text>
+						<div class="d-flex flex-column gap-1">
+							<div class="d-flex align-center justify-space-between">
+								<span class="text-caption">Release:</span>
+								<span>{{ formatDate(item.release_at) }}</span>
+							</div>
+							<div class="d-flex align-center justify-space-between">
+								<span class="text-caption">Expiry:</span>
+								<span>{{ formatDate(item.due_at) }}</span>
+							</div>
+							<div class="d-flex align-center justify-space-between">
+								<span class="text-caption">Subject:</span>
+								<span>{{item.subject_name}}</span>
+							</div>
+						</div>
+					</v-card-text>
+				</v-card>
+			</template>
+		</v-data-table-server>
+		<v-data-table-server
 			class="d-none d-md-block"
+			:items-length="assignmentLen"
 			:headers="headers"
 			:items="assignments"
+			@update:options="fetchAssignments"
+			:search="search"
 			:loading="loading"
 		>
 			<template #item.release_at="{ item }">
@@ -103,8 +110,8 @@
 			<template #item.due_at="{ item }">
 				{{ formatDate(item.due_at) }}
 			</template>
-			<template #item.subject="{ item }">
-				{{  subjects.filter((s) => s.id === item.subject)[0].name }}
+			<template #item.subject_name="{ item }">
+				{{  item.subject_name }}
 			</template>
 			<template #item.actions="{ item }">
 				<v-btn
@@ -114,19 +121,19 @@
 					:to="{name: 'Assignment', params: {assignmentId: item.id}}"
 				></v-btn>
 			</template>
-		</v-data-table>
+		</v-data-table-server>
 
 	</v-card>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
 import { getAssignments } from "@/apps/assignments/api.js";
 import {
-	getClassrooms,
 	getClassroomInfoFromObj,
+	getClassrooms,
 } from "@/apps/classrooms/api.js";
-import { getSubjects, getSubjectInfoFromObj } from "@/apps/subjects/api.js";
+import { getSubjectInfoFromObj, getSubjects } from "@/apps/subjects/api.js";
+import { onMounted, ref, watch } from "vue";
 
 const filters = ref({
 	title: "",
@@ -137,11 +144,15 @@ const filters = ref({
 });
 
 const headers = [
-  { title: "Title", key: "title" },
-  { title: "Release Date", key: "release_at" },
-  { title: "Due Date", key: "due_at" },
-  { title: "Subject", key: "subject" },
-  { title: "Actions", key: "actions", sortable: false },
+	{ title: "Title", key: "title" },
+	{ title: "Release Date", key: "release_at" },
+	{ title: "Due Date", key: "due_at" },
+	{ title: "Subject", key: "subject_name" },
+	{ title: "Actions", key: "actions", sortable: false },
+];
+
+const mobileHeaders = [
+	{ title: "", key: "id" },
 ];
 
 const assignments = ref([]);
@@ -151,12 +162,20 @@ const subjects = ref([]);
 
 const loading = ref(false);
 
-const fetchAssignments = async () => {
+const assignmentLen = ref(10);
+
+const search = ref({});
+
+watch(filters.value, (f) => {
+	search.value = structuredClone(f);
+});
+
+const fetchAssignments = async ({ page, itemsPerPage, search }) => {
 	loading.value = true;
 	try {
 		// Filter out falsy values
 		const filterParams = Object.fromEntries(
-			Object.entries(filters.value)
+			Object.entries(search)
 				.filter(([_, value]) => value)
 				.map(([key, value]) => {
 					// I blame python and django
@@ -170,10 +189,14 @@ const fetchAssignments = async () => {
 				}),
 		);
 
+		filterParams.limit = itemsPerPage ? itemsPerPage : 10;
+		filterParams.offset = (page ? page - 1 : 0) * itemsPerPage;
 		// Only fetch if at least one filter is active
 		if (Object.keys(filterParams).length > 0) {
 			console.log(filterParams);
-			assignments.value = await getAssignments(filterParams);
+			const assignmentsListing = await getAssignments(filterParams);
+			assignmentLen.value = assignmentsListing.count;
+			assignments.value = assignmentsListing.results;
 		} else {
 			assignments.value = []; // Clear the table when no filters
 		}

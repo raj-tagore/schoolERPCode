@@ -61,4 +61,6 @@ api.interceptors.response.use(
     },
 );
 
-export default api;
+const itemsPerPage = 10;
+
+export { api, itemsPerPage };

@@ -1,4 +1,4 @@
-import api from "@/services/api";
+import { api } from "@/services/api";
 
 const images = [
     require("@/assets/classrooms/classroom1.png"),
@@ -14,7 +14,7 @@ const getClassrooms = async (filter) =>
         await api.get(
             `api/allocation/classrooms/all/${filter ? "?" : ""}${filter ? new URLSearchParams(filter) : ""}`,
         )
-    ).data;
+    ).data.results;
 
 
 const updateClassroom = async (classroom) => {

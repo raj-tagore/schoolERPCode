@@ -1,11 +1,11 @@
-import api from "@/services/api";
+import { api } from "@/services/api";
 
 const getAnnouncements = async (filter) =>
     (
         await api.get(
             `api/announcements/all${filter ? "?" : ""}${filter ? new URLSearchParams(filter) : ""}`,
         )
-    ).data;
+    ).data.results;
 
 const getAnnouncement = async (id) => {
     try {

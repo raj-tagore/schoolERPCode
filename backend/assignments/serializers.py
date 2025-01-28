@@ -13,6 +13,7 @@ class AssignmentSerializer(serializers.ModelSerializer):
             "release_at",
             "due_at",
             "subject",
+            "subject_name",
         ]
 
 
@@ -26,6 +27,7 @@ class BasicAssignmentSerializer(serializers.ModelSerializer):
             "release_at",
             "due_at",
             "subject",
+            "subject_name",
         ]
 
 
