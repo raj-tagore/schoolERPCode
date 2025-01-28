@@ -53,6 +53,9 @@ const getStudentInfoFromObj = (item) => ({
     value: item.id,
 });
 
+const getStudentStats = async () => 
+    (await api.get('api/accounts/students/stats/')).data;
+
 export { 
     getTeachers, 
     getTeacher,
@@ -65,4 +68,5 @@ export {
     getStudentInfoFromObj,
 	updateStudent,
 	updateUser,
+    getStudentStats,
 };
