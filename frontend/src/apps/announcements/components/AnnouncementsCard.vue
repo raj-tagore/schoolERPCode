@@ -7,7 +7,7 @@
                 <v-card-title class="text-body-2">{{ announcement.title }}</v-card-title>
                 <v-card-subtitle>{{ announcement.description }}</v-card-subtitle>
                 <v-card-text class="text-grey-darken-2">
-                    <p>Signed by: {{ announcement.signed_by.user.full_name }}</p>
+                    <p>Signed by: {{ announcement.signed_by_details.user.full_name }}</p>
                 </v-card-text>
             </v-card>
         </v-card-text>
