@@ -51,18 +51,9 @@
 				</v-col>
 			</v-row>
 		</v-card-title>
-		<!-- Mobile view: Cards -->
-		<v-data-table-server
-			class="d-md-none"
-			:items-length="assignmentLen"
-			:headers="mobileHeaders"
-			:items="assignments"
-			@update:options="fetchAssignments"
-			:search="search"
-			:loading="loading"
-		>
-			<template #headers={}></template>
-			<template #item={item}>
+		<ResponsiveDataTable :headers="headers" :fetch="getAssignments" :filters="filters">
+			<!--- Mobile template --->
+			<template #mobile="{ item }">
 				<v-card
 					class="ma-2 pa-2"
 					variant="outlined"
@@ -94,26 +85,18 @@
 					</v-card-text>
 				</v-card>
 			</template>
-		</v-data-table-server>
-		<v-data-table-server
-			class="d-none d-md-block"
-			:items-length="assignmentLen"
-			:headers="headers"
-			:items="assignments"
-			@update:options="fetchAssignments"
-			:search="search"
-			:loading="loading"
-		>
-			<template #item.release_at="{ item }">
+
+			<!--- Desktop template --->
+			<template #release_at="{ item }">
 				{{ formatDate(item.release_at) }}
 			</template>
-			<template #item.due_at="{ item }">
+			<template #due_at="{ item }">
 				{{ formatDate(item.due_at) }}
 			</template>
-			<template #item.subject_name="{ item }">
-				{{  item.subject_name }}
+			<template #subject_name="{ item }">
+				{{  item.subject_details.name }}
 			</template>
-			<template #item.actions="{ item }">
+			<template #actions="{ item }">
 				<v-btn
 					icon="mdi-arrow-right"
 					size="small"
@@ -121,8 +104,7 @@
 					:to="{name: 'Assignment', params: {assignmentId: item.id}}"
 				></v-btn>
 			</template>
-		</v-data-table-server>
-
+		</ResponsiveDataTable>
 	</v-card>
 </template>
 
@@ -134,6 +116,7 @@ import {
 } from "@/apps/classrooms/api.js";
 import { getSubjectInfoFromObj, getSubjects } from "@/apps/subjects/api.js";
 import { onMounted, ref, watch } from "vue";
+import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
 
 const filters = ref({
 	title: "",
@@ -151,61 +134,10 @@ const headers = [
 	{ title: "Actions", key: "actions", sortable: false },
 ];
 
-const mobileHeaders = [
-	{ title: "", key: "id" },
-];
-
 const assignments = ref([]);
 
 const classrooms = ref([]);
 const subjects = ref([]);
-
-const loading = ref(false);
-
-const assignmentLen = ref(10);
-
-const search = ref({});
-
-watch(filters.value, (f) => {
-	search.value = structuredClone(f);
-});
-
-const fetchAssignments = async ({ page, itemsPerPage, search }) => {
-	loading.value = true;
-	try {
-		// Filter out falsy values
-		const filterParams = Object.fromEntries(
-			Object.entries(search)
-				.filter(([_, value]) => value)
-				.map(([key, value]) => {
-					// I blame python and django
-					if (typeof value === "boolean") {
-						if (value) {
-							return [key, "True"];
-						}
-						return [key, "False"];
-					}
-					return [key, value];
-				}),
-		);
-
-		filterParams.limit = itemsPerPage ? itemsPerPage : 10;
-		filterParams.offset = (page ? page - 1 : 0) * itemsPerPage;
-		// Only fetch if at least one filter is active
-		if (Object.keys(filterParams).length > 0) {
-			console.log(filterParams);
-			const assignmentsListing = await getAssignments(filterParams);
-			assignmentLen.value = assignmentsListing.count;
-			assignments.value = assignmentsListing.results;
-		} else {
-			assignments.value = []; // Clear the table when no filters
-		}
-	} catch (error) {
-		console.error("Error fetching assignments:", error);
-	} finally {
-		loading.value = false;
-	}
-};
 
 // Properly parses the date string, Date() constructor doesn't work well with ISO strings
 const formatDate = (dateString) =>
