@@ -10,14 +10,15 @@
                     class="ma-2 pa-2 border"
                 >
                     <v-list-item-content>
-                        <v-list-item-title>{{ announcement.title }}</v-list-item-title>
-                        <v-list-item-subtitle class="mb-2">{{ announcement.description }}</v-list-item-subtitle>
+                        <v-list-item-title>{{ announcement?.title || 'Untitled' }}</v-list-item-title>
+                        <v-list-item-subtitle class="mb-2">{{ announcement?.description || 'No description available' }}</v-list-item-subtitle>
                         <v-list-item-text class="text-end">
-                            <p>Signed by: {{ announcement.signed_by_details.user.full_name }}</p>
+                            <p>Signed by: {{ announcement?.signed_by_details?.user_details?.full_name || 'Unknown' }}</p>
                         </v-list-item-text>
                     </v-list-item-content>
                     <template v-slot:append>
                         <v-btn 
+                            v-if="announcement?.id"
                             icon="mdi-arrow-right"
                             variant="flat"
                             border
@@ -27,6 +28,9 @@
                     </template>
                 </v-list-item>
             </v-list>
+            <div v-if="!AnnouncementsData?.length" class="text-center pa-4">
+                No announcements available
+            </div>
         </v-card-text>
     </v-card>
 </template>

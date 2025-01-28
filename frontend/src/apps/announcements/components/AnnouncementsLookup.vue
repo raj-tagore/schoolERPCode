@@ -8,7 +8,7 @@
             v-model="filters.title"
             label="Search by title"
             density="comfortable"
-            @input="fetchAnnouncements"
+            @update:model-value="fetchAnnouncements"
             hide-details
           ></v-text-field>
         </v-col>
@@ -94,7 +94,7 @@
             </div>
             <div class="d-flex align-center justify-space-between">
               <span class="text-caption">Signed By:</span>
-              <span>{{ item.signed_by?.user.full_name }}</span>
+              <span>{{ item.signed_by_details?.user_details?.full_name }}</span>
             </div>
           </div>
         </v-card-text>
@@ -115,7 +115,7 @@
         {{ formatDate(item.expiry_at) }}
       </template>
       <template #item.signed_by="{ item }">
-        {{ item.signed_by?.user.full_name }}
+        {{ item.signed_by_details?.user_details?.full_name }}
       </template>
       <template #item.actions="{ item }">
         <v-btn

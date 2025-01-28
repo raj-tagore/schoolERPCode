@@ -1,19 +1,19 @@
 import { api } from "@/services/api";
 
 const getTeachers = async (filter) =>
-    (await api.get(`api/accounts/teachers/all`, { params: filter })).data;
+    (await api.get(`api/accounts/teachers/all`, { params: filter })).data.results;
 
 const getTeacher = async (id) =>
     (await api.get(`api/accounts/teachers/${id}`)).data;
 
 const getStudents = async (filter) =>
-    (await api.get(`api/accounts/students/all`, { params: filter })).data;
+    (await api.get(`api/accounts/students/all`, { params: filter })).data.results;
 
 const getStudent = async (id) =>
     (await api.get(`api/accounts/students/${id}`)).data;
 
 const getParents = async (filter) =>
-    (await api.get(`api/accounts/parents/all`, { params: filter })).data;
+    (await api.get(`api/accounts/parents/all`, { params: filter })).data.results;
 
 const getParent = async (id) =>
     (await api.get(`api/accounts/parents/${id}`)).data;

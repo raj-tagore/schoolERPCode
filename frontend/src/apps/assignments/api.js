@@ -1,7 +1,7 @@
 import { api } from "@/services/api";
 
 const getAssignments = async (filter) =>
-    (await api.get(`api/assignments/all`, { params: filter })).data;
+    (await api.get(`api/assignments/all`, { params: filter })).data.results;
 
 const getAssignment = async (id) =>
     (await api.get(`api/assignments/${id}`)).data;
