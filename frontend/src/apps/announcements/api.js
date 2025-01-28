@@ -5,7 +5,7 @@ const getAnnouncements = async (filter) =>
         await api.get(
             `api/announcements/all${filter ? "?" : ""}${filter ? new URLSearchParams(filter) : ""}`,
         )
-    ).data.results;
+    ).data;
 
 const getAnnouncement = async (id) => {
     try {

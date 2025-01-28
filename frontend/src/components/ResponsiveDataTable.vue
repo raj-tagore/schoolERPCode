@@ -54,7 +54,7 @@ const props = defineProps({
 
 const search = ref({});
 
-watch(props.filters.value, (f) => {
+watch(props.filters, (f) => {
 	search.value = structuredClone(f);
 });
 
