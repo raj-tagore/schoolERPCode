@@ -1,33 +1,12 @@
 import { api } from "@/services/api";
 
 const getAnnouncements = async (filter) =>
-    (
-        await api.get(
-            `api/announcements/all${filter ? "?" : ""}${filter ? new URLSearchParams(filter) : ""}`,
-        )
-    ).data.results;
+    (await api.get(`api/announcements/all`, { params: filter })).data;
 
-const getAnnouncement = async (id) => {
-    try {
-        const response = await api.get(`api/announcements/${id}`);
-        return response.data;
-    } catch (error) {
-        console.error('Failed to fetch announcement:', error);
-        throw error;
-    }
-};
+const getAnnouncement = async (id) =>
+    (await api.get(`api/announcements/${id}`)).data;
 
-const updateAnnouncement = async (id, data) => {
-    try {
-        const response = await api.put(`api/announcements/${id}/`, data);
-        return { success: true, data: response.data };
-    } catch (error) {
-        console.error('Failed to update announcement:', error);
-        return { 
-            success: false, 
-            error: error.response?.data || 'Failed to update announcement'
-        };
-    }
-};
+const updateAnnouncement = async (id, data) =>
+    await api.put(`api/announcements/${id}/`, data);
 
 export { getAnnouncements, getAnnouncement, updateAnnouncement };
