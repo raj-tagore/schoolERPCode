@@ -7,9 +7,10 @@ from accounts.models import Student, Teacher
 from accounts.serializers import TeacherSerializer
 
 class ClassroomSerializer(serializers.ModelSerializer):
-    students = serializers.PrimaryKeyRelatedField(many=True,queryset=Student.objects.all(),required=False)
-    class_teacher = TeacherSerializer(required=False)
-    other_teachers = serializers.PrimaryKeyRelatedField(many=True,queryset=Teacher.objects.all(),required=False)
+    students = serializers.PrimaryKeyRelatedField(many=True, queryset=Student.objects.all(), required=False)
+    class_teacher = serializers.PrimaryKeyRelatedField(queryset=Teacher.objects.all(), required=False)
+    class_teacher_details = TeacherSerializer(source='class_teacher', read_only=True)
+    other_teachers = serializers.PrimaryKeyRelatedField(many=True, queryset=Teacher.objects.all(), required=False)
 
     class Meta:
         model = Classroom
@@ -20,6 +21,7 @@ class ClassroomSerializer(serializers.ModelSerializer):
             "standard",
             "students",
             "class_teacher",
+            "class_teacher_details",
             "other_teachers",
             "join_code",
         ]
@@ -50,8 +52,10 @@ class ClassroomSerializer(serializers.ModelSerializer):
 
 
 class SubjectSerializer(serializers.ModelSerializer):
-    classroom = ClassroomSerializer(required=False)
-    teacher = TeacherSerializer(required=False)
+    classroom = serializers.PrimaryKeyRelatedField(queryset=Classroom.objects.all(), required=False)
+    classroom_details = ClassroomSerializer(source='classroom', read_only=True)
+    teacher = serializers.PrimaryKeyRelatedField(queryset=Teacher.objects.all(), required=False)
+    teacher_details = TeacherSerializer(source='teacher', read_only=True)
 
     class Meta:
         model = Subject
@@ -61,5 +65,7 @@ class SubjectSerializer(serializers.ModelSerializer):
             "is_active",
             "description",
             "classroom",
+            "classroom_details",
             "teacher",
+            "teacher_details",
         ]

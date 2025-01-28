@@ -1,5 +1,5 @@
 import SubjectPage from "@/apps/subjects/views/SubjectPage.vue"
-import api from "@/services/api"
+import { api } from "@/services/api"
 import SubjectsPage from "./views/SubjectsPage.vue"
 import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue"
 

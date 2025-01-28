@@ -1,11 +1,11 @@
-import api from "@/services/api";
+import { api } from "@/services/api";
 
 const getTeachers = async (filter) =>
     (
         await api.get(
             `api/accounts/teachers/all${filter ? "?" : ""}${filter ? new URLSearchParams(filter) : ""}`,
         )
-    ).data;
+    ).data.results;
 
 const getTeacher = async (id) =>
     (await api.get(`api/accounts/teachers/${id}`)).data;
@@ -15,7 +15,7 @@ const getStudents = async (filter) =>
         await api.get(
             `api/accounts/students/all${filter ? "?" : ""}${filter ? new URLSearchParams(filter) : ""}`,
         )
-    ).data;
+    ).data.results;
 
 const getStudent = async (id) =>
     (await api.get(`api/accounts/students/${id}`)).data;
@@ -29,7 +29,7 @@ const getParents = async (filter) =>
         await api.get(
             `api/accounts/parents/all${filter ? "?" : ""}${filter ? new URLSearchParams(filter) : ""}`,
         )
-    ).data;
+    ).data.results;
 
 const getParent = async (id) =>
     (await api.get(`api/accounts/parents/${id}`)).data;

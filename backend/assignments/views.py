@@ -3,7 +3,6 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
     CreateAPIView,
 )
-
 from rest_framework.viewsets import ModelViewSet
 from .models import Assignment, SubmittedAssignment
 from .serializers import (
@@ -32,6 +31,7 @@ class AllAssignments(ListAPIView):
         release_at = request.query_params.get("release_at")
         due_at = request.query_params.get("due_at")
         subject = request.query_params.get("subject")
+        classroom = request.query_params.get("classroom")
 
         if id:
             queryset = queryset.filter(id=id)
@@ -47,6 +47,8 @@ class AllAssignments(ListAPIView):
             queryset = queryset.filter(due_at=due_at)
         if subject:
             queryset = queryset.filter(subject__id=subject)
+        if classroom:
+            queryset = queryset.filter(subject__classroom__id=classroom)
         return queryset
 
 
