@@ -15,6 +15,10 @@ class Assignment(models.Model):
         related_name="assignments",
     )
 
+    @property
+    def subject_name(self):
+        return self.subject.name
+
     def __str__(self):
         return self.title
 

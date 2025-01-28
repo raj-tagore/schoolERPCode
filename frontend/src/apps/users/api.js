@@ -1,4 +1,4 @@
-import api from "@/services/api";
+import { api } from "@/services/api";
 
 const getTeachers = async (filter) =>
     (await api.get(`api/accounts/teachers/all`, { params: filter })).data;

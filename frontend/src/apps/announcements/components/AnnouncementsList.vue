@@ -13,7 +13,7 @@
                         <v-list-item-title>{{ announcement.title }}</v-list-item-title>
                         <v-list-item-subtitle class="mb-2">{{ announcement.description }}</v-list-item-subtitle>
                         <v-list-item-text class="text-end">
-                            <p>Signed by: {{ announcement.signed_by.user.full_name }}</p>
+                            <p>Signed by: {{ announcement.signed_by_details.user.full_name }}</p>
                         </v-list-item-text>
                     </v-list-item-content>
                     <template v-slot:append>

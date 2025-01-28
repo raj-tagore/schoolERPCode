@@ -1,4 +1,4 @@
-import api from "@/services/api";
+import { api } from "@/services/api";
 
 const images = [
     require("@/assets/classrooms/classroom1.png"),
