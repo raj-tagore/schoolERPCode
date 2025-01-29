@@ -80,61 +80,64 @@
 <script setup>
 import { ref, watch } from "vue";
 import { getTeachers, getStudents, getParents } from "@/apps/users/api";
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 const users = ref([]);
 const loading = ref(false);
 
 const filters = ref({
-    name: "",
-    type: null
+	name: "",
+	type: null,
 });
 
 const headers = [
-    { title: "Name", key: "user.full_name" },
-    { title: "ID", key: "identifier" },
-    { title: "", key: "actions", align: 'end', sortable: false },
+	{ title: "Name", key: "user.full_name" },
+	{ title: "ID", key: "identifier" },
+	{ title: "", key: "actions", align: "end", sortable: false },
 ];
 
 const fetchUsers = async () => {
-    loading.value = true;
-    try {
-        const filter = { name: filters.value.name };
-        let results = [];
-        
-        switch (filters.value.type) {
-            case 'teacher':
-                results = await getTeachers(filter);
-                break;
-            case 'student':
-                results = await getStudents(filter);
-                break;
-            case 'parent':
-                results = await getParents(filter);
-                break;
-            default:
-                const [teachers, students, parents] = await Promise.all([
-                    getTeachers(filter),
-                    getStudents(filter),
-                    getParents(filter)
-                ]);
-                results = [...teachers, ...students, ...parents];
-        }
-        users.value = results;
-    } catch (error) {
-        console.error("Error fetching users:", error);
-    } finally {
-        loading.value = false;
-    }
+	loading.value = true;
+	try {
+		const filter = { name: filters.value.name };
+		let results = [];
+
+		switch (filters.value.type) {
+			case "teacher":
+				results = (await getTeachers(filter)).results;
+				break;
+			case "student":
+				results = (await getStudents(filter)).results;
+				break;
+			case "parent":
+				results = (await getParents(filter)).results;
+				break;
+			default: {
+				const [teachers, students, parents] = await Promise.all([
+					getTeachers(filter),
+					getStudents(filter),
+					getParents(filter),
+				]);
+				results = [...teachers, ...students, ...parents];
+			}
+		}
+		users.value = results;
+	} catch (error) {
+		console.error("Error fetching users:", error);
+	} finally {
+		loading.value = false;
+	}
 };
 
 const viewAccount = (item) => {
-    if (filters.value.type === 'student' || 
-        (filters.value.type === null && item.student_no)) {
-        router.push({ name: 'Student', params: { studentId: item.id }});
-    }
-    // TODO: Add routing for teachers and parents when those routes are created
+	if (
+		filters.value.type === "student" ||
+		(filters.value.type === null && item.student_no)
+	) {
+		router.push({ name: "Student", params: { studentId: item.id } });
+	}
+	// TODO: Add routing for teachers and parents when those routes are created
 };
 
 watch(() => filters.value, fetchUsers, { deep: true });

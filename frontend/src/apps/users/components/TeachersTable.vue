@@ -36,26 +36,25 @@ import { ref, onMounted } from "vue";
 import { getTeachers } from "@/apps/users/api";
 
 const props = defineProps({
-    filter: Object
+	filter: Object,
 });
 
 const teachers = ref([]);
 const search = ref("");
 const teacher_headers = ref([
-    { title: "Name", value: "user.full_name", key: "name" },
-    {
-        title: "",
-        key: "id",
-        align: "end",
-        sortable: false,
-        value: (teacher) => `app/teachers/${teacher.id}`,
-    },
+	{ title: "Name", value: "user.full_name", key: "name" },
+	{
+		title: "",
+		key: "id",
+		align: "end",
+		sortable: false,
+		value: (teacher) => `app/teachers/${teacher.id}`,
+	},
 ]);
 
 const fetchTeachers = async () => {
-    teachers.value = await getTeachers(props.filter || {});
+	teachers.value = (await getTeachers(props.filter || {})).results;
 };
 
 onMounted(fetchTeachers);
-
 </script>

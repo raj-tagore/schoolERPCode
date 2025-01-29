@@ -15,19 +15,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { getAnnouncements } from '@/apps/announcements/api';
+import { ref, onMounted } from "vue";
+import { getAnnouncements } from "@/apps/announcements/api";
 
 const props = defineProps({
-  filter: {
-    type: Object,
-    default: () => ({})
-  }
+	filter: {
+		type: Object,
+		default: () => ({}),
+	},
 });
 
 const announcementsData = ref([]);
 
 onMounted(async () => {
-  announcementsData.value = await getAnnouncements(props.filter);
+	announcementsData.value = (await getAnnouncements(props.filter)).results;
 });
 </script>

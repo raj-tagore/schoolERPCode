@@ -54,14 +54,14 @@
 		<ResponsiveDataTable 
 			:getToFunction="(item) => ( { name : 'Assignment', params: {assignmentId: item.id}} )" 
 			:headers="headers" 
-			:fetch="getAssignmentsPaginated" 
+			:fetch="getAssignments" 
 			:filters="filters">
 		</ResponsiveDataTable>
 	</v-card>
 </template>
 
 <script setup>
-import { getAssignmentsPaginated } from "@/apps/assignments/api.js";
+import { getAssignments } from "@/apps/assignments/api.js";
 import {
 	getClassroomInfoFromObj,
 	getClassrooms,
@@ -90,7 +90,7 @@ const headers = [
 	{ title: "Title", key: "title" },
 	{ title: "Release Date", key: "release_at", formatFunc: formatDate },
 	{ title: "Due Date", key: "due_at", formatFunc: formatDate },
-	{ title: "Subject", key: "subject_details", formatFunc: (item) => item.name},
+	{ title: "Subject", key: "subject_details", formatFunc: (item) => item.name },
 	{ title: "Actions", key: "actions", sortable: false },
 ];
 
@@ -100,8 +100,8 @@ const classrooms = ref([]);
 const subjects = ref([]);
 
 onMounted(async () => {
-	classrooms.value = await getClassrooms();
-	subjects.value = await getSubjects();
+	classrooms.value = (await getClassrooms()).results;
+	subjects.value = (await getSubjects()).results;
 	// Don't fetch assignments on mount, start with empty table
 	assignments.value = [];
 });

@@ -45,7 +45,7 @@ const classroomsData = computed({
 });
 
 const fetchClassroomsData = async () => {
-	classroomsDataRaw.value = await getClassrooms();
+	classroomsDataRaw.value = (await getClassrooms()).results;
 	console.log(classroomsDataRaw);
 };
 onMounted(fetchClassroomsData);

@@ -51,7 +51,6 @@
 import { ref, onMounted } from "vue";
 import { getClassroom, updateClassroom } from "@/apps/classrooms/api";
 import { getTeachers, getTeacherInfoFromObj } from "@/apps/users/api";
-import FormCard from "@/components/FormCard.vue";
 import SubmitButton from "@/components/SubmitButton.vue";
 
 const props = defineProps({
@@ -76,7 +75,7 @@ const handleUpdate = async () => {
 
 onMounted(async () => {
 	classroom.value = await getClassroom(props.classroomId);
-	teachers.value = await getTeachers();
+	teachers.value = (await getTeachers()).results;
 });
 </script>
   

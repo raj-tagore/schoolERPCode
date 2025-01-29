@@ -40,33 +40,33 @@
 </template>
   
 <script setup>
-import { ref, onMounted } from 'vue';
-import { getTeachers } from '@/apps/users/api';
-import { updateSubject } from '@/apps/subjects/api';
-import FormCard from '@/components/FormCard.vue';
+import { ref, onMounted } from "vue";
+import { getTeachers } from "@/apps/users/api";
+import { updateSubject } from "@/apps/subjects/api";
+import FormCard from "@/components/FormCard.vue";
 
-const props = defineProps(['subject']);
+const props = defineProps(["subject"]);
 const teachers = ref([]);
 
 const teacherInfoFromObj = (item) => ({
-  title: `${item.user.full_name}`,
-  subtitle: item.identifier,
-  value: item.id,
+	title: `${item.user.full_name}`,
+	subtitle: item.identifier,
+	value: item.id,
 });
 
 const handleUpdate = async () => {
-  try {
-    console.log(props.subject); 
-    await updateSubject(props.subject);
-    return { success: true };
-  } catch (error) {
-    console.error('Failed to update subject:', error);
-    return { success: false, error };
-  }
+	try {
+		console.log(props.subject);
+		await updateSubject(props.subject);
+		return { success: true };
+	} catch (error) {
+		console.error("Failed to update subject:", error);
+		return { success: false, error };
+	}
 };
 
 onMounted(async () => {
-  teachers.value = await getTeachers();
+	teachers.value = (await getTeachers()).results;
 });
 </script>
   
