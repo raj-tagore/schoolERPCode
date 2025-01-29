@@ -68,8 +68,8 @@
 
 <script setup>
 import { onMounted, ref, watch } from "vue";
-import { useDisplay } from 'vuetify'
-const { mobile } = useDisplay()
+import { useDisplay } from "vuetify";
+const { mobile } = useDisplay();
 
 const props = defineProps({
 	headers: {
@@ -89,7 +89,7 @@ const props = defineProps({
 	},
 	forceMobile: {
 		type: Boolean,
-	}
+	},
 });
 
 const search = ref({});
@@ -108,9 +108,10 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 	loading.value = true;
 	try {
 		// Filter out falsy values
+		console.log(search);
 		const filterParams = Object.fromEntries(
 			Object.entries(search)
-				.filter(([_, value]) => (typeof value === "boolean") ? true : value )
+				.filter(([_, value]) => (typeof value === "boolean" ? true : value))
 				.map(([key, value]) => {
 					// I blame python and django
 					if (typeof value === "boolean") {
@@ -123,19 +124,17 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 				}),
 		);
 
-		if (itemsPerPage) {
-			filterParams.page_size = itemsPerPage;
-		}
-		if (page) {
-			filterParams.page = page;
-		}
 		// Only fetch if at least one filter is active
 		if (Object.keys(filterParams).length > 0) {
+			filterParams.page_size = itemsPerPage || 10;
+			filterParams.page = page || 1;
+			console.log(props.fetch);
+			console.log("Filter Params", filterParams);
 			const listing = await props.fetch(filterParams);
-			itemsLen.value = listing.total_records;
+			console.log(listing);
 			items.value = listing.results;
-		} else {
-			items.value = []; // Clear the table when no filters
+			itemsLen.value = listing.total_records;
+			console.log(items);
 		}
 	} catch (error) {
 		console.error("Error fetching items:", error);
@@ -145,6 +144,10 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 };
 
 onMounted(async () => {
-	items.value = [];
+	const listing = await props.fetch({ page_size: 10, page: 1 });
+	console.log(listing);
+	items.value = listing.results;
+	itemsLen.value = listing.total_records;
+	console.log(items);
 });
 </script>
