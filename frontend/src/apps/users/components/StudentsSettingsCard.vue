@@ -83,7 +83,7 @@ const fetchStudents = async () => {
 		if (filters.value.name) filter.name = filters.value.name;
 		if (filters.value.classroom) filter.classroom = filters.value.classroom;
 
-		students.value = await getStudents(filter);
+		students.value = (await getStudents(filter)).results;
 	} catch (error) {
 		console.error("Error fetching students:", error);
 	} finally {
@@ -92,7 +92,7 @@ const fetchStudents = async () => {
 };
 
 onMounted(async () => {
-	classrooms.value = await getClassrooms();
+	classrooms.value = (await getClassrooms()).results;
 });
 
 watch(() => filters.value, fetchStudents, { deep: true });

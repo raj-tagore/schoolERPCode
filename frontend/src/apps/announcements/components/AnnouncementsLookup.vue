@@ -110,8 +110,9 @@ const headers = [
 ];
 
 onMounted(async () => {
-	({ results: classrooms.value = await getClassrooms()});
-	({ results: subjects.value} = await getSubjects());
-	({ results: teachers.value } = await getTeachers());
+	classrooms.value = (await getClassrooms()).results;
+	subjects.value = (await getSubjects()).results;
+	teachers.value = (await getTeachers()).results;
+	// Don't fetch announcements on mount, start with empty table
 });
 </script>

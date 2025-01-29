@@ -33,8 +33,8 @@ import { getClassrooms, getClassroomImage } from "../api";
 const props = defineProps({
 	filter: {
 		type: Object,
-		default: () => ({})
-	}
+		default: () => ({}),
+	},
 });
 
 const classrooms = ref([]);
@@ -43,11 +43,7 @@ const totalPages = ref(0);
 const currentPage = ref(1);
 
 const fetchClassrooms = async () => {
-	const response = await getClassrooms(props.filter);
-	classrooms.value = response.results;
-	totalRecords.value = response.total_records;
-	totalPages.value = response.total_pages;
-	currentPage.value = response.current_page;
+	classrooms.value = (await getClassrooms(props.filter)).results;
 };
 
 // Watch for changes in the filter

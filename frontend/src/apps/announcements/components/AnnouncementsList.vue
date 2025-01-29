@@ -18,7 +18,7 @@
                     </v-list-item-content>
                     <template v-slot:append>
                         <v-btn 
-                            v-if="announcement?.id"
+                            v-if="announcement"
                             icon="mdi-arrow-right"
                             variant="flat"
                             border
@@ -36,22 +36,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { getAnnouncements } from '@/apps/announcements/api';
+import { ref, onMounted } from "vue";
+import { getAnnouncements } from "@/apps/announcements/api";
 
 const props = defineProps({
-    filter: {
-        type: Object,
-        default: () => ({})
-    },
-    title: String,
-    subtitle: String,
+	filter: {
+		type: Object,
+		default: () => ({}),
+	},
+	title: String,
+	subtitle: String,
 });
 
 const AnnouncementsData = ref([]);
 
 onMounted(async () => {
-    const response = await getAnnouncements(props.filter);
-    AnnouncementsData.value = response.results;
+	AnnouncementsData.value = (await getAnnouncements(props.filter)).results;
 });
 </script>

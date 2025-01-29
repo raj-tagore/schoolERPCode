@@ -62,35 +62,33 @@ const classrooms = ref([]);
 const loading = ref(false);
 
 const filters = ref({
-  name: "",
-  classroom: null
+	name: "",
+	classroom: null,
 });
 
 const headers = [
-  { title: "Name", key: "user_details.full_name" },
-  { title: "Student No", key: "student_no" },
-  { title: "", key: "actions", align: 'end', sortable: false },
+	{ title: "Name", key: "user_details.full_name" },
+	{ title: "Student No", key: "student_no" },
+	{ title: "", key: "actions", align: "end", sortable: false },
 ];
 
 const fetchStudents = async () => {
-  loading.value = true;
-  try {
-    const filter = {};
-    if (filters.value.name) filter.name = filters.value.name;
-    if (filters.value.classroom) filter.classroom = filters.value.classroom;
-    
-    const response = await getStudents(filter);
-    students.value = response.results;
-  } catch (error) {
-    console.error("Error fetching students:", error);
-  } finally {
-    loading.value = false;
-  }
+	loading.value = true;
+	try {
+		const filter = {};
+		if (filters.value.name) filter.name = filters.value.name;
+		if (filters.value.classroom) filter.classroom = filters.value.classroom;
+
+		students.value = (await getStudents(filter)).results;
+	} catch (error) {
+		console.error("Error fetching students:", error);
+	} finally {
+		loading.value = false;
+	}
 };
 
 onMounted(async () => {
-  const response = await getClassrooms();
-  classrooms.value = response.results;
+	classrooms.value = (await getClassrooms()).results;
 });
 
 watch(() => filters.value, fetchStudents, { deep: true });

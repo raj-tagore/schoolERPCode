@@ -75,7 +75,7 @@ const handleUpdate = async () => {
 
 onMounted(async () => {
 	classroom.value = await getClassroom(props.classroomId);
-	teachers.value = await getTeachers();
+	teachers.value = (await getTeachers()).results;
 });
 </script>
   

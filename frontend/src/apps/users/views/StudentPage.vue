@@ -72,7 +72,8 @@ const props = defineProps({
 });
 
 const fetchDetails = async () => {
-  student.value = await getStudent(props.studentId);
+  student.value = ( await getStudent(props.studentId) ).results;
+  studentClassrooms.value = ( await getClassrooms({ student: props.studentId }) ).results;
 };
 
 onMounted(fetchDetails);

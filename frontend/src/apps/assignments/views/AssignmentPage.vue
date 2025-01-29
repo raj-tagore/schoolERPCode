@@ -26,7 +26,7 @@
 
 									<v-spacer class="pt-5"></v-spacer>
 									<v-divider :thickness="5"></v-divider>
-									<div v-if="assignment.subject">
+									<div v-if="assignment.subject_details">
 										<SubjectsList title="Subject" :filter="{id: assignment.subject}"></SubjectsList>
 									</div>
 								</v-card>
