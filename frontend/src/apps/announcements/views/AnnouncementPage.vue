@@ -23,8 +23,8 @@
                   <h4 class="text-subtitle-1 mt-4">Signed by:</h4>
                     <v-list lines="2">
                       <v-list-item 
-                        :title="announcement?.signed_by?.user.full_name"
-                        :subtitle="announcement?.signed_by?.user.email"
+                        :title="announcement?.signed_by_details?.user_details?.full_name"
+                        :subtitle="announcement?.signed_by_details?.user_details?.email"
                         :variant="'flat'"
                         rounded="lg"
                         :to="'#'"

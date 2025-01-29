@@ -11,7 +11,7 @@
                     <v-list-item-content>
                         <v-list-item-title>{{ subject.name }}</v-list-item-title>
                         <v-list-item-subtitle>
-                            {{ subject.teacher?.user?.full_name }}
+                            {{ subject.teacher_details?.user_details?.full_name }}
                         </v-list-item-subtitle>
                     </v-list-item-content>
                     <template v-slot:append>

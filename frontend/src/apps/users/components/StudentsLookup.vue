@@ -35,7 +35,7 @@
     >
       <template #item="{ item }">
         <tr>
-          <td>{{ item.user.full_name }}</td>
+          <td>{{ item.user_details.full_name }}</td>
           <td>{{ item.student_no }}</td>
           <td class="text-right">
             <v-btn
@@ -67,7 +67,7 @@ const filters = ref({
 });
 
 const headers = [
-  { title: "Name", key: "user.full_name" },
+  { title: "Name", key: "user_details.full_name" },
   { title: "Student No", key: "student_no" },
   { title: "", key: "actions", align: 'end', sortable: false },
 ];
