@@ -147,7 +147,7 @@ def add_classroom(standard: int, section: int) -> int:
 
     for subject_name, s_teachers in subject_teachers.items():
         teacher = None
-        for s_teacher in s_teachers:
+        for s_teacher in map(lambda t: t["id"], s_teachers):
             if s_teacher in teachers:
                 teacher = s_teacher
                 break
