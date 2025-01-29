@@ -68,12 +68,11 @@ const student = ref({});
 const tabs = ref(null);
 
 const props = defineProps({
-  studentId: Number,
+	studentId: Number,
 });
 
 const fetchDetails = async () => {
-  student.value = ( await getStudent(props.studentId) ).results;
-  studentClassrooms.value = ( await getClassrooms({ student: props.studentId }) ).results;
+	student.value = await getStudent(props.studentId);
 };
 
 onMounted(fetchDetails);
