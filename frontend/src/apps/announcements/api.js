@@ -1,7 +1,7 @@
 import { api } from "@/services/api";
 
 const getAnnouncements = async (filter) =>
-    (await api.get(`api/announcements/all`, { params: filter })).data.results;
+    (await api.get(`api/announcements/all`, { params: filter })).data;
 
 const getAnnouncement = async (id) =>
     (await api.get(`api/announcements/${id}`)).data;

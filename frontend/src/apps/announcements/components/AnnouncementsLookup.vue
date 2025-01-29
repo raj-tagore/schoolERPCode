@@ -102,11 +102,15 @@
     </div>
 
     <!-- Desktop view: Data Table -->
-    <v-data-table
+    <v-data-table-server
       class="d-none d-md-block"
       :headers="headers"
       :items="announcements"
+      :items-length="totalRecords || 0"
       :loading="loading"
+      v-model:items-per-page="itemsPerPage"
+      v-model:page="page"
+      @update:options="handleTableUpdate"
     >
       <template #item.release_at="{ item }">
         {{ formatDate(item.release_at) }}
@@ -125,7 +129,7 @@
           :to="{ name: 'Announcement', params: { announcementId: item.id }}"
         ></v-btn>
       </template>
-    </v-data-table>
+    </v-data-table-server>
   </v-card>
 </template>
 
@@ -141,6 +145,9 @@ const classrooms = ref([]);
 const subjects = ref([]);
 const teachers = ref([]);
 const loading = ref(false);
+const totalRecords = ref(0);
+const page = ref(1);
+const itemsPerPage = ref(10);
 
 const filters = ref({
   title: "",
@@ -169,7 +176,10 @@ const formatDate = (dateString) => {
 const fetchAnnouncements = async () => {
   loading.value = true;
   try {
-    const filterParams = {};
+    const filterParams = {
+      page: page.value,
+      page_size: itemsPerPage.value,
+    };
     
     if (filters.value.title) filterParams.title = filters.value.title;
     if (filters.value.classroom) filterParams.classroom = filters.value.classroom;
@@ -177,24 +187,25 @@ const fetchAnnouncements = async () => {
     if (filters.value.signed_by) filterParams.signed_by = filters.value.signed_by;
     if (filters.value.is_school_wide) filterParams.is_school_wide = filters.value.is_school_wide;
 
-    // Only fetch if at least one filter is active
-    if (Object.keys(filterParams).length > 0) {
-      announcements.value = await getAnnouncements(filterParams);
-    } else {
-      announcements.value = [];  // Clear the table when no filters
-    }
+    const response = await getAnnouncements(filterParams);
+    announcements.value = response.results;
+    totalRecords.value = response.total_records;
   } catch (error) {
     console.error("Error fetching announcements:", error);
+    announcements.value = [];
   } finally {
     loading.value = false;
   }
 };
 
+const handleTableUpdate = () => {
+  fetchAnnouncements();
+};
+
 onMounted(async () => {
+  fetchAnnouncements();
   classrooms.value = await getClassrooms();
   subjects.value = await getSubjects();
   teachers.value = await getTeachers();
-  // Don't fetch announcements on mount, start with empty table
-  announcements.value = [];
 });
 </script>
