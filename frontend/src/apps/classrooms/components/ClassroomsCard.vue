@@ -38,9 +38,16 @@ const props = defineProps({
 });
 
 const classrooms = ref([]);
+const totalRecords = ref(0);
+const totalPages = ref(0);
+const currentPage = ref(1);
 
 const fetchClassrooms = async () => {
-	classrooms.value = await getClassrooms(props.filter);
+	const response = await getClassrooms(props.filter);
+	classrooms.value = response.results;
+	totalRecords.value = response.total_records;
+	totalPages.value = response.total_pages;
+	currentPage.value = response.current_page;
 };
 
 // Watch for changes in the filter

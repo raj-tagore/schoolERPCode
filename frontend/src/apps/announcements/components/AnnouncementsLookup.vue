@@ -63,7 +63,7 @@
 		<ResponsiveDataTable 
 			:getToFunction="(item) => ({name: 'Announcement', params: {announcementId: item.id}})" 
 			:headers="headers" 
-			:fetch="getAnnouncementsPaginated" 
+			:fetch="getAnnouncements" 
 			:filters="filters"></ResponsiveDataTable>
 
   </v-card>
@@ -71,7 +71,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { getAnnouncementsPaginated } from "../api";
+import { getAnnouncements } from "../api";
 import { getClassrooms, getClassroomInfoFromObj } from "@/apps/classrooms/api";
 import { getSubjects, getSubjectInfoFromObj } from "@/apps/subjects/api";
 import { getTeachers, getTeacherInfoFromObj } from "@/apps/users/api";
@@ -110,9 +110,8 @@ const headers = [
 ];
 
 onMounted(async () => {
-	classrooms.value = await getClassrooms();
-	subjects.value = await getSubjects();
-	teachers.value = await getTeachers();
-	// Don't fetch announcements on mount, start with empty table
+	({ results: classrooms.value = await getClassrooms()});
+	({ results: subjects.value} = await getSubjects());
+	({ results: teachers.value } = await getTeachers());
 });
 </script>

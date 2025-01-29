@@ -53,7 +53,8 @@ const teacher_headers = ref([
 ]);
 
 const fetchTeachers = async () => {
-    teachers.value = await getTeachers(props.filter || {});
+    const response = await getTeachers(props.filter || {});
+    teachers.value = response.results;
 };
 
 onMounted(fetchTeachers);

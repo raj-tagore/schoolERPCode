@@ -68,9 +68,7 @@
 
 <script setup>
 import { onMounted, ref, watch } from "vue";
-
 import { useDisplay } from 'vuetify'
-
 const { mobile } = useDisplay()
 
 const props = defineProps({
@@ -95,9 +93,7 @@ const props = defineProps({
 });
 
 const search = ref({});
-
 const title = ref(props.headers[0]);
-
 const data_headers = ref(props.headers.slice(1, props.headers.length - 1));
 
 watch(props.filters, (f) => {
@@ -135,7 +131,6 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 		}
 		// Only fetch if at least one filter is active
 		if (Object.keys(filterParams).length > 0) {
-			console.log(filterParams);
 			const listing = await props.fetch(filterParams);
 			itemsLen.value = listing.total_records;
 			items.value = listing.results;

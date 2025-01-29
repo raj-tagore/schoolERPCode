@@ -43,7 +43,8 @@ const props = defineProps({
 
 const subjects = ref([]);
 const fetchSubjects = async () => {
-  subjects.value = await getSubjects(props.filter);
+  const response = await getSubjects(props.filter);
+  subjects.value = response.results;
 };
 onMounted(fetchSubjects);
 </script>

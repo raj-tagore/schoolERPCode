@@ -41,7 +41,7 @@
       </v-row>
     <SubmitButton 
       :onSubmit="handleUpdate"
-    ></SubmitButton>
+    />
     </v-card-text>
     </v-card>
   </v-container>
@@ -51,7 +51,6 @@
 import { ref, onMounted } from "vue";
 import { getClassroom, updateClassroom } from "@/apps/classrooms/api";
 import { getTeachers, getTeacherInfoFromObj } from "@/apps/users/api";
-import FormCard from "@/components/FormCard.vue";
 import SubmitButton from "@/components/SubmitButton.vue";
 
 const props = defineProps({

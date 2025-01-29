@@ -51,6 +51,7 @@ const props = defineProps({
 const AnnouncementsData = ref([]);
 
 onMounted(async () => {
-    AnnouncementsData.value = await getAnnouncements(props.filter);
+    const response = await getAnnouncements(props.filter);
+    AnnouncementsData.value = response.results;
 });
 </script>

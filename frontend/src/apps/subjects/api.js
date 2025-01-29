@@ -1,10 +1,7 @@
 import { api } from "@/services/api";
 
-const getSubjectsPaginated = async (filter) =>
-    (await api.get("api/allocation/subjects/all", { params: filter })).data;
-
 const getSubjects = async (filter) =>
-    (await getSubjectsPaginated({ page_size: 10000, ...filter })).results;
+    (await api.get("api/allocation/subjects/all", { params: { page_size: 10000, ...filter } })).data;
 
 const getSubject = async (id) =>
     (await api.get(`api/allocation/subjects/${id}`)).data;
@@ -26,7 +23,6 @@ const updateSubject = async (subject) => {
 
 export {
     getSubjects,
-    getSubjectsPaginated,
     getSubject,
     getSubjectInfoFromObj,
     updateSubject,
