@@ -28,13 +28,13 @@ const updateUser = async (user) =>
     await api.put(`api/users/${user.id}/`, user);
 
 const getTeacherInfoFromObj = (item) => ({
-    title: `${item.user.full_name}`,
+    title: `${item.user_details.full_name}`,
     subtitle: item.identifier,
     value: item.id,
 });
 
 const getStudentInfoFromObj = (item) => ({
-    title: `${item.user.full_name}`,
+    title: `${item.user_details.full_name}`,
     subtitle: item.identifier,
     value: item.id,
 });
