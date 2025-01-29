@@ -81,13 +81,17 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 				}),
 		);
 
-		filterParams.limit = itemsPerPage ? itemsPerPage : 10;
-		filterParams.offset = (page ? page - 1 : 0) * itemsPerPage;
+		if (itemsPerPage) {
+			filterParams.page_size = itemsPerPage;
+		}
+		if (page) {
+			filterParams.page = page;
+		}
 		// Only fetch if at least one filter is active
 		if (Object.keys(filterParams).length > 0) {
 			console.log(filterParams);
 			const listing = await props.fetch(filterParams);
-			itemsLen.value = listing.count;
+			itemsLen.value = listing.total_records;
 			items.value = listing.results;
 		} else {
 			items.value = []; // Clear the table when no filters

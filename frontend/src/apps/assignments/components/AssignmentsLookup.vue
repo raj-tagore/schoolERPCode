@@ -51,7 +51,7 @@
 				</v-col>
 			</v-row>
 		</v-card-title>
-		<ResponsiveDataTable :headers="headers" :fetch="getAssignments" :filters="filters">
+		<ResponsiveDataTable :headers="headers" :fetch="getAssignmentsListing" :filters="filters">
 			<!--- Mobile template --->
 			<template #mobile="{ item }">
 				<v-card
@@ -109,13 +109,13 @@
 </template>
 
 <script setup>
-import { getAssignments } from "@/apps/assignments/api.js";
+import { getAssignmentsListing } from "@/apps/assignments/api.js";
 import {
 	getClassroomInfoFromObj,
 	getClassrooms,
 } from "@/apps/classrooms/api.js";
 import { getSubjectInfoFromObj, getSubjects } from "@/apps/subjects/api.js";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
 
 const filters = ref({

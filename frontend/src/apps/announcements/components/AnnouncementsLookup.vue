@@ -60,7 +60,7 @@
       </v-row>
     </v-card-title>
 
-    <ResponsiveDataTable :headers="headers" :fetch="getAnnouncements" :filters="filters">
+    <ResponsiveDataTable :headers="headers" :fetch="getAnnouncementsListing" :filters="filters">
 
       <template #mobile="{item}">
 
@@ -121,7 +121,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { getAnnouncements } from "../api";
+import { getAnnouncementsListing } from "../api";
 import { getClassrooms, getClassroomInfoFromObj } from "@/apps/classrooms/api";
 import { getSubjects, getSubjectInfoFromObj } from "@/apps/subjects/api";
 import { getTeachers, getTeacherInfoFromObj } from "@/apps/users/api";
