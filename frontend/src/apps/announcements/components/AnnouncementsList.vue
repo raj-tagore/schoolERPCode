@@ -18,7 +18,7 @@
                     </v-list-item-content>
                     <template v-slot:append>
                         <v-btn 
-                            v-if="announcement?.id"
+                            v-if="announcement"
                             icon="mdi-arrow-right"
                             variant="flat"
                             border
