@@ -60,61 +60,11 @@
       </v-row>
     </v-card-title>
 
-    <ResponsiveDataTable :headers="headers" :fetch="getAnnouncementsListing" :filters="filters">
-
-      <template #mobile="{item}">
-
-        <!-- Mobile view: Cards -->
-        <v-card
-          class="ma-2 pa-2"
-          variant="outlined"
-        >
-          <div class="d-flex align-center justify-space-between">
-            <v-card-title class="text-subtitle-1">{{ item.title }}</v-card-title>
-            <v-btn
-              icon="mdi-arrow-right"
-              size="small"
-              variant="outlined"
-              :to="{ name: 'Announcement', params: { announcementId: item.id }}"
-            ></v-btn>
-          </div>
-          <v-card-text>
-            <div class="d-flex flex-column gap-1">
-              <div class="d-flex align-center justify-space-between">
-                <span class="text-caption">Release:</span>
-                <span>{{ formatDate(item.release_at) }}</span>
-              </div>
-              <div class="d-flex align-center justify-space-between">
-                <span class="text-caption">Expiry:</span>
-                <span>{{ formatDate(item.expiry_at) }}</span>
-              </div>
-              <div class="d-flex align-center justify-space-between">
-                <span class="text-caption">Signed By:</span>
-                <span>{{ item.signed_by_details?.user_details.full_name }}</span>
-              </div>
-            </div>
-          </v-card-text>
-        </v-card>
-      </template>
-      <!-- Desktop view: Data Table -->
-      <template #release_at="{ item }">
-        {{ formatDate(item.release_at) }}
-      </template>
-      <template #expiry_at="{ item }">
-        {{ formatDate(item.expiry_at) }}
-      </template>
-      <template #signed_by="{ item }">
-        {{ item.signed_by_details?.user_details.full_name }}
-      </template>
-      <template #actions="{ item }">
-        <v-btn
-          icon="mdi-arrow-right"
-          size="small"
-          variant="outlined"
-          :to="{ name: 'Announcement', params: { announcementId: item.id }}"
-        ></v-btn>
-      </template>
-    </ResponsiveDataTable>
+		<ResponsiveDataTable 
+			:getToFunction="(item) => ({name: 'Announcement', params: {announcementId: item.id}})" 
+			:headers="headers" 
+			:fetch="getAnnouncementsListing" 
+			:filters="filters"></ResponsiveDataTable>
 
   </v-card>
 </template>
@@ -139,15 +89,6 @@ const filters = ref({
 	is_school_wide: null,
 });
 
-
-const headers = [
-	{ title: "Title", key: "title" },
-	{ title: "Release Date", key: "release_at" },
-	{ title: "Expiry Date", key: "expiry_at" },
-	{ title: "Signed By", key: "signed_by" },
-	{ title: "Actions", key: "actions", sortable: false },
-];
-
 const formatDate = (dateString) => {
 	return new Date(dateString).toLocaleString("en-US", {
 		year: "numeric",
@@ -155,6 +96,18 @@ const formatDate = (dateString) => {
 		day: "numeric",
 	});
 };
+
+const headers = [
+	{ title: "Title", key: "title" },
+	{ title: "Release Date", key: "release_at", formatFunc: formatDate },
+	{ title: "Expiry Date", key: "expiry_at", formatFunc: formatDate },
+	{
+		title: "Signed By",
+		key: "signed_by_details",
+		formatFunc: (signedBy) => signedBy.user_details.full_name,
+	},
+	{ title: "Actions", key: "actions", sortable: false },
+];
 
 onMounted(async () => {
 	classrooms.value = await getClassrooms();

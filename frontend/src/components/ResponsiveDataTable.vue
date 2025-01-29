@@ -10,7 +10,29 @@
 	>
 		<template #headers={}></template>
 		<template #item={item}>
-			<slot name="mobile" :item="item"></slot>
+			<v-card
+				class="ma-2 pa-2"
+				variant="outlined"
+			>
+				<div class="d-flex align-center justify-space-between">
+					<v-card-title class="text-subtitle-1">{{ item[title.key] }}</v-card-title>
+					<v-btn v-if="getToFunction"
+						icon="mdi-arrow-right"
+						size="small"
+						variant="outlined"
+						:to="getToFunction(item)"
+					></v-btn> 
+				</div>
+				<v-card-text>
+					<div class="d-flex flex-column gap-1">
+						<div v-for="header in data_headers" class="d-flex align-center justify-space-between">
+							<span class="text-caption">{{header.title}}:</span>
+							<span v-if="header.formatFunc">{{ header.formatFunc(item[header.key]) }}</span>
+							<span v-else>{{ item[header.key] }}</span>
+						</div>
+					</div>
+				</v-card-text>
+			</v-card>
 		</template>
 	</v-data-table-server>
 	<v-data-table-server
@@ -24,10 +46,20 @@
 	>
 		<template #item="{ item }">
 			<tr>
-				<td v-for="key in headers.map((h) => h.key)" :key="key">
-					<slot :name="key" :item="item">
-						{{ item[key] }}
-					</slot>
+				<td v-for="header in headers">
+					<span v-if="header.formatFunc">
+						{{ header.formatFunc(item[header.key]) }}
+					</span>
+					<v-btn
+						v-else-if="header.key === 'actions'"
+						icon="mdi-arrow-right"
+						size="small"
+						variant="outlined"
+						:to="getToFunction(item)"
+					></v-btn>
+					<span v-else>
+						{{ item[header.key] }}
+					</span>
 				</td>
 			</tr>
 		</template>
@@ -39,7 +71,7 @@ import { onMounted, ref, watch } from "vue";
 
 const props = defineProps({
 	headers: {
-		type: Object,
+		type: Array,
 		required: true,
 	},
 	fetch: {
@@ -50,9 +82,16 @@ const props = defineProps({
 		type: Object,
 		required: true,
 	},
+	getToFunction: {
+		type: Function,
+	},
 });
 
 const search = ref({});
+
+const title = ref(props.headers[0]);
+
+const data_headers = ref(props.headers.slice(1, props.headers.length - 1));
 
 watch(props.filters, (f) => {
 	search.value = structuredClone(f);
