@@ -1,6 +1,6 @@
 <template>
 	<v-data-table-server
-		v-if="mobile"
+		v-if="mobile || forceMobile"
 		:items-length="itemsLen"
 		:headers="[]"
 		:items="items"
@@ -89,6 +89,9 @@ const props = defineProps({
 	getToFunction: {
 		type: Function,
 	},
+	forceMobile: {
+		type: Boolean,
+	}
 });
 
 const search = ref({});
