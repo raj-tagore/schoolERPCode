@@ -30,20 +30,20 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { getSubjects } from "../api"
+import { getSubjects } from "../api";
 
 // Props
 const props = defineProps({
-  filter: Object, 
-  title: {
-    type: String,
-    default: "Subjects"
-  },
+	filter: Object,
+	title: {
+		type: String,
+		default: "Subjects",
+	},
 });
 
 const subjects = ref([]);
 const fetchSubjects = async () => {
-  subjects.value = await getSubjects(props.filter);
+	subjects.value = (await getSubjects(props.filter)).results;
 };
 onMounted(fetchSubjects);
 </script>

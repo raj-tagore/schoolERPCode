@@ -95,19 +95,18 @@
 </template>
 
 <script setup>
-
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
 import { getAnnouncement, updateAnnouncement } from "../api";
-import { getTeachers, getTeacherInfoFromObj } from '@/apps/users/api';
-import { getClassrooms, getClassroomInfoFromObj } from '@/apps/classrooms/api';
-import { getSubjects, getSubjectInfoFromObj } from '@/apps/subjects/api';
+import { getTeachers, getTeacherInfoFromObj } from "@/apps/users/api";
+import { getClassrooms, getClassroomInfoFromObj } from "@/apps/classrooms/api";
+import { getSubjects, getSubjectInfoFromObj } from "@/apps/subjects/api";
 import FormCard from "@/components/FormCard.vue";
 
 const props = defineProps({
-  announcementId: {
-    type: Number,
-    required: true
-  }
+	announcementId: {
+		type: Number,
+		required: true,
+	},
 });
 
 const announcement = ref(null);
@@ -116,19 +115,18 @@ const classrooms = ref([]);
 const subjects = ref([]);
 
 const formatDateForInput = (dateString) => {
-  if (!dateString) return '';
-  return new Date(dateString).toISOString().slice(0, 16);
+	if (!dateString) return "";
+	return new Date(dateString).toISOString().slice(0, 16);
 };
 
 const handleUpdate = async () => {
-  return await updateAnnouncement(props.announcementId, announcement.value);
+	return await updateAnnouncement(props.announcementId, announcement.value);
 };
 
 onMounted(async () => {
-  announcement.value = await getAnnouncement(props.announcementId);
-  teachers.value = await getTeachers();
-  classrooms.value = await getClassrooms();
-  subjects.value = await getSubjects();
+	announcement.value = await getAnnouncement(props.announcementId);
+	teachers.value = (await getTeachers()).results;
+	classrooms.value = (await getClassrooms()).results;
+	subjects.value = (await getSubjects()).results;
 });
-
 </script>

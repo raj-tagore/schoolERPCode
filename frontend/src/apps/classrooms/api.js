@@ -4,13 +4,17 @@ const images = [
     require("@/assets/classrooms/classroom1.png"),
     require("@/assets/classrooms/classroom2.png"),
     require("@/assets/classrooms/classroom3.png"),
-]; 
+];
 
 const getClassroom = async (id) =>
     (await api.get(`api/allocation/classrooms/${id}`)).data;
 
 const getClassrooms = async (filter) =>
-    (await api.get(`api/allocation/classrooms/all`, { params: filter })).data;
+    (
+        await api.get("api/allocation/classrooms/all", {
+            params: { page_size: 10000, ...filter },
+        })
+    ).data;
 
 const updateClassroom = async (classroom) =>
     await api.put(`api/allocation/classrooms/${classroom.id}/`, classroom);

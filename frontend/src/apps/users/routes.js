@@ -1,6 +1,5 @@
 import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue"
 import EmptyLayout from "@/layouts/EmptyLayout.vue"
-import UsersPage from "./views/UsersPage.vue"
 import StudentPage from "./views/StudentPage.vue"
 import StudentsPage from "./views/StudentsPage.vue"
 import { api } from "@/services/api";
@@ -16,7 +15,7 @@ export default [
         children: [
             {
                 path: "",
-                component: UsersPage,
+                component: EmptyLayout,
                 name: "Users",
             },
             {

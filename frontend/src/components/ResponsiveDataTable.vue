@@ -1,6 +1,6 @@
 <template>
 	<v-data-table-server
-		class="d-md-none"
+		v-if="mobile || forceMobile"
 		:items-length="itemsLen"
 		:headers="[]"
 		:items="items"
@@ -10,11 +10,33 @@
 	>
 		<template #headers={}></template>
 		<template #item={item}>
-			<slot name="mobile" :item="item"></slot>
+			<v-card
+				class="ma-2 pa-2"
+				variant="outlined"
+			>
+				<div class="d-flex align-center justify-space-between">
+					<v-card-title class="text-subtitle-1">{{ item[title.key] }}</v-card-title>
+					<v-btn v-if="getToFunction"
+						icon="mdi-arrow-right"
+						size="small"
+						variant="outlined"
+						:to="getToFunction(item)"
+					></v-btn> 
+				</div>
+				<v-card-text>
+					<div class="d-flex flex-column gap-1">
+						<div v-for="header in data_headers" class="d-flex align-center justify-space-between">
+							<span class="text-caption">{{header.title}}:</span>
+							<span v-if="header.formatFunc">{{ header.formatFunc(item[header.key]) }}</span>
+							<span v-else>{{ item[header.key] }}</span>
+						</div>
+					</div>
+				</v-card-text>
+			</v-card>
 		</template>
 	</v-data-table-server>
 	<v-data-table-server
-		class="d-none d-md-block"
+		v-else
 		:items-length="itemsLen"
 		:headers="headers"
 		:items="items"
@@ -24,10 +46,20 @@
 	>
 		<template #item="{ item }">
 			<tr>
-				<td v-for="key in headers.map((h) => h.key)" :key="key">
-					<slot :name="key" :item="item">
-						{{ item[key] }}
-					</slot>
+				<td v-for="header in headers">
+					<span v-if="header.formatFunc">
+						{{ header.formatFunc(item[header.key]) }}
+					</span>
+					<v-btn
+						v-else-if="header.key === 'actions'"
+						icon="mdi-arrow-right"
+						size="small"
+						variant="outlined"
+						:to="getToFunction(item)"
+					></v-btn>
+					<span v-else>
+						{{ item[header.key] }}
+					</span>
 				</td>
 			</tr>
 		</template>
@@ -36,10 +68,12 @@
 
 <script setup>
 import { onMounted, ref, watch } from "vue";
+import { useDisplay } from "vuetify";
+const { mobile } = useDisplay();
 
 const props = defineProps({
 	headers: {
-		type: Object,
+		type: Array,
 		required: true,
 	},
 	fetch: {
@@ -50,11 +84,19 @@ const props = defineProps({
 		type: Object,
 		required: true,
 	},
+	getToFunction: {
+		type: Function,
+	},
+	forceMobile: {
+		type: Boolean,
+	},
 });
 
 const search = ref({});
+const title = ref(props.headers[0]);
+const data_headers = ref(props.headers.slice(1, props.headers.length - 1));
 
-watch(props.filters.value, (f) => {
+watch(props.filters, (f) => {
 	search.value = structuredClone(f);
 });
 
@@ -66,9 +108,10 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 	loading.value = true;
 	try {
 		// Filter out falsy values
+		console.log(search);
 		const filterParams = Object.fromEntries(
 			Object.entries(search)
-				.filter(([_, value]) => value)
+				.filter(([_, value]) => (typeof value === "boolean" ? true : value))
 				.map(([key, value]) => {
 					// I blame python and django
 					if (typeof value === "boolean") {
@@ -81,16 +124,17 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 				}),
 		);
 
-		filterParams.limit = itemsPerPage ? itemsPerPage : 10;
-		filterParams.offset = (page ? page - 1 : 0) * itemsPerPage;
 		// Only fetch if at least one filter is active
 		if (Object.keys(filterParams).length > 0) {
-			console.log(filterParams);
+			filterParams.page_size = itemsPerPage || 10;
+			filterParams.page = page || 1;
+			console.log(props.fetch);
+			console.log("Filter Params", filterParams);
 			const listing = await props.fetch(filterParams);
-			itemsLen.value = listing.count;
+			console.log(listing);
 			items.value = listing.results;
-		} else {
-			items.value = []; // Clear the table when no filters
+			itemsLen.value = listing.total_records;
+			console.log(items);
 		}
 	} catch (error) {
 		console.error("Error fetching items:", error);
@@ -100,6 +144,10 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 };
 
 onMounted(async () => {
-	items.value = [];
+	const listing = await props.fetch({ page_size: 10, page: 1 });
+	console.log(listing);
+	items.value = listing.results;
+	itemsLen.value = listing.total_records;
+	console.log(items);
 });
 </script>

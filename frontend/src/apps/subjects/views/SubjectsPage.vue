@@ -1,18 +1,32 @@
 <template>
+	<v-container>
 	<v-row>
 		<v-col>
-			<AllSubjectsCard />
+			<v-text-field
+				v-model="search"
+				label="Search for your classroom"
+				density="comfortable"
+				@update:model-value="updateFilter"
+				clearable
+			/>
 		</v-col>
 	</v-row>
+	<SubjectsCard :filter="filter" />
+	</v-container>
 </template>
 
-<script>
-import { defineComponent } from "vue";
-import AllSubjectsCard from "@/apps/subjects/components/AllSubjectsCard.vue";
+<script setup>
+import SubjectsCard from "@/apps/subjects/components/SubjectsCard.vue";
+import { reactive, ref } from "vue";
 
-export default defineComponent({
-	components: {
-		AllSubjectsCard,
-	},
-});
+const search = ref("");
+const filter = reactive({});
+
+const updateFilter = (value) => {
+	if (value) {
+		filter.name = value;
+	} else {
+		delete filter.name;
+	}
+};
 </script>

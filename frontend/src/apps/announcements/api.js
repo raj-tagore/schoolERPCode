@@ -1,7 +1,7 @@
 import { api } from "@/services/api";
 
 const getAnnouncements = async (filter) =>
-    (await api.get(`api/announcements/all`, { params: filter })).data;
+    (await api.get("api/announcements/all", { params: {page_size: 10000,  ...filter } })).data;
 
 const getAnnouncement = async (id) =>
     (await api.get(`api/announcements/${id}`)).data;
@@ -9,4 +9,8 @@ const getAnnouncement = async (id) =>
 const updateAnnouncement = async (id, data) =>
     await api.put(`api/announcements/${id}/`, data);
 
-export { getAnnouncements, getAnnouncement, updateAnnouncement };
+export {
+    getAnnouncements,
+    getAnnouncement,
+    updateAnnouncement,
+};

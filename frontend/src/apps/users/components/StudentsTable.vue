@@ -35,8 +35,8 @@
 import { ref, onMounted } from "vue";
 import { getStudents } from "@/apps/users/api";
 
-const props  = defineProps({
-	filter: Object
+const props = defineProps({
+	filter: Object,
 });
 
 const students = ref([]);
@@ -53,9 +53,8 @@ const student_headers = ref([
 ]);
 
 const fetchStudents = async () => {
-    students.value = await getStudents(props.filter || {});
+	students.value = (await getStudents(props.filter || {})).results;
 };
 
 onMounted(fetchStudents);
-
 </script>
