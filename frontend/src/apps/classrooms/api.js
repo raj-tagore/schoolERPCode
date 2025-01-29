@@ -9,11 +9,11 @@ const images = [
 const getClassroom = async (id) =>
     (await api.get(`api/allocation/classrooms/${id}`)).data;
 
-const getClassroomsListing = async (filter) =>
+const getClassroomsPaginated = async (filter) =>
     (await api.get("api/allocation/classrooms/all", { params: filter })).data;
 
 const getClassrooms = async (filter) =>
-    (await getClassroomsListing({ page_size: 10000, ...filter })).results;
+    (await getClassroomsPaginated({ page_size: 10000, ...filter })).results;
 
 const updateClassroom = async (classroom) =>
     await api.put(`api/allocation/classrooms/${classroom.id}/`, classroom);
@@ -32,7 +32,7 @@ const getClassroomInfoFromObj = (item) => ({
 export {
     getClassroom,
     getClassrooms,
-    getClassroomsListing,
+    getClassroomsPaginated,
     updateClassroom,
     getClassroomImage,
     getClassroomInfoFromObj,

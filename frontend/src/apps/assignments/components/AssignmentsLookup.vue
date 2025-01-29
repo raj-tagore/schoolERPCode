@@ -54,14 +54,14 @@
 		<ResponsiveDataTable 
 			:getToFunction="(item) => ( { name : 'Assignment', params: {assignmentId: item.id}} )" 
 			:headers="headers" 
-			:fetch="getAssignmentsListing" 
+			:fetch="getAssignmentsPaginated" 
 			:filters="filters">
 		</ResponsiveDataTable>
 	</v-card>
 </template>
 
 <script setup>
-import { getAssignmentsListing } from "@/apps/assignments/api.js";
+import { getAssignmentsPaginated } from "@/apps/assignments/api.js";
 import {
 	getClassroomInfoFromObj,
 	getClassrooms,

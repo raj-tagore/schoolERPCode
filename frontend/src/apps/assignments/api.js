@@ -1,10 +1,10 @@
 import { api } from "@/services/api";
 
-const getAssignmentsListing = async (filter) =>
+const getAssignmentsPaginated = async (filter) =>
     (await api.get("api/assignments/all", { params: filter })).data;
 
 const getAssignments = async (filter) =>
-    (await getAssignmentsListing({page_size: 10000, ...filter})).results;
+    (await getAssignmentsPaginated({page_size: 10000, ...filter})).results;
 
 const getAssignment = async (id) =>
     (await api.get(`api/assignments/${id}`)).data;
@@ -14,7 +14,7 @@ const updateAssignment = async (id, data) =>
 
 export {
     getAssignments,
-    getAssignmentsListing,
+    getAssignmentsPaginated,
     getAssignment,
     updateAssignment,
 };

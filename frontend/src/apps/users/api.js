@@ -1,28 +1,28 @@
 import { api } from "@/services/api";
 
-const getTeachersListing = async (filter) =>
+const getTeachersPaginated = async (filter) =>
     (await api.get("api/accounts/teachers/all", { params: filter })).data;
 
 const getTeachers = async (filter) =>
-    (await getTeachersListing({ page_size: 10000, ...filter })).results;
+    (await getTeachersPaginated({ page_size: 10000, ...filter })).results;
 
 const getTeacher = async (id) =>
     (await api.get(`api/accounts/teachers/${id}`)).data;
 
-const getStudentsListing = async (filter) =>
+const getStudentsPaginated = async (filter) =>
     (await api.get("api/accounts/students/all", { params: filter })).data;
 
 const getStudents = async (filter) =>
-    (await getStudentsListing({ page_size: 10000, ...filter })).results;
+    (await getStudentsPaginated({ page_size: 10000, ...filter })).results;
 
 const getStudent = async (id) =>
     (await api.get(`api/accounts/students/${id}`)).data;
 
-const getParentsListing = async (filter) =>
+const getParentsPaginated = async (filter) =>
     (await api.get("api/accounts/parents/all", { params: filter })).data;
 
 const getParents = async (filter) =>
-    (await getParentsListing({ page_size: 10000, ...filter })).results;
+    (await getParentsPaginated({ page_size: 10000, ...filter })).results;
 
 const getParent = async (id) =>
     (await api.get(`api/accounts/parents/${id}`)).data;
@@ -51,13 +51,13 @@ const getStudentStats = async () =>
 
 export {
     getTeachers,
-	getTeachersListing,
+	getTeachersPaginated,
     getTeacher,
     getStudents,
-	getStudentsListing,
+	getStudentsPaginated,
     getStudent,
     getParents,
-	getParentsListing,
+	getParentsPaginated,
     getParent,
     getUser,
     getTeacherInfoFromObj,
