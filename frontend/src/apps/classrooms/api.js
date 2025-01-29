@@ -10,7 +10,7 @@ const getClassroom = async (id) =>
     (await api.get(`api/allocation/classrooms/${id}`)).data;
 
 const getClassrooms = async (filter) =>
-    (await api.get(`api/allocation/classrooms/all`, { params: filter })).data.results;
+    (await api.get(`api/allocation/classrooms/all`, { params: filter })).data;
 
 const updateClassroom = async (classroom) =>
     await api.put(`api/allocation/classrooms/${classroom.id}/`, classroom);

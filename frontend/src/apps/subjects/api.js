@@ -1,7 +1,7 @@
 import { api } from "@/services/api";
 
 const getSubjects = async (filter) =>
-    (await api.get(`api/allocation/subjects/all`, { params: filter })).data.results;
+    (await api.get(`api/allocation/subjects/all`, { params: filter })).data;
 
 const getSubject = async (id) =>
     (await api.get(`api/allocation/subjects/${id}`)).data;
