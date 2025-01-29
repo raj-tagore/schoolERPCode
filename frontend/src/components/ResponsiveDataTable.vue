@@ -1,6 +1,6 @@
 <template>
 	<v-data-table-server
-		class="d-md-none"
+		v-if="mobile"
 		:items-length="itemsLen"
 		:headers="[]"
 		:items="items"
@@ -36,7 +36,7 @@
 		</template>
 	</v-data-table-server>
 	<v-data-table-server
-		class="d-none d-md-block"
+		v-else
 		:items-length="itemsLen"
 		:headers="headers"
 		:items="items"
@@ -68,6 +68,10 @@
 
 <script setup>
 import { onMounted, ref, watch } from "vue";
+
+import { useDisplay } from 'vuetify'
+
+const { mobile } = useDisplay()
 
 const props = defineProps({
 	headers: {
