@@ -110,7 +110,7 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 		// Filter out falsy values
 		const filterParams = Object.fromEntries(
 			Object.entries(search)
-				.filter(([_, value]) => value)
+				.filter(([_, value]) => (typeof value === "boolean") ? true : value )
 				.map(([key, value]) => {
 					// I blame python and django
 					if (typeof value === "boolean") {
