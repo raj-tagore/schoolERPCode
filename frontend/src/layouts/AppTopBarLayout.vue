@@ -42,7 +42,7 @@
 			class="position-fixed"
 			absolute
 			app
-			location="right bottom"
+			location="right top"
 			@click="rightDrawer = !rightDrawer"
 			icon>
 			<v-icon>{{ rightDrawer ? 'mdi-close' : 'mdi-cog' }}</v-icon>
@@ -60,7 +60,6 @@
 		<Suspense>
 			<v-main>
 				<router-view></router-view>
-
 				<template #fallback>
 					Loading...
 				</template>
