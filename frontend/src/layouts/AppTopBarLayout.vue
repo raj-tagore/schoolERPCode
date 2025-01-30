@@ -1,71 +1,82 @@
 <template>
-	<v-app>
-		<v-navigation-drawer app v-model="leftDrawer"
-			color="grey lighten-4">
-			<v-list dense>
-				<v-list-item>
-					<v-card class="ma-2" 
-						:title="user.first_name + ' ' + user.last_name"
-						:subtitle="user.account?.type || 'No linked account'">
-						<template v-slot:append>
-							<v-btn icon="mdi-logout" @click="logoutHandler" size="small" variant="text"/>
-						</template>
-					</v-card>
-				</v-list-item>
+	<Suspense>
+		<v-app>
+			<v-navigation-drawer app v-model="leftDrawer"
+				color="grey lighten-4">
+				<v-list dense>
+					<v-list-item>
+						<v-card class="ma-2" 
+							:title="user.first_name + ' ' + user.last_name"
+							:subtitle="user.account?.type || 'No linked account'">
+							<template v-slot:append>
+								<v-btn icon="mdi-logout" @click="logoutHandler" size="small" variant="text"/>
+							</template>
+						</v-card>
+					</v-list-item>
 
-				<v-divider :thickness="10" class="border-opacity-100"></v-divider>
+					<v-divider :thickness="10" class="border-opacity-100"></v-divider>
 
-				<v-list-item :to="{name: 'All Apps'}">
-					<v-list-item-title>All Apps</v-list-item-title>
-				</v-list-item>
+					<v-list-item :to="{name: 'All Apps'}">
+						<v-list-item-title>All Apps</v-list-item-title>
+					</v-list-item>
 
-				<v-divider :thickness="10" class="border-opacity-100"></v-divider>
+					<v-divider :thickness="10" class="border-opacity-100"></v-divider>
 
-				<RecursiveList v-for="item in appsMenu" :item="item" />
+					<RecursiveList v-for="item in appsMenu" :item="item" />
 
-			</v-list>
-		</v-navigation-drawer>
-		<v-app-bar app color="primary" dark>
-			<v-app-bar-nav-icon @click.stop="leftDrawer = !leftDrawer"></v-app-bar-nav-icon>
-			<v-toolbar-title>School ERP Dashboard</v-toolbar-title>
-		</v-app-bar>
-		<v-navigation-drawer app v-if="currentRouteMenu" 
-			location="right"
-			v-model="rightDrawer"
-			color="grey lighten-4">
-
-			<RecursiveList v-for="item in currentRouteMenu" :item="item" />
-		</v-navigation-drawer>
-		<span v-if="currentRouteMenu">
-		<v-fab 
-			:v-if="mobile"
-			class="position-fixed"
-			absolute
-			app
-			location="right top"
-			@click="rightDrawer = !rightDrawer"
-			icon>
-			<v-icon>{{ rightDrawer ? 'mdi-close' : 'mdi-menu' }}</v-icon>
-		</v-fab>
-		</span>
-		<v-app-bar v-if="breadcrumbItems" app color="grey" density="compact">
-			<v-breadcrumbs :items="breadcrumbItems">
-				<template v-slot:title="{item}">
-					<v-btn size="small" :to="item.to">
-						{{item.title}}
-					</v-btn>
-				</template>
-			</v-breadcrumbs>
-		</v-app-bar>
-		<Suspense>
+				</v-list>
+			</v-navigation-drawer>
+			<v-app-bar app color="primary" dark>
+				<v-app-bar-nav-icon @click.stop="leftDrawer = !leftDrawer"></v-app-bar-nav-icon>
+				<v-toolbar-title>School ERP Dashboard</v-toolbar-title>
+			</v-app-bar>
+			<v-navigation-drawer app v-if="currentRouteMeta" 
+				location="right"
+				v-model="rightDrawer"
+				color="grey lighten-4">
+				<v-card v-if="currentAppMeta">
+					<v-card-title>{{ currentAppMeta.displayName }}</v-card-title>
+					<v-card-text>
+						<v-btn :to="{name: 'All Apps'}">
+							Go to All Apps
+						</v-btn>
+					</v-card-text>
+				</v-card>
+				<RecursiveList v-for="item in currentAppMeta.menu" :item="item" />
+				<v-card v-if="currentRouteMeta.displayName">
+					<v-card-title>{{ currentRouteMeta.displayName }}</v-card-title>
+				</v-card>
+				<RecursiveList v-for="item in currentRouteMeta.menu" :item="item" />
+			</v-navigation-drawer>
+			<span v-if="currentRouteMeta">
+				<v-fab 
+					:v-if="mobile"
+					class="position-fixed"
+					absolute
+					app
+					location="right top"
+					@click="rightDrawer = !rightDrawer"
+					icon>
+					<v-icon>{{ rightDrawer ? 'mdi-close' : 'mdi-menu' }}</v-icon>
+				</v-fab>
+			</span>
+			<v-app-bar v-if="breadcrumbItems" app color="grey" density="compact">
+				<v-breadcrumbs :items="breadcrumbItems">
+					<template v-slot:title="{item}">
+						<v-btn size="small" :to="item.to">
+							{{item.title}}
+						</v-btn>
+					</template>
+				</v-breadcrumbs>
+			</v-app-bar>
 			<v-main>
 				<router-view></router-view>
-				<template #fallback>
-					Loading...
-				</template>
 			</v-main>
-		</Suspense>
-	</v-app>
+		</v-app>
+		<template #fallback>
+			Loading...
+		</template>
+	</Suspense>
 </template>
 
 <style>
@@ -85,13 +96,17 @@ const currentRoute = useRoute();
 
 const breadcrumbItems = ref([]);
 
-const currentRouteMenu = ref(null);
+const currentRouteMeta = ref(null);
 
 const { mdAndUp, smAndDown, mobile } = useDisplay();
 const leftDrawer = ref(mdAndUp.value);
 const rightDrawer = ref(mdAndUp.value);
 const router = useRouter();
 const authStore = useAuthStore();
+
+const currentAppMeta = ref({});
+
+const appsMenu = ref();
 
 const user = computed(() => authStore.user);
 
@@ -135,28 +150,57 @@ const getRouteMetaRecursive = async (route) =>
 			)
 		: null;
 
-const appsMenu = ref();
-
 getRouteMetaRecursive(appRoutes).then((menu) => {
 	appsMenu.value = menu;
 });
 
-const getRoutesMenu = (route) =>
-	route.matched
-		.filter((route) => route.meta.getMenu)
-		.map((route) => route.meta.getMenu(currentRoute.params))
+const getCurrentAppMeta = async () => {
+	const route = currentRoute.matched
+		.filter(
+			(route) => route.path.includes("app") && route?.meta?.getDisplayName,
+		)
+		?.at(0);
+
+	const meta = route.meta;
+	meta.menu = await route.meta.getMenu(currentRoute.params);
+	meta.displayName = await route.meta.getDisplayName(currentRoute.params);
+	console.log(meta);
+	return meta;
+};
+
+const getRouteMeta = async (route) => {
+	const r = route.matched
+		.filter((route) => route.meta.getMenu && route.meta.getDisplayName)
 		.pop();
+
+	const meta = r.meta;
+	meta.menu = await r.meta.getMenu(route.params);
+	meta.displayName = await r.meta.getDisplayName(route.params);
+	return meta;
+};
 
 watch(currentRoute, (route) => {
 	updateBreadcrumbs(route);
-	currentRouteMenu.value = getRoutesMenu(route);
-	console.log(currentRouteMenu.value);
+	getRouteMeta(route).then((r) => {
+		currentRouteMeta.value = r;
+	});
+
+	// We are at top level route so no await
+	getCurrentAppMeta().then((r) => {
+		currentAppMeta.value = r;
+	});
 });
 
 onMounted(() => {
 	updateBreadcrumbs(currentRoute);
-	currentRouteMenu.value = getRoutesMenu(currentRoute);
-	console.log(currentRouteMenu.value);
+	getRouteMeta(currentRoute).then((r) => {
+		currentRouteMeta.value = r;
+	});
+
+	// We are at top level route so no await
+	getCurrentAppMeta().then((r) => {
+		currentAppMeta.value = r;
+	});
 });
 </script>
 

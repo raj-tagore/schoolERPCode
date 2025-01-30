@@ -12,6 +12,12 @@ export default [
             getDisplayName: () => "Classes",
             defaultRoute: "Classrooms",
             description: "View and manage classrooms",
+			getMenu: () => [
+				{
+					title: "All Classrooms",
+					to: { name: "Classrooms" }
+				},
+			]
         },
         children: [
             {
