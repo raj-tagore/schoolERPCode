@@ -58,6 +58,8 @@ import AnnouncementsList from "@/apps/announcements/components/AnnouncementsList
 import SubjectsList from "@/apps/subjects/components/SubjectsList.vue";
 import ClassroomCard from "@/apps/classrooms/components/ClassroomCard.vue";
 import ClassroomSettings from "@/apps/classrooms/components/ClassroomSettingsCard.vue";
+import AnnouncementsLookup from "@/apps/announcements/components/AnnouncementsLookup.vue";
+import AssignmentsLookup from "@/apps/assignments/components/AssignmentsLookup.vue";
 
 classroom = await getClassroom(props.classroomId);
 </script>

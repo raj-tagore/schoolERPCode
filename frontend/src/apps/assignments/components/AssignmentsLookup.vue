@@ -51,8 +51,9 @@
 			:getToFunction="(item) => ( { name : 'Assignment', params: {assignmentId: item.id}} )" 
 			:headers="headers" 
 			:fetch="getAssignments" 
-			:filters="filters">
-		</ResponsiveDataTable>
+			:filters="filters"
+      		:forceMobile="forceMobile"
+    	/>
 	</v-card>
 </template>
 
@@ -73,6 +74,13 @@ const filters = ref({
 	is_active: null,
 	subject: null,
 	classroom: null,
+});
+
+const props = defineProps({
+	forceMobile: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 // Properly parses the date string, Date() constructor doesn't work well with ISO strings

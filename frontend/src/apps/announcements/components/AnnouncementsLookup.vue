@@ -64,7 +64,9 @@
 			:getToFunction="(item) => ({name: 'Announcement', params: {announcementId: item.id}})" 
 			:headers="headers" 
 			:fetch="getAnnouncements" 
-			:filters="filters"></ResponsiveDataTable>
+			:filters="filters"
+      :forceMobile="forceMobile"
+    ></ResponsiveDataTable>
 
   </v-card>
 </template>
@@ -80,6 +82,13 @@ import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
 const classrooms = ref([]);
 const subjects = ref([]);
 const teachers = ref([]);
+
+const props = defineProps({
+	forceMobile: {
+		type: Boolean,
+		default: false,
+	},
+});
 
 const filters = ref({
 	title: "",
