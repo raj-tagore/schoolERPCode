@@ -58,7 +58,7 @@ const results = ref([]);
 const selectedItem = ref(null);
 
 // To shut up the linter
-_ = selectedItem;
+const _ = selectedItem;
 
 const loading = ref(false);
 
