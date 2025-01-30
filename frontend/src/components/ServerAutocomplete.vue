@@ -1,4 +1,5 @@
 <template>
+	<!--- update:modelValue is a special event that is emitted when you want to indicate to vue that model's value has been changed --->
 	<v-autocomplete
 		:value="selectedItem"
 		:items="results"
@@ -7,7 +8,6 @@
 		:label="label"
 		:item-props="getInfo"
 		@input="selectedItem = $event.target.value"
-		<!--- update:modelValue is a special event that is emitted when you want to indicate to vue that model's value has been changed --->
 		@update:modelValue="emit('update:modelValue', $event)"
 		@update:search="debouncedFetchResults"
 
