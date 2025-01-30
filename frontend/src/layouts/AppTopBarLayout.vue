@@ -45,7 +45,7 @@
 			location="right bottom"
 			@click="rightDrawer = !rightDrawer"
 			icon>
-			<v-icon>{{ rightDrawer ? 'mdi-close' : 'mdi-settings' }}</v-icon>
+			<v-icon>{{ rightDrawer ? 'mdi-close' : 'mdi-cog' }}</v-icon>
 		</v-fab>
 		</span>
 		<v-app-bar v-if="breadcrumbItems" app color="grey" density="compact">
