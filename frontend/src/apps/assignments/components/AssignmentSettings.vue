@@ -22,9 +22,7 @@
 							:fetch="getSubjects"
 							searchField="name"
 							label="Subject"
-						>
-
-						</ServerAutocomplete>
+						/>
 					</v-col>
 				</v-row>
 				<v-row v-if="assignment">

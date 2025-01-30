@@ -19,26 +19,22 @@
 					></v-text-field>
 				</v-col>
 				<v-col cols="12" md="4" lg="2">
-					<v-autocomplete
+					<ServerAutocomplete
 						v-model="filters.classroom"
-						:items="classrooms"
+						:getInfo="getClassroomInfoFromObj"
 						label="Filter by classroom"
-						:item-props="getClassroomInfoFromObj"
-						clearable
-						hide-details
-						density="comfortable"
-					></v-autocomplete>
+						:fetch="getClassrooms"
+						searchField="name"
+					/>
 				</v-col>
 				<v-col cols="12" md="4" lg="2">
-					<v-autocomplete
+					<ServerAutocomplete
 						v-model="filters.subject"
-						:items="subjects"
+						:getInfo="getSubjectInfoFromObj"
 						label="Filter by subject"
-						:item-props="getSubjectInfoFromObj"
-						clearable
-						hide-details
-						density="comfortable"
-					></v-autocomplete>
+						:fetch="getSubjects"
+						searchField="name"
+					/>
 				</v-col>
 				<v-col cols="12" md="4" lg="2">
 					<v-checkbox
@@ -69,6 +65,7 @@ import {
 import { getSubjectInfoFromObj, getSubjects } from "@/apps/subjects/api.js";
 import { onMounted, ref } from "vue";
 import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
+import ServerAutocomplete from "@/components/ServerAutocomplete.vue";
 
 const filters = ref({
 	title: "",
