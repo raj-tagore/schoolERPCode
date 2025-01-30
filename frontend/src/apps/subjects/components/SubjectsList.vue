@@ -8,12 +8,10 @@
                     :key="index"
                     class="ma-1 pa-2 border"
                 >
-                    <v-list-item-content>
-                        <v-list-item-title>{{ subject.name }}</v-list-item-title>
-                        <v-list-item-subtitle>
-                            {{ subject.teacher_details?.user_details?.full_name }}
-                        </v-list-item-subtitle>
-                    </v-list-item-content>
+					<v-list-item-title>{{ subject.name }}</v-list-item-title>
+					<v-list-item-subtitle>
+						{{ subject.teacher_details?.user_details?.full_name }}
+					</v-list-item-subtitle>
                     <template v-slot:append>
                         <v-btn 
                         :to="{ name: 'Subject', params: { subjectId: subject.id } }"

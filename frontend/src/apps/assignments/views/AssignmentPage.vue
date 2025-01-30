@@ -36,7 +36,7 @@
 					<v-tabs-window-item>
 						<v-row class="ma-2">
 							<v-col lg="6">
-								<!---- TODO: Assignment Settings Card --->
+								<AssignmentSettings :assignmentId="assignmentId"></AssignmentSettings>
 							</v-col>
 						</v-row>
 					</v-tabs-window-item>
@@ -50,6 +50,7 @@
 import { onMounted, ref } from "vue";
 import SubjectsList from "@/apps/subjects/components/SubjectsList.vue";
 import { getAssignment } from "@/apps/assignments/api";
+import AssignmentSettings from "@/apps/assignments/components/AssignmentSettings.vue";
 
 const assignment = ref(null);
 
