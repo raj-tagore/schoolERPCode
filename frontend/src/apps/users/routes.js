@@ -1,7 +1,7 @@
-import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue"
-import EmptyLayout from "@/layouts/EmptyLayout.vue"
-import StudentPage from "./views/StudentPage.vue"
-import StudentsPage from "./views/StudentsPage.vue"
+import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
+import EmptyLayout from "@/layouts/EmptyLayout.vue";
+import StudentPage from "./views/StudentPage.vue";
+import StudentsPage from "./views/StudentsPage.vue";
 import { api } from "@/services/api";
 
 export default [
@@ -11,7 +11,7 @@ export default [
         meta: {
             getDisplayName: () => "Users",
             defaultRoute: "Users",
-			description: "View and manage users",
+            description: "View and manage users",
         },
         children: [
             {
@@ -35,16 +35,38 @@ export default [
                 name: "Parents",
             },
             {
-                path: "student/:studentId",
-                component: StudentPage,
-                name: "Student",
-                props: true,
+                path: "students",
+                component: EmptyLayout,
+                name: "Students",
                 meta: {
-                    defaultRoute: "Student",
-                    getDisplayName: async (params) => 
-                    (await api.get(`api/accounts/students/${params.studentId}/`)).data.user.full_name,
+                    defaultRoute: "Students",
+                    getDisplayName: async () => "Students",
                 },
+                children: [
+                    {
+                        path: ":studentId",
+                        component: StudentPage,
+                        name: "Student",
+                        props: true,
+                        meta: {
+                            defaultRoute: "Student",
+                            getDisplayName: async (params) =>
+                                (await api.get(`api/accounts/students/${params.studentId}/`))
+                                    .data.user.full_name,
+                            getMenu: (params) => [
+                                {
+                                    title: "Edit Student",
+                                    to: { name: "StudentEdit", params },
+                                },
+                                {
+                                    title: "View Student",
+                                    to: { name: "Student", params },
+                                },
+                            ],
+                        },
+                    },
+                ],
             },
         ],
     },
-]
+];

@@ -4,15 +4,6 @@
     color="grey lighten-4">
       <v-list dense>
         <!-- User Info -->
-        <v-list-item>
-          <v-card class="ma-2" 
-          :title="user.first_name + ' ' + user.last_name"
-          :subtitle="user.account?.type || 'No linked account'">
-          <template v-slot:append>
-            <v-btn icon="mdi-logout" @click="logoutHandler" size="small" variant="text"/>
-          </template>
-          </v-card>
-        </v-list-item>
 
         <v-divider :thickness="10" class="border-opacity-100"></v-divider>
 
