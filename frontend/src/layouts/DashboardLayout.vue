@@ -16,6 +16,10 @@
 
         <v-divider :thickness="10" class="border-opacity-100"></v-divider>
 
+        <v-list-item :to="{name: 'All Apps'}">
+          <v-list-item-title>All Apps</v-list-item-title>
+        </v-list-item>
+
         <!-- Dashboard -->
         <v-list-item :to="{name: 'Dashboard'}">
           <v-list-item-title>Dashboard</v-list-item-title>

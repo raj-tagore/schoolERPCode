@@ -10,7 +10,8 @@ export default [
         component: AppTopBarLayout,
         meta: {
             getDisplayName: () => "Users",
-            defaultRoute: "Users"
+            defaultRoute: "Users",
+			description: "View and manage users",
         },
         children: [
             {

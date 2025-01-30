@@ -10,6 +10,7 @@ export default [
         meta: {
             getDisplayName: () => "Annnouncements",
             defaultRoute: "Announcements",
+			description: "View and manage announcements",
         },
         children: [
             {

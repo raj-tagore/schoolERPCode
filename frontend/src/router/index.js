@@ -3,16 +3,13 @@ import { createRouter, createWebHistory } from "vue-router";
 // Layouts
 import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
-import DashboardPage from "@/views/DashboardPage.vue";
 // Pages
 import HomePage from "@/views/HomePage.vue";
 import LoginPage from "@/views/LoginPage.vue";
+import DashboardPage from "@/views/DashboardPage.vue";
+import AllAppsPage from "@/views/AllAppsPage.vue";
 // Routes in Apps
-import classroomsRoutes from "@/apps/classrooms/routes";
-import subjectsRoutes from "@/apps/subjects/routes"
-import usersRoutes from "@/apps/users/routes"
-import announcementsRoutes from "@/apps/announcements/routes"
-import assignmentsRoutes from "@/apps/assignments/routes"
+import appRoutes from "@/router/app";
 
 const routes = [
     {
@@ -35,17 +32,19 @@ const routes = [
         path: "/app/",
         component: DashboardLayout,
         children: [
+			{
+                path: "",
+                name: "All Apps",
+                component: AllAppsPage,
+                meta: { requiresAuth: true },
+			},
             {
                 path: "dashboard/",
                 name: "Dashboard",
                 component: DashboardPage,
                 meta: { requiresAuth: true },
             },
-            ...classroomsRoutes,
-            ...subjectsRoutes,
-            ...usersRoutes,
-            ...announcementsRoutes,
-            ...assignmentsRoutes,
+			...appRoutes,
         ],
     },
 ];

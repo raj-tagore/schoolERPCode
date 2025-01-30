@@ -9,6 +9,7 @@ export default [
 		meta: {
 			getDisplayName: () => "Assignments",
 			defaultRoute: "Assignments",
+			description: "View and manage assignments",
 		},
 		children: [
 			{

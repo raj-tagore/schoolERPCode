@@ -10,6 +10,7 @@ export default [
         meta: {
             getDisplayName: () => "Subjects",
             defaultRoute: "Subjects",
+			description: "View and manage subjects",
         },
         children: [
             {

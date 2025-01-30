@@ -11,6 +11,7 @@ export default [
             requiresAuth: true,
             getDisplayName: () => "Classes",
             defaultRoute: "Classrooms",
+			description: "View and manage classrooms",
         },
         children: [
             {
