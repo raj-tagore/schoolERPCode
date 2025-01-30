@@ -55,10 +55,6 @@ export default [
                                     .data.user.full_name,
                             getMenu: (params) => [
                                 {
-                                    title: "Edit Student",
-                                    to: { name: "StudentEdit", params },
-                                },
-                                {
                                     title: "View Student",
                                     to: { name: "Student", params },
                                 },
