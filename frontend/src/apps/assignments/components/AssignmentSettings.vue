@@ -23,6 +23,7 @@
 							searchField="name"
 							label="Subject"
 						/>
+
 					</v-col>
 				</v-row>
 				<v-row v-if="assignment">
@@ -76,7 +77,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted } from "vue";
 import { getSubjects, getSubjectInfoFromObj } from "@/apps/subjects/api";
 import { getAssignment, updateAssignment } from "@/apps/assignments/api";
 import ServerAutocomplete from "@/components/ServerAutocomplete.vue";
@@ -91,10 +92,6 @@ const props = defineProps({
 });
 
 const assignment = ref({});
-
-watch(assignment, () => {
-	console.log(assignment.value);
-});
 
 const handleUpdate = async () => await updateAssignment(assignment.value);
 

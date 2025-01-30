@@ -1,11 +1,13 @@
 <template>
 	<v-autocomplete
-		v-model="selectedItem"
+		:value="selectedItem"
 		:items="results"
 		:loading="loading"
 		:search-input.sync="query"
 		:label="label"
 		:item-props="getInfo"
+		@input="selectedItem = $event.target.value"
+		@update:modelValue="emit('update:modelValue', $event)"
 		@update:search="debouncedFetchResults"
 		@click:clear="searchChanged"
 	>
