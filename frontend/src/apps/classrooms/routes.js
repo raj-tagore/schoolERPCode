@@ -1,12 +1,12 @@
 import ClassroomPage from "@/apps/classrooms/views/ClassroomPage.vue";
 import ClassroomsPage from "@/apps/classrooms/views/ClassroomsPage.vue";
-import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
+import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import { api } from "@/services/api";
 
 export default [
     {
         path: "classrooms/",
-        component: AppTopBarLayout,
+        component: DashboardLayout,
         meta: {
             requiresAuth: true,
             getDisplayName: () => "Classes",
@@ -26,8 +26,8 @@ export default [
                 component: ClassroomPage,
                 meta: {
                     getDisplayName: async (params) =>
-                        (await api.get(`api/allocation/classrooms/${params.classroomId}`)).data.name,
-                    defaultRoute: "Classroom",
+                        params ? (await api.get(`api/allocation/classrooms/${params.classroomId}`)).data.name : "Classrooms",
+                    defaultRoute: "Classrooms",
                 },
             },
         ],

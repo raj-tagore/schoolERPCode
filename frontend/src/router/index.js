@@ -30,7 +30,7 @@ const routes = [
     },
     {
         path: "/app/",
-        component: DashboardLayout,
+        component: EmptyLayout,
         children: [
 			{
                 path: "",

@@ -20,40 +20,7 @@
           <v-list-item-title>All Apps</v-list-item-title>
         </v-list-item>
 
-        <!-- Dashboard -->
-        <v-list-item :to="{name: 'Dashboard'}">
-          <v-list-item-title>Dashboard</v-list-item-title>
-        </v-list-item>
-
-        <v-list-item :to="{name: 'Classrooms'}">
-          <v-list-item-title>Classes</v-list-item-title>
-        </v-list-item>
-
-        <v-list-item :to="{name: 'Subjects'}">
-          <v-list-item-title>Subjects</v-list-item-title>
-        </v-list-item>
-
-        <ExpandableListItem title="Users">
-          <v-list dense>
-            <v-list-item :to="{name: 'Students'}">
-              <v-list-item-title>Students</v-list-item-title>
-            </v-list-item>
-            <v-list-item :to="{name: 'Teachers'}">
-              <v-list-item-title>Teachers</v-list-item-title>
-            </v-list-item>
-            <v-list-item :to="{name: 'Parents'}">
-              <v-list-item-title>Parents</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </ExpandableListItem>
-
-        <v-list-item :to="{name: 'Announcements'}">
-          <v-list-item-title>Announcements</v-list-item-title>
-        </v-list-item>
-
-        <v-list-item :to="{name: 'Assignments'}">
-          <v-list-item-title>Assignments</v-list-item-title>
-        </v-list-item>
+		<RecursiveList :item="routesMeta" />
         
         <!-- <ExpandableListItem title="Classrooms">
           <v-list dense>
@@ -88,12 +55,12 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth"; // Pinia store
-import ExpandableListItem from '@/components/c-expandable-list-item.vue'
 import { useDisplay } from "vuetify/lib/framework.mjs";
-
+import { useRoute } from "vue-router";
+import RecursiveList from "@/components/RecursiveList.vue";
 
 const { mdAndUp, smAndDown } = useDisplay();
 const drawer = ref(mdAndUp.value);
@@ -101,6 +68,35 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 const user = computed(() => authStore.user);
+
+const currentRoute = useRoute();
+
+const getAppRoute = () =>
+	currentRoute.matched.filter((route) => route.meta.getDisplayName)[0];
+
+async function getRoutesMeta(route) {
+	if (route) {
+		console.log(route)
+		return {
+			title: route?.meta?.getDisplayName ? await route.meta.getDisplayName() : undefined,
+			to: route?.meta?.defaultRoute ? route.meta.defaultRoute : undefined,
+			childrens: route.children
+				? await Promise.all(route.children.map(getRoutesMeta))
+				: undefined,
+		};
+	}
+}
+
+const routesMeta = ref({});
+
+watch(currentRoute, async () => {
+	routesMeta.value = await getRoutesMeta(getAppRoute());
+});
+
+onMounted(async () => {
+	routesMeta.value = await getRoutesMeta(getAppRoute());
+	console.log(routesMeta.value);
+});
 
 function logoutHandler() {
 	router.push({ name: "Login" });
