@@ -42,7 +42,7 @@ export default [
                 component: ClassroomsPage,
             },
             {
-                path: "view/:classroomId/",
+                path: ":classroomId/",
                 props: true,
                 component: BreadcrumbsLayout,
                 meta: {

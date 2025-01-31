@@ -59,26 +59,17 @@ function logoutHandler() {
 	authStore.logout();
 }
 
-const getRouteMetaRecursive = async (route) => {
-	try {
-		return route
-			? await Promise.all(
-					route
-						.filter((route) => route?.meta?.getDisplayName && !route.props)
-						.map(async (route) => ({
-							title: await route.meta.getDisplayName(),
-							to: { name: route.meta.defaultRoute },
-							children: await getRouteMetaRecursive(route?.children),
-						})),
-				)
-			: null;
-	} catch (error) {
-		console.error(error);
-		return null;
-	}
-};
+const getRouteMeta = async (route) =>
+	Promise.all(
+		route
+			.filter((route) => route?.meta?.getDisplayName && !route.props)
+			.map(async (route) => ({
+				title: await route.meta.getDisplayName(),
+				to: { name: route.meta.defaultRoute },
+			})),
+	);
 
-getRouteMetaRecursive(appRoutes).then((menu) => {
+getRouteMeta(appRoutes).then((menu) => {
 	appsMenu.value = menu;
 });
 </script>
