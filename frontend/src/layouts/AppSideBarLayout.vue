@@ -37,7 +37,9 @@
 					<v-icon>{{ rightDrawer ? 'mdi-close' : 'mdi-menu' }}</v-icon>
 				</v-fab>
 			<v-main>
-				<router-view></router-view>
+				<slot>
+					<router-view></router-view>
+				</slot>
 			</v-main>
 		</v-app>
 		<template #fallback>
