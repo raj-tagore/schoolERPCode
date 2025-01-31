@@ -49,7 +49,7 @@ subject_teachers = {
 def add_user(
     username: str, email: str, first_name: str, last_name: str, groups: int
 ) -> int:
-    user_id = len(data["user"]) + 2
+    user_id = len(data["user"]) + 1
     data["user"].append(
         {
             "id": user_id,
@@ -109,7 +109,7 @@ def add_guardian(student_id: int, guardian_num: int) -> int:
             "whatsapp": 9898989898 + guardian_id,
         }
     )
-    return guardian_id 
+    return guardian_id
 
 
 def add_student(student_num: int, standard: int, section: int) -> int:
@@ -153,7 +153,7 @@ def add_classroom(standard: int, section: int) -> int:
                 break
         data["subject"].append(
             {
-                "id": len(data["subject"]),
+                "id": len(data["subject"]) + 1,
                 "name": subject_name,
                 "is_active": len(data["subject"]) % 2 == 0,
                 "description": "Subject {} of Classroom {}{}".format(
@@ -282,8 +282,14 @@ for m_name, values in data.items():
         newline="",
         encoding="utf-8",
     ) as output_file:
-        fieldnames = values[0].keys()
+        fieldnames = list(values[0].keys())
+
+        if "id" in fieldnames:
+            fieldnames.remove("id")
 
         writer = csv.DictWriter(output_file, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(values)
+        for row in values:
+            if "id" in row.keys():
+                del row["id"]
+            writer.writerow(row)
