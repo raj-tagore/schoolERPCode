@@ -1,9 +1,6 @@
 <template>
 	<ExpandableListItem v-if="item.children && item.children.length > 0" :title="item.title">
 		<v-list dense>
-			<v-list-item :to="item.to">
-				<v-list-item-title>{{item.title}}</v-list-item-title>
-			</v-list-item>
 			<RecursiveList
 				v-for="child in item.children"
 				:key="child.id"

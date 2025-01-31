@@ -5,20 +5,22 @@
 				location="right"
 				v-model="rightDrawer"
 				color="accent">
-				<v-card v-if="currentAppMeta" class="mb-4 ma-4">
-					<v-card-title>{{ currentAppMeta.displayName }}</v-card-title>
+				<v-card v-if="parentMeta" class="mb-4 ma-4">
+					<v-card-title>{{ parentMeta.displayName }}</v-card-title>
 					<v-card-text>
 						<v-btn :to="{name: 'All Apps'}">
 							Go to All Apps
 						</v-btn>
 					</v-card-text>
 				</v-card>
-				<RecursiveList v-for="item in currentAppMeta.menu" :item="item" />
-				<span v-if="currentRouteMeta">
-					<v-card v-if="currentRouteMeta.displayName" class="mb-4 ma-4">
-						<v-card-title>{{ currentRouteMeta.displayName }}</v-card-title>
+				<span v-if="parentMeta">
+				<RecursiveList v-for="item in parentMeta.menu" :item="item" />
+				</span>
+				<span v-if="currentMeta">
+					<v-card v-if="currentMeta.displayName" class="mb-4 ma-4">
+						<v-card-title>{{ currentMeta.displayName }}</v-card-title>
 					</v-card>
-					<RecursiveList v-for="item in currentRouteMeta.menu" :item="item" />
+					<RecursiveList v-for="item in currentMeta.menu" :item="item" />
 				</span>
 			</v-navigation-drawer>
 				<v-fab 
@@ -46,67 +48,61 @@ import { useRoute } from "vue-router";
 import RecursiveList from "@/components/RecursiveList.vue";
 
 const currentRoute = useRoute();
-const currentRouteMeta = ref(null);
+const currentMeta = ref(null);
 
 const { mobile } = useDisplay();
 const rightDrawer = ref(!mobile.value);
 
-const currentAppMeta = ref({});
-
-const getCurrentAppMeta = async () => {
-	const route = currentRoute.matched
-		.filter(
-			(route) => route.path.includes("app") && route?.meta?.getDisplayName,
-		)
-		?.at(0);
-
-	if (route?.meta) {
-		const meta = route.meta;
-		meta.menu = await route.meta.getMenu(currentRoute.params);
-		meta.displayName = await route.meta.getDisplayName(currentRoute.params);
-		return meta;
-	}
-};
+const parentMeta = ref({});
 
 const getRouteMeta = async (route) => {
-	const r = route.matched
-		.filter((route) => route?.meta?.getMenu && route?.meta?.getDisplayName)
-		.pop();
+	const routes = route.matched.filter(
+		(route) =>
+			route?.meta?.getMenu &&
+			route?.meta?.getDisplayName
+	);
+	console.log(route.matched)
 
-	if (r?.meta) {
-		const meta = r.meta;
-		meta.menu = await r.meta.getMenu(route.params);
-		meta.displayName = await r.meta.getDisplayName(route.params);
-		return meta;
+	const routeMeta = {};
+
+	const current = routes.pop();
+	if (current?.meta) {
+		const meta = current.meta;
+		meta.menu = await current.meta.getMenu(route.params);
+		meta.displayName = await current.meta.getDisplayName(route.params);
+		routeMeta.current = meta;
 	}
+
+	console.log(current)
+
+	const parent = routes.pop();
+
+	if (parent?.meta) {
+		const meta = parent.meta;
+		meta.menu = await parent.meta.getMenu(route.params);
+		meta.displayName = await parent.meta.getDisplayName(route.params);
+		routeMeta.parent = meta;
+	}
+
+	console.log(parent)
+	return routeMeta;
 };
 
 watch(currentRoute, (route) => {
-	getCurrentAppMeta().then((r) => {
-		currentAppMeta.value = r;
-	});
-
-
 	getRouteMeta(route).then((r) => {
-		if (r?.getDisplayName !== currentAppMeta?.value?.getDisplayName) {
-			currentRouteMeta.value = r;
-		} else {
-			currentRouteMeta.value = null;
-		}
+		currentMeta.value = r.current;
+		parentMeta.value = r.parent;
+		console.log("current", currentMeta.value)
+		console.log("parent", parentMeta.value)
 	});
 });
 
 onMounted(() => {
-	getCurrentAppMeta().then((r) => {
-		currentAppMeta.value = r;
-	});
-
 	getRouteMeta(currentRoute).then((r) => {
-		if (r?.getDisplayName !== currentAppMeta?.value?.getDisplayName) {
-			currentRouteMeta.value = r;
-		} else {
-			currentRouteMeta.value = null;
-		}
+		currentMeta.value = r.current;
+		parentMeta.value = r.parent;
+		console.log("current", currentMeta.value)
+		console.log("parent", parentMeta.value)
 	});
 });
 </script>

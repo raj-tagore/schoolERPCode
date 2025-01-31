@@ -51,13 +51,19 @@ export default [
                 meta: {
                     defaultRoute: "Students",
                     getDisplayName: async () => "Students",
+                    getMenu: (props) => [
+                        {
+                            title: "View Student",
+                            to: { name: "Students", params: props },
+                        },
+                    ],
                 },
                 children: [
-					{
-						path: "",
-						component: StudentsPage,
-						name: "Students",
-					},
+                    {
+                        path: "",
+                        component: StudentsPage,
+                        name: "Students",
+                    },
                     {
                         path: ":studentId",
                         component: StudentPage,
@@ -67,11 +73,11 @@ export default [
                             defaultRoute: "Student",
                             getDisplayName: async (params) =>
                                 (await api.get(`api/accounts/students/${params.studentId}/`))
-                                    .data.user.full_name,
-                            getMenu: (params) => [
+                                    .data.user_details.full_name,
+                            getMenu: (props) => [
                                 {
                                     title: "View Student",
-                                    to: { name: "Student", params },
+                                    to: { name: "Student", params: props },
                                 },
                             ],
                         },
