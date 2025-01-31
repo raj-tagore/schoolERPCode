@@ -8,7 +8,7 @@ import EditAssignmentPage from "./views/EditAssignmentPage.vue"
 export default [
     {
         path: "assignments/",
-        content: AppSideBarLayout,
+        component: AppSideBarLayout,
         meta: {
             getDisplayName: () => "Assignments",
             defaultRoute: "Assignments",
