@@ -4,8 +4,8 @@
 			<v-navigation-drawer
 				location="right"
 				v-model="rightDrawer"
-				color="blue-grey">
-				<v-card v-if="currentAppMeta">
+				color="accent">
+				<v-card v-if="currentAppMeta" class="mb-4 ma-2">
 					<v-card-title>{{ currentAppMeta.displayName }}</v-card-title>
 					<v-card-text>
 						<v-btn :to="{name: 'All Apps'}">
@@ -15,7 +15,7 @@
 				</v-card>
 				<RecursiveList v-for="item in currentAppMeta.menu" :item="item" />
 				<span v-if="currentRouteMeta">
-					<v-card v-if="currentRouteMeta.displayName">
+					<v-card v-if="currentRouteMeta.displayName" class="mb-4 ma-2">
 						<v-card-title>{{ currentRouteMeta.displayName }}</v-card-title>
 					</v-card>
 					<RecursiveList v-for="item in currentRouteMeta.menu" :item="item" />
