@@ -51,7 +51,7 @@ const currentRoute = useRoute();
 const currentRouteMeta = ref(null);
 
 const { mobile } = useDisplay();
-const rightDrawer = ref(mobile.value);
+const rightDrawer = ref(!mobile.value);
 
 const currentAppMeta = ref({});
 
