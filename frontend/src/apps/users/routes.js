@@ -9,9 +9,24 @@ export default [
         path: "users/",
         component: AppTopBarLayout,
         meta: {
+            requiresAuth: true,
             getDisplayName: () => "Users",
             defaultRoute: "Users",
             description: "View and manage users",
+            getMenu: () => [
+                {
+                    title: "All Students",
+                    to: { name: "Students" },
+                },
+                {
+                    title: "All Teachers",
+                    to: { name: "Teachers" },
+                },
+                {
+                    title: "All Parents",
+                    to: { name: "Parents" },
+                },
+            ],
         },
         children: [
             {

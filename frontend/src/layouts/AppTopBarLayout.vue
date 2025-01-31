@@ -30,7 +30,7 @@
 				<v-app-bar-nav-icon @click.stop="leftDrawer = !leftDrawer"></v-app-bar-nav-icon>
 				<v-toolbar-title>School ERP Dashboard</v-toolbar-title>
 			</v-app-bar>
-			<v-navigation-drawer app v-if="currentRouteMeta" 
+			<v-navigation-drawer app v-if="currentAppMeta" 
 				location="right"
 				v-model="rightDrawer"
 				color="grey lighten-4">
@@ -43,12 +43,14 @@
 					</v-card-text>
 				</v-card>
 				<RecursiveList v-for="item in currentAppMeta.menu" :item="item" />
-				<v-card v-if="currentRouteMeta.displayName">
-					<v-card-title>{{ currentRouteMeta.displayName }}</v-card-title>
-				</v-card>
-				<RecursiveList v-for="item in currentRouteMeta.menu" :item="item" />
+				<span v-if="currentRouteMeta">
+					<v-card v-if="currentRouteMeta.displayName">
+						<v-card-title>{{ currentRouteMeta.displayName }}</v-card-title>
+					</v-card>
+					<RecursiveList v-for="item in currentRouteMeta.menu" :item="item" />
+				</span>
 			</v-navigation-drawer>
-			<span v-if="currentRouteMeta">
+			<span v-if="currentAppMeta">
 				<v-fab 
 					:v-if="mobile"
 					class="position-fixed"
@@ -161,28 +163,35 @@ const getCurrentAppMeta = async () => {
 		)
 		?.at(0);
 
-	const meta = route.meta;
-	meta.menu = await route.meta.getMenu(currentRoute.params);
-	meta.displayName = await route.meta.getDisplayName(currentRoute.params);
-	console.log(meta);
-	return meta;
+	if (route?.meta) {
+		const meta = route.meta;
+		meta.menu = await route.meta.getMenu(currentRoute.params);
+		meta.displayName = await route.meta.getDisplayName(currentRoute.params);
+		return meta;
+	}
 };
 
 const getRouteMeta = async (route) => {
 	const r = route.matched
-		.filter((route) => route.meta.getMenu && route.meta.getDisplayName)
+		.filter((route) => route?.meta?.getMenu && route?.meta?.getDisplayName)
 		.pop();
 
-	const meta = r.meta;
-	meta.menu = await r.meta.getMenu(route.params);
-	meta.displayName = await r.meta.getDisplayName(route.params);
-	return meta;
+	if (r?.meta) {
+		const meta = r.meta;
+		meta.menu = await r.meta.getMenu(route.params);
+		meta.displayName = await r.meta.getDisplayName(route.params);
+		return meta;
+	}
 };
 
 watch(currentRoute, (route) => {
 	updateBreadcrumbs(route);
 	getRouteMeta(route).then((r) => {
-		currentRouteMeta.value = r;
+		if (r !== currentAppMeta.value) {
+			currentRouteMeta.value = r;
+		} else {
+			currentRouteMeta.value = null;
+		}
 	});
 
 	// We are at top level route so no await
@@ -193,14 +202,22 @@ watch(currentRoute, (route) => {
 
 onMounted(() => {
 	updateBreadcrumbs(currentRoute);
-	getRouteMeta(currentRoute).then((r) => {
-		currentRouteMeta.value = r;
-	});
 
-	// We are at top level route so no await
 	getCurrentAppMeta().then((r) => {
 		currentAppMeta.value = r;
 	});
+
+	getRouteMeta(currentRoute).then((r) => {
+		console.log("appRouteMeta", currentAppMeta.value);
+		console.log("currentRouteMeta", r.getDisplayName);
+		if (r.getDisplayName !== currentAppMeta.value.getDisplayName) {
+			currentRouteMeta.value = r;
+		} else {
+			currentRouteMeta.value = null;
+		}
+	});
+
+	// We are at top level route so no await
 });
 </script>
 

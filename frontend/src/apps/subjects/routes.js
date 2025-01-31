@@ -1,7 +1,7 @@
-import SubjectPage from "@/apps/subjects/views/SubjectPage.vue"
-import { api } from "@/services/api"
-import SubjectsPage from "./views/SubjectsPage.vue"
-import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue"
+import SubjectPage from "@/apps/subjects/views/SubjectPage.vue";
+import { api } from "@/services/api";
+import SubjectsPage from "./views/SubjectsPage.vue";
+import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
 
 export default [
     {
@@ -10,13 +10,19 @@ export default [
         meta: {
             getDisplayName: () => "Subjects",
             defaultRoute: "Subjects",
-			description: "View and manage subjects",
+            description: "View and manage subjects",
+            getMenu: () => [
+                {
+                    title: "All Subjects",
+                    to: { name: "Subjects" },
+                },
+            ],
         },
         children: [
             {
                 path: "",
                 component: SubjectsPage,
-                name: "Subjects"
+                name: "Subjects",
             },
             {
                 path: ":subjectId/",
@@ -26,9 +32,17 @@ export default [
                 meta: {
                     defaultRoute: "Subject",
                     getDisplayName: async (params) =>
-                        (await api.get(`api/allocation/subjects/${params.subjectId}`)).data.name,
+                        (await api.get(`api/allocation/subjects/${params.subjectId}`)).data
+                            .name,
+
+                    getMenu: () => [
+                        {
+                            title: "All Subjects",
+                            to: { name: "Subjects" },
+                        },
+                    ],
                 },
             },
         ],
     },
-]
+];

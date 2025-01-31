@@ -2,7 +2,6 @@ import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
 import AnnouncementsPage from "./views/AnnouncementsPage.vue";
 import AnnouncementPage from "./views/AnnouncementPage.vue";
 
-
 export default [
     {
         path: "announcements/",
@@ -10,7 +9,13 @@ export default [
         meta: {
             getDisplayName: () => "Annnouncements",
             defaultRoute: "Announcements",
-			description: "View and manage announcements",
+            description: "View and manage announcements",
+            getMenu: () => [
+                {
+                    title: "All Announcements",
+                    to: { name: "Announcements" },
+                },
+            ],
         },
         children: [
             {
@@ -25,9 +30,15 @@ export default [
                 props: true,
                 meta: {
                     defaultRoute: "Announcement",
-                    getDisplayName: () => "View"
-                }
-            }
-        ]
-    }
-]
+                    getDisplayName: () => "View",
+                    getMenu: (params) => [
+                        {
+                            title: "View Announcements",
+                            to: { name: "Announcement", params },
+                        },
+                    ],
+                },
+            },
+        ],
+    },
+];
