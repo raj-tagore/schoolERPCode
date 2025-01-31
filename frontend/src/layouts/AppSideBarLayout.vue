@@ -19,6 +19,11 @@
 				<span v-if="currentMeta">
 					<v-card v-if="currentMeta.displayName" class="mb-4 ma-4">
 						<v-card-title>{{ currentMeta.displayName }}</v-card-title>
+						<v-card-text v-if="!parentMeta">
+							<v-btn :to="{name: 'All Apps'}">
+								Go to All Apps
+							</v-btn>
+					</v-card-text>
 					</v-card>
 					<RecursiveList v-for="item in currentMeta.menu" :item="item" />
 				</span>
@@ -57,11 +62,9 @@ const parentMeta = ref({});
 
 const getRouteMeta = async (route) => {
 	const routes = route.matched.filter(
-		(route) =>
-			route?.meta?.getMenu &&
-			route?.meta?.getDisplayName
+		(route) => route?.meta?.getMenu && route?.meta?.getDisplayName,
 	);
-	console.log(route.matched)
+	console.log(route.matched);
 
 	const routeMeta = {};
 
@@ -73,7 +76,7 @@ const getRouteMeta = async (route) => {
 		routeMeta.current = meta;
 	}
 
-	console.log(current)
+	console.log(current);
 
 	const parent = routes.pop();
 
@@ -84,7 +87,7 @@ const getRouteMeta = async (route) => {
 		routeMeta.parent = meta;
 	}
 
-	console.log(parent)
+	console.log(parent);
 	return routeMeta;
 };
 
@@ -92,8 +95,8 @@ watch(currentRoute, (route) => {
 	getRouteMeta(route).then((r) => {
 		currentMeta.value = r.current;
 		parentMeta.value = r.parent;
-		console.log("current", currentMeta.value)
-		console.log("parent", parentMeta.value)
+		console.log("current", currentMeta.value);
+		console.log("parent", parentMeta.value);
 	});
 });
 
@@ -101,8 +104,8 @@ onMounted(() => {
 	getRouteMeta(currentRoute).then((r) => {
 		currentMeta.value = r.current;
 		parentMeta.value = r.parent;
-		console.log("current", currentMeta.value)
-		console.log("parent", parentMeta.value)
+		console.log("current", currentMeta.value);
+		console.log("parent", parentMeta.value);
 	});
 });
 </script>
