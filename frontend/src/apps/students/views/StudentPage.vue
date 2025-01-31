@@ -60,7 +60,7 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import { getStudent } from "@/apps/users/api";
+import { getStudent } from "@/apps/students/api";
 import StudentSettingsCard from "@/apps/students/components/StudentSettingsCard";
 import ClassroomsCard from "@/apps/classrooms/components/ClassroomsCard";
 

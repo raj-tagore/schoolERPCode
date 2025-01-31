@@ -50,7 +50,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { getClassroom, updateClassroom } from "@/apps/classrooms/api";
-import { getTeachers, getTeacherInfoFromObj } from "@/apps/users/api";
+import { getTeachers, getTeacherInfoFromObj } from "@/apps/teachers/api";
 import SubmitButton from "@/components/SubmitButton.vue";
 
 const props = defineProps({

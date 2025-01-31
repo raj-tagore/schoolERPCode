@@ -9,5 +9,5 @@
 </template>
 
 <script setup>
-import StudentsSettingsCard from "@/apps/users/components/StudentsSettingsCard.vue";
+import StudentsSettingsCard from "@/apps/students/components/StudentsSettingsCard.vue";
 </script>

@@ -76,7 +76,7 @@ import { ref, onMounted } from "vue";
 import { getAnnouncements } from "../api";
 import { getClassrooms, getClassroomInfoFromObj } from "@/apps/classrooms/api";
 import { getSubjects, getSubjectInfoFromObj } from "@/apps/subjects/api";
-import { getTeachers, getTeacherInfoFromObj } from "@/apps/users/api";
+import { getTeachers, getTeacherInfoFromObj } from "@/apps/teachers/api";
 import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
 
 const classrooms = ref([]);

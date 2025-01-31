@@ -20,7 +20,7 @@ import { ref, onMounted } from "vue";
 import { api } from "@/services/api";
 import SubjectCard from "@/apps/subjects/components/SubjectCard.vue";
 import AnnouncementsList from "@/apps/announcements/components/AnnouncementsList.vue";
-import { getTeachers } from "@/apps/users/api";
+import { getTeachers } from "@/apps/teachers/api";
 
 const props = defineProps({
 	subjectId: String,

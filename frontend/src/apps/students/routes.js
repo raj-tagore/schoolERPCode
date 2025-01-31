@@ -13,6 +13,12 @@ export default [
             getDisplayName: () => "Students",
             defaultRoute: "Students",
             description: "View and manage students",
+            getMenu: (props) => [
+                {
+                    title: "View Students",
+                    to: { name: "Students", params: props },
+                },
+            ],
         },
         children: [
             {
@@ -23,16 +29,6 @@ export default [
             {
                 path: "",
                 component: BreadcrumbsLayout,
-                meta: {
-                    defaultRoute: "Students",
-                    getDisplayName: async () => "Students",
-                    getMenu: (props) => [
-                        {
-                            title: "View Students",
-                            to: { name: "Students", params: props },
-                        },
-                    ],
-                },
                 children: [
                     {
                         path: ":studentId",
