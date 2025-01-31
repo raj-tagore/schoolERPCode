@@ -26,30 +26,6 @@ class ClassroomSerializer(serializers.ModelSerializer):
             "join_code",
         ]
 
-    def create(self, validated_data):
-        students = validated_data.pop("students", [])
-        other_teachers = validated_data.pop("other_teachers", [])
-        classroom = Classroom.objects.create(**validated_data)
-        classroom.students.set(students)
-        classroom.other_teachers.set(other_teachers)
-        return classroom
-
-    def update(self, instance, validated_data):
-        students = validated_data.pop("students", None)
-        other_teachers = validated_data.pop("other_teachers", None)
-        join_code = validated_data.pop("join_code", None)
-        if join_code is not None:
-            instance.join_code = join_code
-        else:
-            instance.join_code = uuid.uuid4()
-        instance = super().update(instance, validated_data)
-        if students is not None:
-            instance.students.set(students)
-        if other_teachers is not None:
-            instance.other_teachers.set(other_teachers)
-
-        return instance
-
 
 class SubjectSerializer(serializers.ModelSerializer):
     classroom = serializers.PrimaryKeyRelatedField(queryset=Classroom.objects.all(), required=False)
