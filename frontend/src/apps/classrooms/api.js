@@ -31,7 +31,7 @@ const getClassroomInfoFromObj = (item) => ({
 });
 
 const createClassroom = async (classroom) =>
-    await api.post("api/allocation/classrooms/create", classroom);
+    await api.post("api/allocation/classrooms/create/", classroom);
 
 export {
     getClassroom,

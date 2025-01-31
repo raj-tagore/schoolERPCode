@@ -65,6 +65,7 @@
 				</v-row>
 				<SubmitButton 
 					:onSubmit="handleCreate"
+					submitText="Create"
 				/>
 			</v-card-text>
 		</v-card>
