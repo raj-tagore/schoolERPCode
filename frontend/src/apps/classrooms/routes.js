@@ -1,5 +1,6 @@
 import ClassroomPage from "@/apps/classrooms/views/ClassroomPage.vue";
 import EditClassroomPage from "@/apps/classrooms/views/EditClassroomPage.vue";
+import CreateClassroomPage from "@/apps/classrooms/views/CreateClassroomPage.vue";
 import ClassroomsPage from "@/apps/classrooms/views/ClassroomsPage.vue";
 import AppSideBarLayout from "@/layouts/AppSideBarLayout.vue";
 import BreadcrumbsLayout from "@/layouts/BreadcrumbsLayout.vue";
@@ -19,16 +20,29 @@ export default [
                     title: "All Classrooms",
                     to: { name: "Classrooms" },
                 },
+                {
+                    title: "Create Classrooms",
+                    to: { name: "CreateClassroom" },
+                },
             ],
         },
         children: [
+            {
+                path: "create/",
+                name: "CreateClassroom",
+                component: CreateClassroomPage,
+                meta: {
+                    getDisplayName: () => "Create Classrooms",
+                    defaultRoute: "CreateClassroom",
+                },
+            },
             {
                 path: "",
                 name: "Classrooms",
                 component: ClassroomsPage,
             },
             {
-                path: ":classroomId/",
+                path: "view/:classroomId/",
                 props: true,
                 component: BreadcrumbsLayout,
                 meta: {
