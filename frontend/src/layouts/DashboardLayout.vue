@@ -2,10 +2,10 @@
 	<Suspense>
 		<v-app>
 			<v-navigation-drawer app v-model="leftDrawer"
-				color="teal">
+				color="secondary">
 				<v-list dense>
 					<v-list-item>
-						<v-card class="ma-2" 
+						<v-card class="ma-2 mb-4" 
 							:title="user.first_name + ' ' + user.last_name"
 							:subtitle="user.account?.type || 'No linked account'">
 							<template v-slot:append>
@@ -13,10 +13,6 @@
 							</template>
 						</v-card>
 					</v-list-item>
-
-					<v-divider :thickness="10" class="border-opacity-50"></v-divider>
-
-					<v-divider :thickness="10" class="border-opacity-50"></v-divider>
 
 					<RecursiveList v-for="item in appsMenu" :item="item" />
 
