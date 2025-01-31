@@ -1,7 +1,7 @@
 <template>
 	<Suspense>
 		<v-app>
-			<v-app-bar v-if="breadcrumbItems" app density="comfortable">
+			<v-app-bar v-if="breadcrumbItems" app density="compact">
 				<v-breadcrumbs :items="breadcrumbItems">
 					<template v-slot:title="{item}">
 						<v-btn size="small" :to="item.to">
