@@ -1,12 +1,12 @@
 import SubjectPage from "@/apps/subjects/views/SubjectPage.vue";
 import { api } from "@/services/api";
 import SubjectsPage from "./views/SubjectsPage.vue";
-import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
+import AppSideBarLayout from "@/layouts/AppSideBarLayout.vue";
 
 export default [
     {
         path: "subjects/",
-        component: AppTopBarLayout,
+        component: AppSideBarLayout,
         meta: {
             getDisplayName: () => "Subjects",
             defaultRoute: "Subjects",

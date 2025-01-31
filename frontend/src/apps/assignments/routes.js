@@ -1,4 +1,4 @@
-import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
+import AppSideBarLayout from "@/layouts/AppSideBarLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
 
 import AssignmentsPage from "./views/AssignmentsPage.vue";
@@ -8,7 +8,7 @@ import EditAssignmentPage from "./views/EditAssignmentPage.vue"
 export default [
     {
         path: "assignments/",
-        content: AppTopBarLayout,
+        content: AppSideBarLayout,
         meta: {
             getDisplayName: () => "Assignments",
             defaultRoute: "Assignments",

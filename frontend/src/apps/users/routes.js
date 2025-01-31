@@ -1,4 +1,4 @@
-import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
+import AppSideBarLayout from "@/layouts/AppSideBarLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import StudentPage from "./views/StudentPage.vue";
 import StudentsPage from "./views/StudentsPage.vue";
@@ -7,7 +7,7 @@ import { api } from "@/services/api";
 export default [
     {
         path: "users/",
-        component: AppTopBarLayout,
+        component: AppSideBarLayout,
         meta: {
             requiresAuth: true,
             getDisplayName: () => "Users",

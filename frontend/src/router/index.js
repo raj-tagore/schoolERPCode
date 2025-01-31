@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/stores/auth";
 import { createRouter, createWebHistory } from "vue-router";
 // Layouts
-import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
+import DashboardLayout from "@/layouts/DashboardLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
 // Pages
 import HomePage from "@/views/HomePage.vue";
@@ -30,7 +30,7 @@ const routes = [
     },
     {
         path: "/app/",
-        component: AppTopBarLayout,
+        component: DashboardLayout,
         children: [
 			{
                 path: "",

@@ -1,4 +1,4 @@
-import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
+import AppSideBarLayout from "@/layouts/AppSideBarLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
 
 import AnnouncementsPage from "./views/AnnouncementsPage.vue";
@@ -8,7 +8,7 @@ import EditAnnouncementPage from "./views/EditAnnouncementPage.vue";
 export default [
     {
         path: "announcements/",
-        component: AppTopBarLayout,
+        component: AppSideBarLayout,
         meta: {
             getDisplayName: () => "Annnouncements",
             defaultRoute: "Announcements",

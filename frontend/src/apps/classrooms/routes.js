@@ -1,12 +1,12 @@
 import ClassroomPage from "@/apps/classrooms/views/ClassroomPage.vue";
 import ClassroomsPage from "@/apps/classrooms/views/ClassroomsPage.vue";
-import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
+import AppSideBarLayout from "@/layouts/AppSideBarLayout.vue";
 import { api } from "@/services/api";
 
 export default [
     {
         path: "classrooms/",
-        component: AppTopBarLayout,
+        component: AppSideBarLayout,
         meta: {
             requiresAuth: true,
             getDisplayName: () => "Classes",

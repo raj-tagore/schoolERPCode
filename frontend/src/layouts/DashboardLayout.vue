@@ -1,96 +1,87 @@
 <template>
-  <v-app>
-    <v-navigation-drawer app v-model="drawer" 
-    color="grey lighten-4">
-      <v-list dense>
-        <!-- User Info -->
+	<Suspense>
+		<v-app>
+			<v-navigation-drawer app v-model="leftDrawer"
+				color="grey lighten-4">
+				<v-list dense>
+					<v-list-item>
+						<v-card class="ma-2" 
+							:title="user.first_name + ' ' + user.last_name"
+							:subtitle="user.account?.type || 'No linked account'">
+							<template v-slot:append>
+								<v-btn icon="mdi-logout" @click="logoutHandler" size="small" variant="text"/>
+							</template>
+						</v-card>
+					</v-list-item>
 
-        <v-divider :thickness="10" class="border-opacity-100"></v-divider>
+					<v-divider :thickness="10" class="border-opacity-100"></v-divider>
 
-        <v-list-item :to="{name: 'All Apps'}">
-          <v-list-item-title>All Apps</v-list-item-title>
-        </v-list-item>
+					<v-divider :thickness="10" class="border-opacity-100"></v-divider>
 
-		<RecursiveList :item="routesMeta" />
-        
-        <!-- <ExpandableListItem title="Classrooms">
-          <v-list dense>
-            <v-list-item to="/classrooms">
-              <v-list-item-title>View Classrooms</v-list-item-title>
-            </v-list-item>
-            <v-list-item to="/classrooms/create">
-              <v-list-item-title>Create Classroom</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </ExpandableListItem> -->
+					<RecursiveList v-for="item in appsMenu" :item="item" />
 
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-app-bar app color="primary" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>School ERP Dashboard</v-toolbar-title>
-    </v-app-bar>
-
-  <Suspense>
-    <v-main>
-        <v-container>
-          <router-view></router-view>
-          <template #fallback>
-            Loading...
-          </template>
-      </v-container>
-    </v-main>
-  </Suspense>
-  </v-app>
+				</v-list>
+			</v-navigation-drawer>
+			<v-app-bar app color="primary" dark>
+				<v-app-bar-nav-icon @click.stop="leftDrawer = !leftDrawer"></v-app-bar-nav-icon>
+				<v-toolbar-title>School ERP Dashboard</v-toolbar-title>
+			</v-app-bar>
+			<v-main>
+				<router-view></router-view>
+			</v-main>
+		</v-app>
+		<template #fallback>
+			Loading...
+		</template>
+	</Suspense>
 </template>
 
+<style>
+</style>
 <script setup>
-import { ref, computed, watch, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { ref, computed } from "vue";
 import { useAuthStore } from "@/stores/auth"; // Pinia store
 import { useDisplay } from "vuetify/lib/framework.mjs";
-import { useRoute } from "vue-router";
+
+import { useRouter } from "vue-router";
+
 import RecursiveList from "@/components/RecursiveList.vue";
 
-const { mdAndUp, smAndDown } = useDisplay();
-const drawer = ref(mdAndUp.value);
+import appRoutes from "@/router/app";
+
+
+const { mdAndUp } = useDisplay();
+const leftDrawer = ref(mdAndUp.value);
 const router = useRouter();
 const authStore = useAuthStore();
 
+const appsMenu = ref();
+
 const user = computed(() => authStore.user);
-
-const currentRoute = useRoute();
-
-const getAppRoute = () =>
-	currentRoute.matched.filter((route) => route.meta.getDisplayName)[0];
-
-async function getRoutesMeta(route) {
-	if (route) {
-		console.log(route)
-		return {
-			title: route?.meta?.getDisplayName ? await route.meta.getDisplayName() : undefined,
-			to: route?.meta?.defaultRoute ? route.meta.defaultRoute : undefined,
-			childrens: route.children
-				? await Promise.all(route.children.map(getRoutesMeta))
-				: undefined,
-		};
-	}
-}
-
-const routesMeta = ref({});
-
-watch(currentRoute, async () => {
-	routesMeta.value = await getRoutesMeta(getAppRoute());
-});
-
-onMounted(async () => {
-	routesMeta.value = await getRoutesMeta(getAppRoute());
-	console.log(routesMeta.value);
-});
 
 function logoutHandler() {
 	router.push({ name: "Login" });
 	authStore.logout();
 }
+
+const getRouteMetaRecursive = async (route) =>
+	route
+		? await Promise.all(
+				route
+					.filter((route) => route?.meta?.getDisplayName && !route?.props)
+					.map(async (route) => ({
+						title: await route.meta.getDisplayName(),
+						to: { name: route.meta.defaultRoute },
+						children: await getRouteMetaRecursive(route?.children),
+					})),
+			)
+		: null;
+
+getRouteMetaRecursive(appRoutes).then((menu) => {
+	appsMenu.value = menu;
+});
+
+
 </script>
+
+
