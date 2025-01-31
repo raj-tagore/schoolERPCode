@@ -1,4 +1,3 @@
-
 from django.db import models
 from attachments.models import Attachment
 from users.models import User
@@ -21,6 +20,9 @@ class Teacher(models.Model):
     # qualifications = models.TextField('Qualifications', blank=True)
     phone = models.CharField('Phone number', max_length=20, blank=True)
     whatsapp = models.CharField('WhatsApp number', max_length=20, blank=True)
+
+    class Meta:
+        ordering = ['identifier']
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name} ({self.user.username})"
@@ -114,6 +116,9 @@ class Student(models.Model):
     #     blank=True,
     #     related_name='student_report_cards'
     # )
+
+    class Meta:
+        ordering = ['student_no']
 
     def __str__(self):
         return f"{self.user.full_name} ({self.user.username})"

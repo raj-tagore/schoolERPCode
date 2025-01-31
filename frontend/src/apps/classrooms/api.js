@@ -30,10 +30,14 @@ const getClassroomInfoFromObj = (item) => ({
     value: item.id,
 });
 
+const createClassroom = async (classroom) =>
+    await api.post("api/allocation/classrooms/create", classroom);
+
 export {
     getClassroom,
     getClassrooms,
     updateClassroom,
     getClassroomImage,
     getClassroomInfoFromObj,
+    createClassroom,
 };
