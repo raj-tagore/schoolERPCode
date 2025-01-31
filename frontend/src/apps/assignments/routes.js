@@ -1,6 +1,9 @@
 import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue";
+import EmptyLayout from "@/layouts/EmptyLayout.vue";
+
 import AssignmentsPage from "./views/AssignmentsPage.vue";
 import AssignmentPage from "./views/AssignmentPage.vue";
+import EditAssignmentPage from "./views/EditAssignmentPage.vue"
 
 export default [
     {
@@ -25,8 +28,7 @@ export default [
             },
             {
                 path: ":assignmentId/",
-                component: AssignmentPage,
-                name: "Assignment",
+				component: EmptyLayout,
                 props: true,
                 meta: {
                     defaultRoute: "Assignment",
@@ -36,8 +38,26 @@ export default [
                             title: "View Assignment",
                             to: { name: "Assignment", props },
                         },
+                        {
+                            title: "Edit Assignment",
+                            to: { name: "EditAssignment", props },
+                        },
                     ],
                 },
+				children: [
+					{
+						path: "",
+						component: AssignmentPage,
+						name: "Assignment",
+						props: true,
+					},
+					{
+						path: "edit/",
+						component: EditAssignmentPage,
+						name: "EditAssignment",
+						props: true,
+					}
+				]
             },
         ],
     },
