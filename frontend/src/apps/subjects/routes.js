@@ -3,7 +3,7 @@ import EditSubjectPage from "@/apps/subjects/views/EditSubjectPage.vue";
 import { api } from "@/services/api";
 import SubjectsPage from "./views/SubjectsPage.vue";
 import AppSideBarLayout from "@/layouts/AppSideBarLayout.vue";
-import BreadcrumbsLayout from "@/layouts/BreadcrumbsLayout.vue";
+import EmptyLayout from "@/layouts/EmptyLayout.vue";
 
 export default [
     {
@@ -28,7 +28,7 @@ export default [
             },
             {
                 path: ":subjectId/",
-                component: BreadcrumbsLayout,
+                component: EmptyLayout,
                 meta: {
                     defaultRoute: "Subject",
                     getDisplayName: async (props) =>

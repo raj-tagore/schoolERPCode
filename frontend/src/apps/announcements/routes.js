@@ -1,5 +1,5 @@
 import AppSideBarLayout from "@/layouts/AppSideBarLayout.vue";
-import BreadcrumbsLayout from "@/layouts/BreadcrumbsLayout.vue";
+import EmptyLayout from "@/layouts/EmptyLayout.vue";
 
 import AnnouncementsPage from "./views/AnnouncementsPage.vue";
 import AnnouncementPage from "./views/AnnouncementPage.vue";
@@ -28,7 +28,7 @@ export default [
             },
             {
                 path: ":announcementId/",
-                component: BreadcrumbsLayout,
+                component: EmptyLayout,
                 props: true,
                 meta: {
                     defaultRoute: "Announcement",
