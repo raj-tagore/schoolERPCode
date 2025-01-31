@@ -16,10 +16,6 @@
 
 					<v-divider :thickness="10" class="border-opacity-100"></v-divider>
 
-					<v-list-item :to="{name: 'All Apps'}">
-						<v-list-item-title>All Apps</v-list-item-title>
-					</v-list-item>
-
 					<v-divider :thickness="10" class="border-opacity-100"></v-divider>
 
 					<RecursiveList v-for="item in appsMenu" :item="item" />
