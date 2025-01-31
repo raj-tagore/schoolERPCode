@@ -89,7 +89,10 @@ const getRouteMeta = async (route) => {
 watch(currentRoute, (route) => {
 	getCurrentAppMeta().then((r) => {
 		currentAppMeta.value = r;
+		console.log("currentAppMeta", currentRouteMeta.value);
 	});
+
+	console.log("route", route);
 
 	getRouteMeta(route).then((r) => {
 		if (r?.getDisplayName !== currentAppMeta?.value?.getDisplayName) {
@@ -97,6 +100,7 @@ watch(currentRoute, (route) => {
 		} else {
 			currentRouteMeta.value = null;
 		}
+		console.log("currentRouteMeta", currentRouteMeta.value);
 	});
 });
 
@@ -104,6 +108,8 @@ onMounted(() => {
 	getCurrentAppMeta().then((r) => {
 		currentAppMeta.value = r;
 	});
+		console.log("currentRoute", currentRoute);
+		console.log("currentRouteMeta", currentRouteMeta);
 
 	getRouteMeta(currentRoute).then((r) => {
 		if (r?.getDisplayName !== currentAppMeta?.value?.getDisplayName) {
@@ -111,6 +117,8 @@ onMounted(() => {
 		} else {
 			currentRouteMeta.value = null;
 		}
+		console.log("currentRoute", currentRoute);
+		console.log("currentRouteMeta", currentRouteMeta);
 	});
 });
 </script>

@@ -49,7 +49,6 @@ import RecursiveList from "@/components/RecursiveList.vue";
 
 import appRoutes from "@/router/app";
 
-
 const { mdAndUp } = useDisplay();
 const leftDrawer = ref(mdAndUp.value);
 const router = useRouter();
@@ -64,24 +63,29 @@ function logoutHandler() {
 	authStore.logout();
 }
 
-const getRouteMetaRecursive = async (route) =>
-	route
-		? await Promise.all(
-				route
-					.filter((route) => route?.meta?.getDisplayName && !route?.props)
-					.map(async (route) => ({
-						title: await route.meta.getDisplayName(),
-						to: { name: route.meta.defaultRoute },
-						children: await getRouteMetaRecursive(route?.children),
-					})),
-			)
-		: null;
+const getRouteMetaRecursive = async (route) => {
+	try {
+		console.log(route)
+		return route
+			? await Promise.all(
+					route
+						.filter((route) => route?.meta?.getDisplayName && !route.props)
+						.map(async (route) => ({
+							title: await route.meta.getDisplayName(),
+							to: { name: route.meta.defaultRoute },
+							children: await getRouteMetaRecursive(route?.children),
+						})),
+				)
+			: null;
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
+};
 
 getRouteMetaRecursive(appRoutes).then((menu) => {
 	appsMenu.value = menu;
 });
-
-
 </script>
 
 
