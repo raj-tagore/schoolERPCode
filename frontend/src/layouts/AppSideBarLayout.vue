@@ -5,7 +5,7 @@
 				location="right"
 				v-model="rightDrawer"
 				color="accent">
-				<v-card v-if="currentAppMeta" class="mb-4 ma-2">
+				<v-card v-if="currentAppMeta" class="mb-4 ma-4">
 					<v-card-title>{{ currentAppMeta.displayName }}</v-card-title>
 					<v-card-text>
 						<v-btn :to="{name: 'All Apps'}">
@@ -15,7 +15,7 @@
 				</v-card>
 				<RecursiveList v-for="item in currentAppMeta.menu" :item="item" />
 				<span v-if="currentRouteMeta">
-					<v-card v-if="currentRouteMeta.displayName" class="mb-4 ma-2">
+					<v-card v-if="currentRouteMeta.displayName" class="mb-4 ma-4">
 						<v-card-title>{{ currentRouteMeta.displayName }}</v-card-title>
 					</v-card>
 					<RecursiveList v-for="item in currentRouteMeta.menu" :item="item" />
@@ -44,13 +44,10 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
 import { useDisplay } from "vuetify/lib/framework.mjs";
-
 import { useRoute } from "vue-router";
-
 import RecursiveList from "@/components/RecursiveList.vue";
 
 const currentRoute = useRoute();
-
 const currentRouteMeta = ref(null);
 
 const { mobile } = useDisplay();
