@@ -38,3 +38,9 @@ $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (3, 'Student')" "schoo
 $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (4, 'Parent')" "schoolERPDB"
 
 python import_dummy_data.py 2> /dev/null
+
+export DJANGO_SUPERUSER_USERNAME=sandy
+export DJANGO_SUPERUSER_PASSWORD=san
+export DJANGO_SUPERUSER_EMAIL=san@san.com
+
+python manage.py createsuperuser --noinput

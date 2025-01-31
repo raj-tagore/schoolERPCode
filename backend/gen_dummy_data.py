@@ -1,6 +1,7 @@
 import csv
 import datetime
 import random
+from django.contrib.auth.hashers import BCryptSHA256PasswordHasher
 
 import os
 
@@ -45,6 +46,8 @@ subject_teachers = {
     "Social Studies": [],
 }
 
+hasher = BCryptSHA256PasswordHasher()
+password = hasher.encode("Pass1234#", hasher.salt())
 
 def add_user(
     username: str, email: str, first_name: str, last_name: str, groups: int
@@ -55,7 +58,7 @@ def add_user(
             "id": user_id,
             "username": username,
             "email": email,
-            "password": "Pass1234#",
+            "password": password,
             "first_name": first_name,
             "last_name": last_name,
             "school": 2,
