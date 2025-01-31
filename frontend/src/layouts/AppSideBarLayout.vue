@@ -39,8 +39,6 @@
 	</Suspense>
 </template>
 
-<style>
-</style>
 <script setup>
 import { ref, watch, onMounted } from "vue";
 import { useDisplay } from "vuetify/lib/framework.mjs";
