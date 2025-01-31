@@ -65,7 +65,6 @@ function logoutHandler() {
 
 const getRouteMetaRecursive = async (route) => {
 	try {
-		console.log(route)
 		return route
 			? await Promise.all(
 					route

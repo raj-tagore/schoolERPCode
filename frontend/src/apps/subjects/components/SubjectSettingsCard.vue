@@ -56,7 +56,6 @@ const teacherInfoFromObj = (item) => ({
 
 const handleUpdate = async () => {
 	try {
-		console.log(props.subject);
 		await updateSubject(props.subject);
 		return { success: true };
 	} catch (error) {

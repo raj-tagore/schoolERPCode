@@ -108,7 +108,6 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 	loading.value = true;
 	try {
 		// Filter out falsy values
-		console.log(search);
 		const filterParams = Object.fromEntries(
 			Object.entries(search)
 				.filter(([_, value]) => (typeof value === "boolean" ? true : value))
@@ -128,13 +127,9 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 		if (Object.keys(filterParams).length > 0) {
 			filterParams.page_size = itemsPerPage || 10;
 			filterParams.page = page || 1;
-			console.log(props.fetch);
-			console.log("Filter Params", filterParams);
 			const listing = await props.fetch(filterParams);
-			console.log(listing);
 			items.value = listing.results;
 			itemsLen.value = listing.total_records;
-			console.log(items);
 		}
 	} catch (error) {
 		console.error("Error fetching items:", error);
@@ -145,9 +140,7 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 
 onMounted(async () => {
 	const listing = await props.fetch({ page_size: 10, page: 1 });
-	console.log(listing);
 	items.value = listing.results;
 	itemsLen.value = listing.total_records;
-	console.log(items);
 });
 </script>
