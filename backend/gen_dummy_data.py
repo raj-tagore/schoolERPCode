@@ -66,7 +66,7 @@ def add_user(
 
 
 def add_teacher(teacher_num: int, subject: str) -> int:
-    teacher_id = len(data["teacher"])
+    teacher_id = len(data["teacher"]) + 1
     user_id = add_user(
         "Teacher {} for {}".format(teacher_num, subject),
         "teacher{}for{}@testerp.shouldnotexist.com".format(teacher_num, subject),
@@ -99,7 +99,7 @@ def add_guardian(student_id: int, guardian_num: int) -> int:
         "For {}".format(student_id),
         4,
     )
-    guardian_id = len(data["parent"])
+    guardian_id = len(data["parent"]) + 1
     data["parent"].append(
         {
             "id": guardian_id,
@@ -109,11 +109,11 @@ def add_guardian(student_id: int, guardian_num: int) -> int:
             "whatsapp": 9898989898 + guardian_id,
         }
     )
-    return guardian_id
+    return guardian_id 
 
 
 def add_student(student_num: int, standard: int, section: int) -> int:
-    student_id = len(data["student"])
+    student_id = len(data["student"]) + 1
     user_id = add_user(
         "Student {} of Class {}-{}".format(
             student_num + 1, standard_idx + 1, chr((ord("A") + section_idx))
@@ -139,7 +139,7 @@ def add_student(student_num: int, standard: int, section: int) -> int:
 
 
 def add_classroom(standard: int, section: int) -> int:
-    classroom_id = len(data["classroom"])
+    classroom_id = len(data["classroom"]) + 1
 
     teachers = []
     for t in subject_teachers.values():
@@ -220,7 +220,7 @@ for i in range(
 ):
     data["announcement"].append(
         {
-            "id": len(data["announcement"]),
+            "id": len(data["announcement"]) + 1,
             "title": f"Announcement {len(data['announcement'])}",
             "description": lorem,
             "is_active": len(data["announcement"]) % 2 == 0,
@@ -255,7 +255,7 @@ for subject in data["subject"]:
 for i in range(announcements_per_school):
     data["announcement"].append(
         {
-            "id": len(data["announcement"]),
+            "id": len(data["announcement"]) + 1,
             "title": f"Announcement {len(data['announcement'])}",
             "description": lorem,
             "is_active": len(data["announcement"]) % 2 == 0,
@@ -283,6 +283,7 @@ for m_name, values in data.items():
         encoding="utf-8",
     ) as output_file:
         fieldnames = values[0].keys()
+
         writer = csv.DictWriter(output_file, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(values)
