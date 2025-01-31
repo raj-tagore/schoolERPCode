@@ -3,7 +3,7 @@
   <v-card variant="flat">
     <v-card-title>
       <v-row>
-        <v-col cols="12">
+        <v-col cols="12" md="6">
           <v-text-field
             v-model="filters.name"
             label="Search by name"
@@ -12,7 +12,7 @@
             hide-details
           ></v-text-field>
         </v-col>
-        <v-col cols="12">
+        <v-col cols="12" md="6">
           <v-autocomplete
             v-model="filters.classroom"
             :items="classrooms"
