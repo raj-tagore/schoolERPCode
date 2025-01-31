@@ -53,7 +53,7 @@ export default [
                     getDisplayName: async () => "Students",
                     getMenu: (props) => [
                         {
-                            title: "View Student",
+                            title: "View Students",
                             to: { name: "Students", params: props },
                         },
                     ],
