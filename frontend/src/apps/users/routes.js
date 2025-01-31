@@ -36,11 +36,6 @@ export default [
                 name: "Users",
             },
             {
-                path: "students",
-                component: StudentsPage,
-                name: "Students",
-            },
-            {
                 path: "teachers",
                 component: EmptyLayout,
                 name: "Teachers",
@@ -53,12 +48,16 @@ export default [
             {
                 path: "students",
                 component: BreadcrumbsLayout,
-                name: "Students",
                 meta: {
                     defaultRoute: "Students",
                     getDisplayName: async () => "Students",
                 },
                 children: [
+					{
+						path: "",
+						component: StudentsPage,
+						name: "Students",
+					},
                     {
                         path: ":studentId",
                         component: StudentPage,
