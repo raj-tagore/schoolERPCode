@@ -3,6 +3,7 @@ import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import BreadcrumbsLayout from "@/layouts/BreadcrumbsLayout.vue";
 import StudentPage from "./views/StudentPage.vue";
 import StudentsPage from "./views/StudentsPage.vue";
+import EditStudentsPage from "./views/EditStudentsPage.vue";
 import { api } from "@/services/api";
 
 export default [
@@ -19,9 +20,18 @@ export default [
                     title: "View Students",
                     to: { name: "Students", params: props },
                 },
+                {
+                    title: "Edit Students",
+                    to: { name: "EditStudents", params: props },
+                },
             ],
         },
         children: [
+            {
+                path: "edit/",
+                component: EditStudentsPage,
+                name: "EditStudents",
+            },
             {
                 path: "",
                 component: StudentsPage,
