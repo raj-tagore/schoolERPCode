@@ -2,14 +2,14 @@ import ClassroomPage from "@/apps/classrooms/views/ClassroomPage.vue";
 import EditClassroomPage from "@/apps/classrooms/views/EditClassroomPage.vue";
 import CreateClassroomPage from "@/apps/classrooms/views/CreateClassroomPage.vue";
 import ClassroomsPage from "@/apps/classrooms/views/ClassroomsPage.vue";
-import AppSideBarLayout from "@/layouts/AppSideBarLayout.vue";
-import BreadcrumbsLayout from "@/layouts/BreadcrumbsLayout.vue";
+import AppSideBarBreadcrumbsLayout from "@/layouts/AppSideBarBreadcrumbsLayout.vue";
+import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import { api } from "@/services/api";
 
 export default [
     {
         path: "classrooms/",
-        component: AppSideBarLayout,
+        component: AppSideBarBreadcrumbsLayout,
         meta: {
             requiresAuth: true,
             getDisplayName: () => "Classes",
@@ -44,7 +44,7 @@ export default [
             {
                 path: ":classroomId/",
                 props: true,
-                component: BreadcrumbsLayout,
+                component: EmptyLayout,
                 meta: {
                     getDisplayName: async (props) =>
                         props

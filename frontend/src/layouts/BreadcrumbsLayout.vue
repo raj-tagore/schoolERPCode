@@ -11,7 +11,9 @@
 				</v-breadcrumbs>
 			</v-app-bar>
 			<v-main>
-				<router-view></router-view>
+				<slot>
+					<router-view></router-view>
+				</slot>
 			</v-main>
 		</v-app>
 		<template #fallback>

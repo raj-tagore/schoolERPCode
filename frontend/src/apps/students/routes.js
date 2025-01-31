@@ -1,6 +1,5 @@
-import AppSideBarLayout from "@/layouts/AppSideBarLayout.vue";
+import AppSideBarBreadcrumbsLayout from "@/layouts/AppSideBarBreadcrumbsLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
-import BreadcrumbsLayout from "@/layouts/BreadcrumbsLayout.vue";
 import StudentPage from "./views/StudentPage.vue";
 import StudentsPage from "./views/StudentsPage.vue";
 import EditStudentsPage from "./views/EditStudentsPage.vue";
@@ -9,7 +8,7 @@ import { api } from "@/services/api";
 export default [
     {
         path: "students/",
-        component: AppSideBarLayout,
+        component: AppSideBarBreadcrumbsLayout,
         meta: {
             requiresAuth: true,
             getDisplayName: () => "Students",
@@ -40,7 +39,7 @@ export default [
             {
                 path: ":studentId",
                 props: true,
-                component: BreadcrumbsLayout,
+                component: EmptyLayout,
                 meta: {
                     defaultRoute: "Student",
                     getDisplayName: async (params) =>

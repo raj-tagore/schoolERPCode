@@ -2,13 +2,13 @@ import SubjectPage from "@/apps/subjects/views/SubjectPage.vue";
 import EditSubjectPage from "@/apps/subjects/views/EditSubjectPage.vue";
 import { api } from "@/services/api";
 import SubjectsPage from "./views/SubjectsPage.vue";
-import AppSideBarLayout from "@/layouts/AppSideBarLayout.vue";
-import BreadcrumbsLayout from "@/layouts/BreadcrumbsLayout.vue";
+import AppSideBarBreadcrumbsLayout from "@/layouts/AppSideBarBreadcrumbsLayout.vue";
+import EmptyLayout from "@/layouts/EmptyLayout.vue";
 
 export default [
     {
         path: "subjects/",
-        component: AppSideBarLayout,
+        component: AppSideBarBreadcrumbsLayout,
         meta: {
             getDisplayName: () => "Subjects",
             defaultRoute: "Subjects",
@@ -28,7 +28,7 @@ export default [
             },
             {
                 path: ":subjectId/",
-                component: BreadcrumbsLayout,
+                component: EmptyLayout,
                 meta: {
                     defaultRoute: "Subject",
                     getDisplayName: async (props) =>
