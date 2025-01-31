@@ -188,9 +188,7 @@ watch(currentRoute, (route) => {
 	});
 
 	getRouteMeta(route).then((r) => {
-		console.log("appRouteMeta", currentAppMeta.value);
-		console.log("currentRouteMeta", r.getDisplayName);
-		if (r.getDisplayName !== currentAppMeta.value.getDisplayName) {
+		if (r?.getDisplayName !== currentAppMeta?.value?.getDisplayName) {
 			currentRouteMeta.value = r;
 		} else {
 			currentRouteMeta.value = null;
@@ -208,9 +206,7 @@ onMounted(() => {
 	});
 
 	getRouteMeta(currentRoute).then((r) => {
-		console.log("appRouteMeta", currentAppMeta.value);
-		console.log("currentRouteMeta", r.getDisplayName);
-		if (r.getDisplayName !== currentAppMeta.value.getDisplayName) {
+		if (r?.getDisplayName !== currentAppMeta?.value?.getDisplayName) {
 			currentRouteMeta.value = r;
 		} else {
 			currentRouteMeta.value = null;
