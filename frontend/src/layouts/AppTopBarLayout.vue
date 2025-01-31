@@ -182,8 +182,15 @@ const getRouteMeta = async (route) => {
 
 watch(currentRoute, (route) => {
 	updateBreadcrumbs(route);
+
+	getCurrentAppMeta().then((r) => {
+		currentAppMeta.value = r;
+	});
+
 	getRouteMeta(route).then((r) => {
-		if (r !== currentAppMeta.value) {
+		console.log("appRouteMeta", currentAppMeta.value);
+		console.log("currentRouteMeta", r.getDisplayName);
+		if (r.getDisplayName !== currentAppMeta.value.getDisplayName) {
 			currentRouteMeta.value = r;
 		} else {
 			currentRouteMeta.value = null;
@@ -191,9 +198,6 @@ watch(currentRoute, (route) => {
 	});
 
 	// We are at top level route so no await
-	getCurrentAppMeta().then((r) => {
-		currentAppMeta.value = r;
-	});
 });
 
 onMounted(() => {
