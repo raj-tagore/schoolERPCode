@@ -2,12 +2,13 @@
 	<v-container>
 		<v-row>
 			<v-col>
-                <StudentsSettingsCard></StudentsSettingsCard>
+				<StudentSettingsCard/>
+                <!---- <StudentsSettingsCard></StudentsSettingsCard> ---->
 			</v-col>
 		</v-row>
 	</v-container>
 </template>
 
 <script setup>
-import StudentsSettingsCard from "@/apps/students/components/StudentsSettingsCard.vue";
+import StudentSettingsCard from "@/apps/students/components/StudentSettingsCard.vue";
 </script>

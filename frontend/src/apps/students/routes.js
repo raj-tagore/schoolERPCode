@@ -1,4 +1,5 @@
 import AppSideBarLayout from "@/layouts/AppSideBarLayout.vue";
+import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import BreadcrumbsLayout from "@/layouts/BreadcrumbsLayout.vue";
 import StudentPage from "./views/StudentPage.vue";
 import StudentsPage from "./views/StudentsPage.vue";
@@ -27,26 +28,37 @@ export default [
                 name: "Students",
             },
             {
-                path: "",
+                path: ":studentId",
+                props: true,
                 component: BreadcrumbsLayout,
+                meta: {
+                    defaultRoute: "Student",
+                    getDisplayName: async (params) =>
+                        (await api.get(`api/accounts/students/${params.studentId}/`)).data
+                            .user_details.full_name,
+                    getMenu: (props) => [
+                        {
+                            title: "View Student",
+                            to: { name: "Student", params: props },
+                        },
+                        {
+                            title: "Edit Student",
+                            to: { name: "EditStudent", params: props },
+                        },
+                    ],
+                },
                 children: [
                     {
-                        path: ":studentId",
+						path: "",
                         component: StudentPage,
                         name: "Student",
                         props: true,
-                        meta: {
-                            defaultRoute: "Student",
-                            getDisplayName: async (params) =>
-                                (await api.get(`api/accounts/students/${params.studentId}/`))
-                                    .data.user_details.full_name,
-                            getMenu: (props) => [
-                                {
-                                    title: "View Student",
-                                    to: { name: "Student", params: props },
-                                },
-                            ],
-                        },
+                    },
+                    {
+						path: "edit/",
+                        component: EmptyLayout,
+                        name: "EditStudent",
+                        props: true,
                     },
                 ],
             },
