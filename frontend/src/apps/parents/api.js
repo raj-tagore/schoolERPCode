@@ -10,4 +10,7 @@ const getParents = async (filter) =>
 const getParent = async (id) =>
     (await api.get(`api/accounts/parents/${id}`)).data;
 
-export { getParents, getParent };
+const getTeacherStats = async () =>
+    (await api.get("api/accounts/teachers/stats/")).data;
+
+export { getParents, getParent, getTeacherStats };
