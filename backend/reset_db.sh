@@ -41,7 +41,7 @@ $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (2, 'Teacher')" "schoo
 $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (3, 'Student')" "schoolERPDB"
 $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (4, 'Parent')" "schoolERPDB"
 
-python 2> /dev/null <<HEREDOC
+python <<HEREDOC
 import csv
 import sys
 from django.contrib.auth.hashers import make_password
