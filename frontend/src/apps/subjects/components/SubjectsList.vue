@@ -17,7 +17,8 @@
                         :to="{ name: 'Subject', params: { subjectId: subject.id } }"
                         icon="mdi-arrow-right"
                         size="small"
-                        variant="outlined"
+                        variant="text"
+                        class="ma-1 pa-2 border"
                         ></v-btn>
                     </template>
                 </v-list-item>
