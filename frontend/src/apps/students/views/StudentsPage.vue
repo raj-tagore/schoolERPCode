@@ -6,7 +6,7 @@
           <v-col cols="12" md="4">
             <StudentsStatsCard />
           </v-col>
-          <v-col cols="12" md="4">
+          <v-col cols="12" md="8">
             <StudentsLookup />
           </v-col>
         </v-row>
