@@ -35,10 +35,10 @@ export default [
                         (await api.get(`api/allocation/subjects/${params.subjectId}`)).data
                             .name,
 
-                    getMenu: () => [
+                    getMenu: (params) => [
                         {
-                            title: "All Subjects",
-                            to: { name: "Subjects" },
+                            title: "View Subject",
+                            to: { name: "Subject", params },
                         },
                     ],
                 },
