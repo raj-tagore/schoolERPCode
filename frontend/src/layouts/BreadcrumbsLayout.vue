@@ -53,7 +53,7 @@ const updateBreadcrumbs = async (route) => {
 	}
 };
 
-watch(currentRoute, updateBreadcrumbs(route));
+watch(currentRoute, updateBreadcrumbs);
 
 onMounted(() => {
 	updateBreadcrumbs(currentRoute);

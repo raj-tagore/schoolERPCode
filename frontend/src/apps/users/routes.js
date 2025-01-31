@@ -1,5 +1,6 @@
 import AppSideBarLayout from "@/layouts/AppSideBarLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
+import BreadcrumbsLayout from "@/layouts/BreadcrumbsLayout.vue";
 import StudentPage from "./views/StudentPage.vue";
 import StudentsPage from "./views/StudentsPage.vue";
 import { api } from "@/services/api";
@@ -51,7 +52,7 @@ export default [
             },
             {
                 path: "students",
-                component: EmptyLayout,
+                component: BreadcrumbsLayout,
                 name: "Students",
                 meta: {
                     defaultRoute: "Students",

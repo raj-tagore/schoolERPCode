@@ -1,5 +1,5 @@
 import AppSideBarLayout from "@/layouts/AppSideBarLayout.vue";
-import EmptyLayout from "@/layouts/EmptyLayout.vue";
+import BreadcrumbsLayout from "@/layouts/BreadcrumbsLayout.vue";
 
 import AssignmentsPage from "./views/AssignmentsPage.vue";
 import AssignmentPage from "./views/AssignmentPage.vue";
@@ -28,7 +28,7 @@ export default [
             },
             {
                 path: ":assignmentId/",
-				component: EmptyLayout,
+				component: BreadcrumbsLayout,
                 props: true,
                 meta: {
                     defaultRoute: "Assignment",

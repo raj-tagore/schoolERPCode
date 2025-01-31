@@ -1,10 +1,10 @@
 <template>
 	<Suspense>
 		<v-app>
-			<v-navigation-drawer app 
+			<v-navigation-drawer
 				location="right"
 				v-model="rightDrawer"
-				color="grey lighten-4">
+				color="blue-grey">
 				<v-card v-if="currentAppMeta">
 					<v-card-title>{{ currentAppMeta.displayName }}</v-card-title>
 					<v-card-text>
@@ -22,8 +22,8 @@
 				</span>
 			</v-navigation-drawer>
 				<v-fab 
+				app
 					absolute
-					app
 					location="right top"
 					@click="rightDrawer = !rightDrawer"
 					icon>
@@ -53,8 +53,8 @@ const currentRoute = useRoute();
 
 const currentRouteMeta = ref(null);
 
-const { mdAndUp, mobile } = useDisplay();
-const rightDrawer = ref(mdAndUp.value);
+const { mobile } = useDisplay();
+const rightDrawer = ref(mobile.value);
 
 const currentAppMeta = ref({});
 

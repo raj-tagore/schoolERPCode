@@ -2,7 +2,7 @@
 	<Suspense>
 		<v-app>
 			<v-navigation-drawer app v-model="leftDrawer"
-				color="grey lighten-4">
+				color="teal">
 				<v-list dense>
 					<v-list-item>
 						<v-card class="ma-2" 
@@ -14,9 +14,9 @@
 						</v-card>
 					</v-list-item>
 
-					<v-divider :thickness="10" class="border-opacity-100"></v-divider>
+					<v-divider :thickness="10" class="border-opacity-50"></v-divider>
 
-					<v-divider :thickness="10" class="border-opacity-100"></v-divider>
+					<v-divider :thickness="10" class="border-opacity-50"></v-divider>
 
 					<RecursiveList v-for="item in appsMenu" :item="item" />
 
