@@ -83,7 +83,6 @@ const filters = ref(props.defaultValues);
 const emit = defineEmits(["update:filters"]);
 
 watch(filters.value, (newValue) => {
-	console.log(newValue)
 	emit("update:filters", structuredClone(newValue));
 });
 </script>

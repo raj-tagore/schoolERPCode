@@ -24,11 +24,18 @@ import { onMounted, ref, watch } from "vue";
 import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
 import FilterCard from "@/components/FilterCard.vue";
 
-const filters = ref({});
+const filters = ref({
+	title: "",
+	description: "",
+	classroom: null,
+	subject: null,
+	is_active: null,
+});
 
 const filtersChanged = (newFilters) => {
-	console.log("Filters changed", newFilters);
-	filters.value = newFilters;
+	for (const key of Object.keys(newFilters)) {
+		filters.value[key] = newFilters[key];
+	}
 };
 
 
