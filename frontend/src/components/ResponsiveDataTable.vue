@@ -125,14 +125,11 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 				}),
 		);
 
-		// Only fetch if at least one filter is active
-		if (Object.keys(filterParams).length > 0) {
-			filterParams.page_size = itemsPerPage || 10;
-			filterParams.page = page || 1;
-			const listing = await props.fetch(filterParams);
-			items.value = listing.results;
-			itemsLen.value = listing.total_records;
-		}
+		filterParams.page_size = itemsPerPage || 10;
+		filterParams.page = page || 1;
+		const listing = await props.fetch(filterParams);
+		items.value = listing.results;
+		itemsLen.value = listing.total_records;
 	} catch (error) {
 		console.error("Error fetching items:", error);
 	} finally {
