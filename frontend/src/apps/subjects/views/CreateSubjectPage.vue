@@ -26,17 +26,17 @@ const model = ref([
 		type: "string",
 	},
 	{
-		label: "Description",
-		key: "description",
-		type: "string",
-	},
-	{
 		label: "Classroom",
 		key: "classroom",
 		type: "number",
 		fetchOptions: getClassrooms,
 		fetchOptionsInfo: getClassroomInfoFromObj,
 		searchField: "name",
+	},
+	{
+		label: "Description",
+		key: "description",
+		type: "longstring",
 	},
 	{
 		label: "Teacher",
