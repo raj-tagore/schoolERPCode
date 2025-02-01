@@ -11,7 +11,7 @@
 		@input="selectedItem = $event.target.value"
 		@update:modelValue="emit('update:modelValue', $event)"
 		@update:search="debouncedFetchResults"
-
+		:clearable="clearable"
 	>
 		<template v-slot:append-item>
 			<div v-if="hasMore" v-intersect="debouncedFetchResults" class="pa-4 teal--text">
@@ -49,6 +49,10 @@ const props = defineProps({
 	multiple: {
 		type: Boolean,
 		default: false,
+	},
+	clearable: {
+		type: Boolean,
+		default: true,
 	},
 });
 

@@ -98,9 +98,9 @@ const title = ref(props.headers[0]);
 const data_headers = ref(props.headers.slice(1, props.headers.length - 1));
 
 watch(props.filters, (f) => {
-	console.log(props.filters);
+	console.log("Responsive Data Table", f);
 	search.value = structuredClone(f);
-});
+}, {deep: true});
 
 const loading = ref(false);
 const itemsLen = ref(10);
