@@ -54,6 +54,10 @@ export default [
                             title: "View Subject",
                             to: { name: "Subject", props },
                         },
+                        {
+                            title: "Edit Subject",
+                            to: { name: "EditSubject", props },
+                        },
                     ],
                 },
                 children: [
@@ -64,7 +68,7 @@ export default [
                         props: true,
                     },
                     {
-                        path: "edit",
+                        path: "edit/",
                         component: EditSubjectPage,
                         name: "EditSubject",
                         props: true,
