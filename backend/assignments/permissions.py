@@ -11,18 +11,7 @@ class AssignmentPermissions(BasePermission):
 
         # Check if user is in the 'Teacher' group
         if "Teacher" in [group.name for group in request.user.groups.all()]:
-            # Check if user is teaching or assisting in any related classroom
-            classrooms = obj.classrooms.all()
-            if (
-                obj.class_teacher == request.user
-                or obj.other_teachers.filter(id=request.user.id).exists()
-            ):
-                return True
-            if (
-                obj.students.filter(id=request.user.id).exists()
-                and request.method in SAFE_METHODS
-            ):
-                return True
+            return True
         return False
 
 
