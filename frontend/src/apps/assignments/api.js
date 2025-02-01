@@ -13,4 +13,7 @@ const getAssignment = async (id) =>
 const updateAssignment = async (id, data) =>
     await api.put(`api/assignments/${id}/`, data);
 
-export { getAssignments, getAssignment, updateAssignment };
+const createAssignment = async (data) =>
+    await api.post("api/assignments/create/", data);
+
+export { getAssignments, getAssignment, updateAssignment, createAssignment };

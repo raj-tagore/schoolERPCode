@@ -22,10 +22,14 @@ const getStudentInfoFromObj = (item) => ({
 const getStudentStats = async () =>
     (await api.get("api/accounts/students/stats/")).data;
 
+const createStudent = async (student) =>
+    await api.post("api/users/students/create/", student);
+
 export {
     getStudents,
     getStudent,
     getStudentInfoFromObj,
     updateStudent,
+	createStudent,
     getStudentStats,
 };
