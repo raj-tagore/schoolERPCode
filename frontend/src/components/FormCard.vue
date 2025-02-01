@@ -1,7 +1,7 @@
 <template>
 	<v-card>
 		<v-card-title>
-			{{actionName}} New {{ title }}
+			{{actionName}} {{ title }}
 		</v-card-title>
 		<v-card-text>
 			<v-row>
