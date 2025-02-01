@@ -1,5 +1,6 @@
 import SubjectPage from "@/apps/subjects/views/SubjectPage.vue";
 import EditSubjectPage from "@/apps/subjects/views/EditSubjectPage.vue";
+import CreateSubjectPage from "@/apps/subjects/views/CreateSubjectPage.vue";
 import { api } from "@/services/api";
 import SubjectsPage from "./views/SubjectsPage.vue";
 import AppSideBarBreadcrumbsLayout from "@/layouts/AppSideBarBreadcrumbsLayout.vue";
@@ -18,9 +19,22 @@ export default [
                     title: "All Subjects",
                     to: { name: "Subjects" },
                 },
+                {
+                    title: "Create Subject",
+                    to: { name: "CreateSubject" },
+                },
             ],
         },
         children: [
+            {
+                path: "create/",
+                name: "CreateSubject",
+                component: CreateSubjectPage,
+                meta: {
+                    getDisplayName: () => "Create Subject",
+                    defaultRoute: "CreateClassroom",
+                },
+            },
             {
                 path: "",
                 component: SubjectsPage,
