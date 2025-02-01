@@ -4,6 +4,7 @@ import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import AnnouncementsPage from "./views/AnnouncementsPage.vue";
 import AnnouncementPage from "./views/AnnouncementPage.vue";
 import EditAnnouncementPage from "./views/EditAnnouncementPage.vue";
+import CreateAnnouncementPage from "./views/CreateAnnouncementPage.vue";
 
 export default [
     {
@@ -18,6 +19,10 @@ export default [
                     title: "All Announcements",
                     to: { name: "Announcements" },
                 },
+                {
+                    title: "Create Announcement",
+                    to: { name: "CreateAnnouncement" },
+                },
             ],
         },
         children: [
@@ -25,6 +30,11 @@ export default [
                 path: "",
                 component: AnnouncementsPage,
                 name: "Announcements",
+            },
+            {
+                path: "create/",
+                component: CreateAnnouncementPage,
+                name: "CreateAnnouncement",
             },
             {
                 path: ":announcementId/",

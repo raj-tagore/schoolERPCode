@@ -21,9 +21,13 @@ const updateSubject = async (subject) => {
     await api.put(`api/allocation/subjects/${subject.id}/`, cleanSubject);
 };
 
+const createSubject = async (subject) =>
+    await api.post("api/allocation/subjects/create/", subject);
+
 export {
     getSubjects,
     getSubject,
     getSubjectInfoFromObj,
     updateSubject,
+	createSubject,
 };

@@ -1,6 +1,7 @@
 <template>
   <v-card variant="flat">
     <v-card-title>
+			<FilterCard :filtersInfo="filtersInfo" @update:filters="filtersChanged" />
       <!-- Search filters -->
       <v-row>
         <v-col cols="12" md="4" lg="3">
@@ -90,6 +91,48 @@ const props = defineProps({
 	},
 });
 
+const filtersInfo = ref([
+	{
+		label: "Search by title",
+		type: "string",
+		key: "title",
+	},
+	{
+		label: "Filter by classroom",
+		type: "number",
+		key: "classroom",
+		fetchOptions: getClassrooms,
+		fetchOptionsInfo: getClassroomInfoFromObj,
+		searchField: "name",
+	},
+	{
+		label: "Filter by subject",
+		type: "number",
+		key: "subject",
+		fetchOptions: getSubjects,
+		fetchOptionsInfo: getSubjectInfoFromObj,
+		searchField: "name",
+	},
+	{
+		label: "Filter by signer",
+		type: "number",
+		key: "title",
+		fetchOptions: getTeachers,
+		fetchOptionsInfo: getTeacherInfoFromObj,
+		searchField: "name",
+	},
+	{
+		label: "Is School Wide",
+		type: "n_nary",
+		key: "is_school_wide",
+		fetchOptions: () => [
+			{ title: "All Announcements", value: null },
+			{ title: "School Wide Only", value: "True" },
+			{ title: "Non-School Wide Only", value: "False" },
+		],
+	},
+]);
+
 const filters = ref({
 	title: "",
 	classroom: null,
@@ -97,6 +140,10 @@ const filters = ref({
 	signed_by: null,
 	is_school_wide: null,
 });
+
+const filtersChanged = (newFilters) => {
+	Object.assign(filters.value, newFilters);
+};
 
 const formatDate = (dateString) => {
 	return new Date(dateString).toLocaleString("en-US", {

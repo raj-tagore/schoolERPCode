@@ -1,87 +1,123 @@
 <template>
-  <v-card>
-    <v-card-title>{{ title }}</v-card-title>
-    <v-card-text>
-      <slot></slot>
-      <v-row>
-        <v-col>
-          <v-btn 
-            @click="handleSubmit" 
-            color="primary"
-            :loading="isSubmitting"
-            :disabled="isSubmitting"
-            :append-icon="isSuccess ? 'mdi-check' : (error ? 'mdi-alert' : '')"
-            :color="error ? 'error' : 'primary'"
-          >
-            {{ isSuccess ? 'Updated!' : (error ? 'Failed!' : submitText) }}
-          </v-btn>
-          <v-alert
-            v-if="error"
-            type="error"
-            class="mt-2"
-            density="compact"
-          >
-            {{ error }}
-          </v-alert>
-        </v-col>
-      </v-row>
-    </v-card-text>
-  </v-card>
+	<v-card>
+		<v-card-title>
+			{{actionName}} New {{ title }}
+		</v-card-title>
+		<v-card-text>
+			<v-row>
+				<v-col cols="12" :lg="field.type === 'longstring' ? 12 : 6" v-for="field in model">
+					<v-text-field 
+						v-if="field.type === 'string'"
+						:label="field.label" 
+						v-model="newValue[field.key]"
+						:rules="[v => !!v || `${field.label} is required`]"
+						required
+					></v-text-field>
+					<v-textarea 
+						v-if="field.type === 'longstring'"
+						:label="field.label" 
+						v-model="newValue[field.key]"
+						:rules="[v => !!v || `${field.label} is required`]"
+						required
+					></v-textarea>
+					<v-select
+						v-if="field.type === 'select'"
+						:label="field.label"
+						v-model="newValue[field.key]"
+						:items="field.items"
+					></v-select>
+					<v-text-field
+						v-if="field.type === 'datetime'"
+						:label="field.label"
+						type="datetime-local"
+						v-model="newValue[field.key]"
+						:rules="[v => !!v || `${field.label} is required`]"
+						required
+					></v-text-field>
+					<ServerAutocomplete
+						v-if="field.type === 'number'"
+						v-model="newValue[field.key]"
+						:fetch="field.fetchOptions"
+						:getInfo="field.fetchOptionsInfo"
+						:searchField="field.searchField"
+						:label="field.label"
+					/>
+					<v-checkbox 
+						v-if="field.type === 'boolean'"
+						:label="field.label" 
+						v-model="newValue[field.key]"
+					></v-checkbox>
+					<ServerAutocomplete
+						v-if="field.type === 'array'"
+						v-model="newValue[field.key]"
+						:fetch="field.fetchOptions"
+						:getInfo="field.fetchOptionsInfo"
+						:searchField="field.searchField"
+						:label="field.label"
+						:multiple='true'
+					/>
+				</v-col>
+			</v-row>
+			<SubmitButton 
+				:onSubmit="handleAction"
+				:submitText="actionName"
+			/>
+		</v-card-text>
+	</v-card>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
+import SubmitButton from "@/components/SubmitButton.vue";
+import ServerAutocomplete from "@/components/ServerAutocomplete.vue";
 
 const props = defineProps({
-  title: {
-    type: String,
-    required: true
-  },
-  submitText: {
-    type: String,
-    default: 'Update'
-  },
-  onSubmit: {
-    type: Function,
-    required: true
-  }
+	title: {
+		type: String,
+		required: true,
+	},
+	actionName: {
+		type: String,
+		required: true,
+	},
+	// Each element for this array will be an object with the following keys:
+	// - label: String
+	// - key: String
+	// - type: String
+	//   - 'string'
+	//   - 'number'
+	//   - 'boolean'
+	//	 - 'array'
+	//   - 'longstring'
+	// - fetchOptions: Function?
+	// - fetchOptionsInfo: Function?
+	// - searchField: String?
+	// - defaultValue: Any
+	model: {
+		type: Array,
+		required: true,
+	},
+	action: {
+		type: Function,
+		required: true,
+	},
 });
 
-const isSubmitting = ref(false);
-const isSuccess = ref(false);
-const error = ref(null);
+const newValue = ref(
+	props.model.reduce((acc, { key, defaultValue }) => {
+		acc[key] = defaultValue;
+		return acc;
+	}, {}),
+);
 
-const formatErrorMessage = (error) => {
-  if (error.response) {
-    const { status, data } = error.response;
-    // Handle 400 Bad Request
-    if (status === 400) {
-      if (typeof data === 'object') {
-        // Format field-specific errors
-        const errors = Object.entries(data)
-          .map(([field, messages]) => `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`)
-          .join('\n');
-        return errors;
-      }
-      return data.detail || 'Invalid data submitted';
-    }    
-    // Handle other status codes
-    return data.detail || `Server returned ${status}`;
-  }  
-  return 'Failed to submit form';
-};
 
-const handleSubmit = async () => {
-  isSubmitting.value = true;
-  isSuccess.value = false;
-  error.value = null;
-  
-  const result = await props.onSubmit();
-  if (result.success) {
-    isSuccess.value = true;
-  } else {
-    error.value = formatErrorMessage(result.error);
-  }
-  isSubmitting.value = false;
+const handleAction = async () => {
+	try {
+		await props.action(newValue.value);
+		return { success: true };
+	} catch (error) {
+		console.error(`Failed to ${props.actionName} ${props.title}:`, error);
+		return { success: false, error };
+	}
 };
 </script>

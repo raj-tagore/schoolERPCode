@@ -124,7 +124,7 @@ def add_student(student_num: int, standard: int, section: int) -> int:
         "student{}of_class{}{}@testerp.shouldnotexist.com".format(
             student_num + 1, standard_idx + 1, chr((ord("A") + section_idx))
         ),
-        "Student {}".format(section_idx + 1),
+        "Student {}".format(student_num + 1),
         "For {}-{}".format(standard_idx + 1, chr((ord("A") + section_idx))),
         3,
     )

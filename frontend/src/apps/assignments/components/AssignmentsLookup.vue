@@ -1,52 +1,7 @@
 <template>
 	<v-card variant="flat">
 		<v-card-title>
-			<v-row>
-				<v-col cols="12" md="4" lg="3">
-					<v-text-field
-						v-model="filters.title"
-						label="Search by title"
-						density="comfortable"
-						hide-details
-					></v-text-field>
-				</v-col>
-				<v-col cols="12" md="4" lg="3">
-					<v-text-field
-						v-model="filters.description"
-						label="Search by description"
-						density="comfortable"
-						hide-details
-					></v-text-field>
-				</v-col>
-				<v-col cols="12" md="4" lg="2">
-					<ServerAutocomplete
-						v-model="filters.classroom"
-						:getInfo="getClassroomInfoFromObj"
-						label="Filter by classroom"
-						:fetch="getClassrooms"
-						searchField="name"
-					/>
-				</v-col>
-				<v-col cols="12" md="4" lg="2">
-					<ServerAutocomplete
-						v-model="filters.subject"
-						:getInfo="getSubjectInfoFromObj"
-						label="Filter by subject"
-						:fetch="getSubjects"
-						searchField="name"
-					/>
-				</v-col>
-				<!----- Replace with autocomplete or dropdown for true, false and undefined ---->
-				<v-col cols="12" md="4" lg="2">
-					<v-checkbox
-						v-model="filters.is_active"
-						label="Filter by Active"
-						clearable
-						hide-details
-						density="comfortable"
-					></v-checkbox>
-				</v-col>
-			</v-row>
+			<FilterCard :filtersInfo="filtersInfo" @update:filters="filtersChanged" :onFilterChange="filtersChanged" />
 		</v-card-title>
 		<ResponsiveDataTable 
 			:getToFunction="(item) => ( { name : 'Assignment', params: {assignmentId: item.id}} )" 
@@ -67,15 +22,58 @@ import {
 import { getSubjectInfoFromObj, getSubjects } from "@/apps/subjects/api.js";
 import { onMounted, ref } from "vue";
 import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
-import ServerAutocomplete from "@/components/ServerAutocomplete.vue";
+import FilterCard from "@/components/FilterCard.vue";
 
 const filters = ref({
 	title: "",
-	description: null,
-	is_active: null,
-	subject: null,
+	description: "",
 	classroom: null,
+	subject: null,
+	is_active: null,
 });
+
+const filtersChanged = (newFilters) => {
+	Object.assign(filters.value, newFilters);
+};
+
+const filtersInfo = ref([
+	{
+		label: "Search by title",
+		type: "string",
+		key: "title",
+	},
+	{
+		label: "Search by description",
+		type: "string",
+		key: "description",
+	},
+	{
+		label: "Filter by classroom",
+		type: "number",
+		key: "classroom",
+		fetchOptions: getClassrooms,
+		fetchOptionsInfo: getClassroomInfoFromObj,
+		searchField: "name",
+	},
+	{
+		label: "Filter by subject",
+		type: "number",
+		key: "subject",
+		fetchOptions: getSubjects,
+		fetchOptionsInfo: getSubjectInfoFromObj,
+		searchField: "name",
+	},
+	{
+		label: "Filter by active",
+		type: "n_nary",
+		key: "is_active",
+		fetchOptions: () => [
+			{ title: "Active", value: true },
+			{ title: "Inactive", value: false },
+			{ title: "All", value: null },
+		],
+	},
+]);
 
 const props = defineProps({
 	forceMobile: {
