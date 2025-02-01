@@ -38,7 +38,6 @@ const filtersChanged = (newFilters) => {
 	}
 };
 
-
 const filtersInfo = ref([
 	{
 		label: "Search by title",

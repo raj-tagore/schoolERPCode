@@ -17,6 +17,7 @@
 				:getInfo="field.fetchOptionsInfo"
 				:searchField="field.searchField"
 				:label="field.label"
+				density="comfortable"
 			/>
 			<v-checkbox 
 				v-if="field.type === 'boolean'"
@@ -32,6 +33,7 @@
 				:searchField="field.searchField"
 				:label="field.label"
 				:multiple='true'
+				density="comfortable"
 			/>
 			<v-select
 				v-if="field.type === 'n_nary'"

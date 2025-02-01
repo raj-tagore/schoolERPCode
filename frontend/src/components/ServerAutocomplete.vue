@@ -55,6 +55,10 @@ const props = defineProps({
 		type: Boolean,
 		default: true,
 	},
+	density: {
+		type: String,
+		default: "standard",
+	},
 });
 
 // Text used to search for items
