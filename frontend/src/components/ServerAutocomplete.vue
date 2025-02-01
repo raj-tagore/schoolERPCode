@@ -7,6 +7,7 @@
 		:search-input.sync="query"
 		:label="label"
 		:item-props="getInfo"
+		:multiple="multiple"
 		@input="selectedItem = $event.target.value"
 		@update:modelValue="emit('update:modelValue', $event)"
 		@update:search="debouncedFetchResults"
@@ -30,7 +31,7 @@ const props = defineProps({
 		required: true,
 	},
 	modelValue: {
-		type: Number,
+		type: [Number, Array],
 		required: true,
 	},
 	fetch: {
@@ -45,6 +46,10 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
+	multiple: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 // Text used to search for items
@@ -58,7 +63,7 @@ const results = ref([]);
 const selectedItem = ref(null);
 
 // To shut up the linter
-_ = selectedItem;
+const _ = selectedItem;
 
 const loading = ref(false);
 

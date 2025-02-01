@@ -97,7 +97,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { getAnnouncement, updateAnnouncement } from "../api";
-import { getTeachers, getTeacherInfoFromObj } from "@/apps/users/api";
+import { getTeachers, getTeacherInfoFromObj } from "@/apps/teachers/api";
 import { getClassrooms, getClassroomInfoFromObj } from "@/apps/classrooms/api";
 import { getSubjects, getSubjectInfoFromObj } from "@/apps/subjects/api";
 import FormCard from "@/components/FormCard.vue";

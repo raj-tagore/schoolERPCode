@@ -33,7 +33,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { getStudents } from "@/apps/users/api";
+import { getStudents } from "@/apps/students/api";
 
 const props = defineProps({
 	filter: Object,

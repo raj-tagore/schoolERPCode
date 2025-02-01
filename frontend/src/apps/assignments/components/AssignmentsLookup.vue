@@ -36,6 +36,7 @@
 						searchField="name"
 					/>
 				</v-col>
+				<!----- Replace with autocomplete or dropdown for true, false and undefined ---->
 				<v-col cols="12" md="4" lg="2">
 					<v-checkbox
 						v-model="filters.is_active"

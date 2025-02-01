@@ -1,104 +1,58 @@
 <template>
-  <v-app>
-    <v-navigation-drawer app v-model="drawer" 
-    color="grey lighten-4">
-      <v-list dense>
-        <!-- User Info -->
-        <v-list-item>
-          <v-card class="ma-2" 
-          :title="user.first_name + ' ' + user.last_name"
-          :subtitle="user.account?.type || 'No linked account'">
-          <template v-slot:append>
-            <v-btn icon="mdi-logout" @click="logoutHandler" size="small" variant="text"/>
-          </template>
-          </v-card>
-        </v-list-item>
+	<Suspense>
+		<v-app>
+			<v-navigation-drawer app v-model="leftDrawer"
+				color="secondary">
+				<v-list dense>
+					<v-list-item>
+						<v-card class="ma-2 mb-4" 
+							:title="user.first_name + ' ' + user.last_name"
+							:subtitle="user.account?.type || 'No linked account'">
+							<template v-slot:append>
+								<v-btn icon="mdi-logout" @click="logoutHandler" size="small" variant="text"/>
+							</template>
+						</v-card>
+					</v-list-item>
 
-        <v-divider :thickness="10" class="border-opacity-100"></v-divider>
+					<RecursiveList v-for="item in appsMenu" :item="item" />
 
-        <v-list-item :to="{name: 'All Apps'}">
-          <v-list-item-title>All Apps</v-list-item-title>
-        </v-list-item>
-
-        <!-- Dashboard -->
-        <v-list-item :to="{name: 'Dashboard'}">
-          <v-list-item-title>Dashboard</v-list-item-title>
-        </v-list-item>
-
-        <v-list-item :to="{name: 'Classrooms'}">
-          <v-list-item-title>Classes</v-list-item-title>
-        </v-list-item>
-
-        <v-list-item :to="{name: 'Subjects'}">
-          <v-list-item-title>Subjects</v-list-item-title>
-        </v-list-item>
-
-        <ExpandableListItem title="Users">
-          <v-list dense>
-            <v-list-item :to="{name: 'Students'}">
-              <v-list-item-title>Students</v-list-item-title>
-            </v-list-item>
-            <v-list-item :to="{name: 'Teachers'}">
-              <v-list-item-title>Teachers</v-list-item-title>
-            </v-list-item>
-            <v-list-item :to="{name: 'Parents'}">
-              <v-list-item-title>Parents</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </ExpandableListItem>
-
-        <v-list-item :to="{name: 'Announcements'}">
-          <v-list-item-title>Announcements</v-list-item-title>
-        </v-list-item>
-
-        <v-list-item :to="{name: 'Assignments'}">
-          <v-list-item-title>Assignments</v-list-item-title>
-        </v-list-item>
-        
-        <!-- <ExpandableListItem title="Classrooms">
-          <v-list dense>
-            <v-list-item to="/classrooms">
-              <v-list-item-title>View Classrooms</v-list-item-title>
-            </v-list-item>
-            <v-list-item to="/classrooms/create">
-              <v-list-item-title>Create Classroom</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </ExpandableListItem> -->
-
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-app-bar app color="primary" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>School ERP Dashboard</v-toolbar-title>
-    </v-app-bar>
-
-  <Suspense>
-    <v-main>
-        <v-container>
-          <router-view></router-view>
-          <template #fallback>
-            Loading...
-          </template>
-      </v-container>
-    </v-main>
-  </Suspense>
-  </v-app>
+				</v-list>
+			</v-navigation-drawer>
+			<v-app-bar app color="primary" dark>
+				<v-app-bar-nav-icon @click.stop="leftDrawer = !leftDrawer"></v-app-bar-nav-icon>
+				<v-toolbar-title>School ERP Dashboard</v-toolbar-title>
+			</v-app-bar>
+			<v-main>
+				<slot>
+					<router-view></router-view>
+				</slot>
+			</v-main>
+		</v-app>
+		<template #fallback>
+			Loading...
+		</template>
+	</Suspense>
 </template>
 
+<style>
+</style>
 <script setup>
 import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth"; // Pinia store
-import ExpandableListItem from '@/components/c-expandable-list-item.vue'
 import { useDisplay } from "vuetify/lib/framework.mjs";
 
+import { useRouter } from "vue-router";
 
-const { mdAndUp, smAndDown } = useDisplay();
-const drawer = ref(mdAndUp.value);
+import RecursiveList from "@/components/RecursiveList.vue";
+
+import appRoutes from "@/router/app";
+
+const { mdAndUp } = useDisplay();
+const leftDrawer = ref(mdAndUp.value);
 const router = useRouter();
 const authStore = useAuthStore();
+
+const appsMenu = ref();
 
 const user = computed(() => authStore.user);
 
@@ -106,4 +60,20 @@ function logoutHandler() {
 	router.push({ name: "Login" });
 	authStore.logout();
 }
+
+const getRouteMeta = async (route) =>
+	Promise.all(
+		route
+			.filter((route) => route?.meta?.getDisplayName && !route.props)
+			.map(async (route) => ({
+				title: await route.meta.getDisplayName(),
+				to: { name: route.meta.defaultRoute },
+			})),
+	);
+
+getRouteMeta(appRoutes).then((menu) => {
+	appsMenu.value = menu;
+});
 </script>
+
+

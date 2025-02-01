@@ -45,7 +45,6 @@ const formatErrorMessage = (error) => {
 			if (typeof data === "object") {
 				// Format field-specific errors
 				const errors = objToString(data);
-				console.log(data);
 				return errors;
 			}
 			return data.detail || "Invalid data submitted";

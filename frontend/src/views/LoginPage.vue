@@ -26,7 +26,7 @@ const authStore = useAuthStore()
 async function handleLogin({ username, password }) {
   try {
     await authStore.login({ username, password })
-    router.push({ name: 'All Apps' })
+    router.push({ name: 'Dashboard' })
   } catch (err) {
     error.value = 'Login failed. Please check your credentials.'
   }

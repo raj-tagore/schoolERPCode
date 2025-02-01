@@ -41,7 +41,7 @@
   
 <script setup>
 import { ref, onMounted } from "vue";
-import { getTeachers } from "@/apps/users/api";
+import { getTeachers } from "@/apps/teachers/api";
 import { updateSubject } from "@/apps/subjects/api";
 import FormCard from "@/components/FormCard.vue";
 
@@ -56,7 +56,6 @@ const teacherInfoFromObj = (item) => ({
 
 const handleUpdate = async () => {
 	try {
-		console.log(props.subject);
 		await updateSubject(props.subject);
 		return { success: true };
 	} catch (error) {

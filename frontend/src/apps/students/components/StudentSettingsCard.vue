@@ -50,17 +50,18 @@
 <script setup>
 import { ref } from "vue";
 import FormCard from "@/components/FormCard.vue";
-import { updateStudent, updateUser } from "@/apps/users/api";
+import { updateStudent } from "@/apps/students/api";
+import { updateUser } from "@/apps/users/api";
 
 const props = defineProps({
 	student: {
 		type: Object,
-		required: true
+		required: true,
 	},
 	user: {
 		type: Object,
-		required: true
-	}
+		required: true,
+	},
 });
 
 const handleUpdate = async () => {

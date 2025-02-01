@@ -56,7 +56,7 @@
 
 <script setup>
 import { ref, watch, onMounted } from "vue";
-import { getStudents } from "@/apps/users/api";
+import { getStudents } from "@/apps/students/api";
 import { getClassrooms, getClassroomInfoFromObj } from "@/apps/classrooms/api";
 
 const students = ref([]);

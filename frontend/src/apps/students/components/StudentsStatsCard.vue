@@ -44,7 +44,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { getStudentStats } from '@/apps/users/api';
+import { getStudentStats } from '@/apps/students/api';
 
 const stats = ref({
   total: 0,

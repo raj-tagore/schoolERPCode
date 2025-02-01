@@ -1,34 +1,62 @@
-import SubjectPage from "@/apps/subjects/views/SubjectPage.vue"
-import { api } from "@/services/api"
-import SubjectsPage from "./views/SubjectsPage.vue"
-import AppTopBarLayout from "@/layouts/AppTopBarLayout.vue"
+import SubjectPage from "@/apps/subjects/views/SubjectPage.vue";
+import EditSubjectPage from "@/apps/subjects/views/EditSubjectPage.vue";
+import { api } from "@/services/api";
+import SubjectsPage from "./views/SubjectsPage.vue";
+import AppSideBarBreadcrumbsLayout from "@/layouts/AppSideBarBreadcrumbsLayout.vue";
+import EmptyLayout from "@/layouts/EmptyLayout.vue";
 
 export default [
     {
         path: "subjects/",
-        component: AppTopBarLayout,
+        component: AppSideBarBreadcrumbsLayout,
         meta: {
             getDisplayName: () => "Subjects",
             defaultRoute: "Subjects",
-			description: "View and manage subjects",
+            description: "View and manage subjects",
+            getMenu: () => [
+                {
+                    title: "All Subjects",
+                    to: { name: "Subjects" },
+                },
+            ],
         },
         children: [
             {
                 path: "",
                 component: SubjectsPage,
-                name: "Subjects"
+                name: "Subjects",
             },
             {
                 path: ":subjectId/",
-                component: SubjectPage,
-                name: "Subject",
-                props: true,
+                component: EmptyLayout,
                 meta: {
                     defaultRoute: "Subject",
-                    getDisplayName: async (params) =>
-                        (await api.get(`api/allocation/subjects/${params.subjectId}`)).data.name,
+                    getDisplayName: async (props) =>
+                        (await api.get(`api/allocation/subjects/${props.subjectId}`)).data
+                            .name,
+
+                    getMenu: (props) => [
+                        {
+                            title: "View Subject",
+                            to: { name: "Subject", props },
+                        },
+                    ],
                 },
+                children: [
+                    {
+                        path: "",
+                        component: SubjectPage,
+                        name: "Subject",
+                        props: true,
+                    },
+                    {
+                        path: "edit",
+                        component: EditSubjectPage,
+                        name: "EditSubject",
+                        props: true,
+                    },
+                ],
             },
         ],
     },
-]
+];

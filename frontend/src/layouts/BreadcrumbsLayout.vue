@@ -1,3 +1,29 @@
+<template>
+	<Suspense>
+		<v-app>
+			<v-app-bar v-if="breadcrumbItems" app density="compact">
+				<v-breadcrumbs :items="breadcrumbItems">
+					<template v-slot:title="{item}">
+						<v-btn size="small" :to="item.to">
+							{{item.title}}
+						</v-btn>
+					</template>
+				</v-breadcrumbs>
+			</v-app-bar>
+			<v-main>
+				<slot>
+					<router-view></router-view>
+				</slot>
+			</v-main>
+		</v-app>
+		<template #fallback>
+			Loading...
+		</template>
+	</Suspense>
+</template>
+
+<style>
+</style>
 <script setup>
 import { ref, watch, onMounted } from "vue";
 
@@ -27,31 +53,12 @@ const updateBreadcrumbs = async (route) => {
 		lastBreadcrumb.active = true;
 		lastBreadcrumb.disabled = false;
 	}
-}
+};
 
 watch(currentRoute, updateBreadcrumbs);
 
-onMounted(() => updateBreadcrumbs(currentRoute))
+onMounted(() => {
+	updateBreadcrumbs(currentRoute);
+});
 </script>
 
-<template>
-	<v-app>
-		<v-app-bar v-if="breadcrumbItems" app color="grey" density="compact">
-			<v-breadcrumbs :items="breadcrumbItems">
-				<template v-slot:title="{item}">
-					<v-btn size="small" :to="item.to">
-						{{item.title}}
-					</v-btn>
-				</template>
-			</v-breadcrumbs>
-		</v-app-bar>
-		<v-main>
-			<router-view></router-view>
-		</v-main>
-	</v-app>
-</template>
-
-
-
-<style>
-</style>

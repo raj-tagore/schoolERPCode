@@ -15,7 +15,8 @@
 				variant="outlined"
 			>
 				<div class="d-flex align-center justify-space-between">
-					<v-card-title class="text-subtitle-1">{{ item[title.key] }}</v-card-title>
+					<v-card-title v-if="title.formatFunc" class="text-subtitle-1">{{ title.formatFunc(item[title.key]) }}</v-card-title>
+					<v-card-title v-else class="text-subtitle-1">{{ item[title.key] }}</v-card-title>
 					<v-btn v-if="getToFunction"
 						icon="mdi-arrow-right"
 						size="small"
@@ -46,14 +47,14 @@
 	>
 		<template #item="{ item }">
 			<tr>
-				<td v-for="header in headers">
+				<td v-for="header in headers" :class="header.key === 'actions' ? 'text-right' : null">
 					<span v-if="header.formatFunc">
 						{{ header.formatFunc(item[header.key]) }}
 					</span>
 					<v-btn
 						v-else-if="header.key === 'actions'"
 						icon="mdi-arrow-right"
-						size="small"
+						size="x-small"
 						variant="outlined"
 						:to="getToFunction(item)"
 					></v-btn>
@@ -97,6 +98,7 @@ const title = ref(props.headers[0]);
 const data_headers = ref(props.headers.slice(1, props.headers.length - 1));
 
 watch(props.filters, (f) => {
+	console.log(props.filters);
 	search.value = structuredClone(f);
 });
 
@@ -108,7 +110,6 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 	loading.value = true;
 	try {
 		// Filter out falsy values
-		console.log(search);
 		const filterParams = Object.fromEntries(
 			Object.entries(search)
 				.filter(([_, value]) => (typeof value === "boolean" ? true : value))
@@ -124,18 +125,11 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 				}),
 		);
 
-		// Only fetch if at least one filter is active
-		if (Object.keys(filterParams).length > 0) {
-			filterParams.page_size = itemsPerPage || 10;
-			filterParams.page = page || 1;
-			console.log(props.fetch);
-			console.log("Filter Params", filterParams);
-			const listing = await props.fetch(filterParams);
-			console.log(listing);
-			items.value = listing.results;
-			itemsLen.value = listing.total_records;
-			console.log(items);
-		}
+		filterParams.page_size = itemsPerPage || 10;
+		filterParams.page = page || 1;
+		const listing = await props.fetch(filterParams);
+		items.value = listing.results;
+		itemsLen.value = listing.total_records;
 	} catch (error) {
 		console.error("Error fetching items:", error);
 	} finally {
@@ -145,9 +139,7 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 
 onMounted(async () => {
 	const listing = await props.fetch({ page_size: 10, page: 1 });
-	console.log(listing);
 	items.value = listing.results;
 	itemsLen.value = listing.total_records;
-	console.log(items);
 });
 </script>

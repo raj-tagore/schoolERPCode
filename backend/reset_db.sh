@@ -29,77 +29,18 @@ printf "public\nlocalhost\nlocalhost\n\n" | python manage.py create_tenant
 
 printf "school1\nschool1\nschool1.localhost\n\n" | python manage.py create_tenant
 
-export DJANGO_SUPERUSER_USERNAME=sandy
-export DJANGO_SUPERUSER_PASSWORD=san
-export DJANGO_SUPERUSER_EMAIL=san@san.com
 export DJANGO_SETTINGS_MODULE=schoolERPCode.settings
 
-python manage.py createsuperuser --noinput
 
 $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (1, 'Admin')" "schoolERPDB"
 $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (2, 'Teacher')" "schoolERPDB"
 $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (3, 'Student')" "schoolERPDB"
 $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (4, 'Parent')" "schoolERPDB"
 
-python 2> /dev/null <<HEREDOC
-import csv
-import sys
-from django.contrib.auth.hashers import make_password
-import django
-from django_tenants.utils import tenant_context
+python import_dummy_data.py 2> /dev/null
 
-django.setup()
+export DJANGO_SUPERUSER_USERNAME=sandy
+export DJANGO_SUPERUSER_PASSWORD=san
+export DJANGO_SUPERUSER_EMAIL=san@san.com
 
-from users.models import User
-from tenants.models import School
-from accounts.models import Teacher, Parent, Student
-from allocation.models import Classroom, Subject
-from announcements.models import Announcement
-from assignments.models import Assignment
-
-tenant = School.objects.filter(name="school1")[0]
-
-def process_csv(input_file, Model):
-	reader = csv.DictReader(input_file)
-	fieldnames = reader.fieldnames
-
-
-	print(Model)
-	for row in reader:
-		m2m_fields = []
-		temp_row = row.copy()
-		for key in temp_row.keys():
-			if key not in map(lambda field: field.name, Model._meta.get_fields()):
-				del row[key]
-		for field in Model._meta.get_fields():
-			if field.many_to_many and field.name in row.keys():
-				m2m_fields.append(( field.name, row[field.name] ))
-				del row[field.name]
-			elif (field.many_to_one or field.one_to_one) and field.name in row.keys():
-				row[field.name + "_id"] = row[field.name]
-				del row[field.name]
-
-		with tenant_context(tenant):
-			obj = Model.objects.create(**row)
-			for field in m2m_fields:
-				int_str = field[1].translate({ord('['): None, ord(']'): None}).split(",")
-				if len(int_str) == 1 and int_str[0] == '':
-					continue
-				getattr(obj, field[0]).set([int(num) for num in int_str])
-
-dummy_files = [
-	("dummy_data/User.csv", User),
-	("dummy_data/Teacher.csv", Teacher),
-	("dummy_data/Parent.csv", Parent),
-	("dummy_data/Student.csv", Student),
-	("dummy_data/Classroom.csv", Classroom),
-	("dummy_data/Subject.csv", Subject),
-	("dummy_data/Announcement.csv", Announcement),
-	("dummy_data/Assignment.csv", Assignment),
-]
-
-
-for input_csv_path, Model in dummy_files:
-	with open(input_csv_path, mode='r', newline='', encoding='utf-8') as input_file:
-		process_csv(input_file, Model)
-HEREDOC 
+python manage.py createsuperuser --noinput

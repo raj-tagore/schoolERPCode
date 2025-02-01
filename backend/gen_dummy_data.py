@@ -1,6 +1,7 @@
 import csv
 import datetime
 import random
+from django.contrib.auth.hashers import BCryptSHA256PasswordHasher
 
 import os
 
@@ -45,17 +46,19 @@ subject_teachers = {
     "Social Studies": [],
 }
 
+hasher = BCryptSHA256PasswordHasher()
+password = hasher.encode("Pass1234#", hasher.salt())
 
 def add_user(
     username: str, email: str, first_name: str, last_name: str, groups: int
 ) -> int:
-    user_id = len(data["user"]) + 2
+    user_id = len(data["user"]) + 1
     data["user"].append(
         {
             "id": user_id,
             "username": username,
             "email": email,
-            "password": "Pass1234#",
+            "password": password,
             "first_name": first_name,
             "last_name": last_name,
             "school": 2,
@@ -66,7 +69,7 @@ def add_user(
 
 
 def add_teacher(teacher_num: int, subject: str) -> int:
-    teacher_id = len(data["teacher"])
+    teacher_id = len(data["teacher"]) + 1
     user_id = add_user(
         "Teacher {} for {}".format(teacher_num, subject),
         "teacher{}for{}@testerp.shouldnotexist.com".format(teacher_num, subject),
@@ -99,7 +102,7 @@ def add_guardian(student_id: int, guardian_num: int) -> int:
         "For {}".format(student_id),
         4,
     )
-    guardian_id = len(data["parent"])
+    guardian_id = len(data["parent"]) + 1
     data["parent"].append(
         {
             "id": guardian_id,
@@ -113,7 +116,7 @@ def add_guardian(student_id: int, guardian_num: int) -> int:
 
 
 def add_student(student_num: int, standard: int, section: int) -> int:
-    student_id = len(data["student"])
+    student_id = len(data["student"]) + 1
     user_id = add_user(
         "Student {} of Class {}-{}".format(
             student_num + 1, standard_idx + 1, chr((ord("A") + section_idx))
@@ -139,7 +142,7 @@ def add_student(student_num: int, standard: int, section: int) -> int:
 
 
 def add_classroom(standard: int, section: int) -> int:
-    classroom_id = len(data["classroom"])
+    classroom_id = len(data["classroom"]) + 1
 
     teachers = []
     for t in subject_teachers.values():
@@ -153,7 +156,7 @@ def add_classroom(standard: int, section: int) -> int:
                 break
         data["subject"].append(
             {
-                "id": len(data["subject"]),
+                "id": len(data["subject"]) + 1,
                 "name": subject_name,
                 "is_active": len(data["subject"]) % 2 == 0,
                 "description": "Subject {} of Classroom {}{}".format(
@@ -220,7 +223,7 @@ for i in range(
 ):
     data["announcement"].append(
         {
-            "id": len(data["announcement"]),
+            "id": len(data["announcement"]) + 1,
             "title": f"Announcement {len(data['announcement'])}",
             "description": lorem,
             "is_active": len(data["announcement"]) % 2 == 0,
@@ -255,7 +258,7 @@ for subject in data["subject"]:
 for i in range(announcements_per_school):
     data["announcement"].append(
         {
-            "id": len(data["announcement"]),
+            "id": len(data["announcement"]) + 1,
             "title": f"Announcement {len(data['announcement'])}",
             "description": lorem,
             "is_active": len(data["announcement"]) % 2 == 0,
@@ -282,7 +285,14 @@ for m_name, values in data.items():
         newline="",
         encoding="utf-8",
     ) as output_file:
-        fieldnames = values[0].keys()
+        fieldnames = list(values[0].keys())
+
+        if "id" in fieldnames:
+            fieldnames.remove("id")
+
         writer = csv.DictWriter(output_file, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(values)
+        for row in values:
+            if "id" in row.keys():
+                del row["id"]
+            writer.writerow(row)
