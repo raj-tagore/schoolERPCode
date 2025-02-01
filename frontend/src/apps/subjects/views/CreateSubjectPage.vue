@@ -1,11 +1,12 @@
 <template>
 	<v-container>
-		<CreateForm
+		<FormCard
 			title="Subject"
+			actionName="Create"
 			:model="model"
-			:create="createSubject"
-		/>
+			:action="createSubject"
 
+		/>
 	</v-container>
 </template>
 
@@ -13,7 +14,7 @@
 import { createSubject } from "@/apps/subjects/api";
 import { ref } from "vue";
 
-import CreateForm from "@/components/CreateForm.vue";
+import FormCard from "@/components/FormCard.vue";
 
 import { getClassrooms, getClassroomInfoFromObj } from "@/apps/classrooms/api";
 import { getTeachers, getTeacherInfoFromObj } from "@/apps/teachers/api";
