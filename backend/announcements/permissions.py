@@ -14,7 +14,6 @@ class AnnouncementPermissions(BasePermission):
         # Check if user is in the 'Teacher' group
         if "Teacher" in [group.name for group in request.user.groups.all()]:
             # Check if user is teaching or assisting in any related classroom
-            classrooms = obj.classrooms.all()
             if classrooms.filter(class_teacher=request.user).exists() or \
                classrooms.filter(other_teachers=request.user).exists():
                 return True
