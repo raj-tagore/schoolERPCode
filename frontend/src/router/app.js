@@ -5,6 +5,7 @@ import parentsRoutes from "@/apps/parents/routes"
 import teachersRoutes from "@/apps/teachers/routes"
 import announcementsRoutes from "@/apps/announcements/routes"
 import assignmentsRoutes from "@/apps/assignments/routes"
+import attachmentRoutes from "@/apps/attachments/routes"
 
 export default [
     ...classroomsRoutes,
@@ -14,4 +15,5 @@ export default [
 	...teachersRoutes,
     ...announcementsRoutes,
     ...assignmentsRoutes,
+    ...attachmentRoutes,
 ];

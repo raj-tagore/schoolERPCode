@@ -5,7 +5,7 @@
 			title="Classroom"
 			actionName="Update"
 			:model="model"
-			:action="handleUpdate"
+			:action="updateClassroom"
 		/>
 	</v-container>
 </template>
@@ -50,16 +50,6 @@ const model = ref([
 		type: "boolean",
 	},
 ]);
-
-const handleUpdate = async (formData) => {
-	try {
-		await updateClassroom(props.classroomId, formData);
-		return { success: true };
-	} catch (error) {
-		console.error("Failed to update classroom:", error);
-		return { success: false, error };
-	}
-};
 
 onMounted(async () => {
 	classroom.value = await getClassroom(props.classroomId);

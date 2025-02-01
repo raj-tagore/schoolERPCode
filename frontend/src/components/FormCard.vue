@@ -56,6 +56,13 @@
 						:label="field.label"
 						:multiple='true'
 					/>
+					<v-file-input
+						v-if="field.type === 'file'"
+						v-model="newValue[field.key]"
+						:label="field.label"
+						required
+						show-size
+					></v-file-input>
 				</v-col>
 			</v-row>
 			<SubmitButton 
@@ -89,6 +96,7 @@ const props = defineProps({
 	//   - 'boolean'
 	//	 - 'array'
 	//   - 'longstring'
+	//   - 'file'
 	// - fetchOptions: Function?
 	// - fetchOptionsInfo: Function?
 	// - searchField: String?
