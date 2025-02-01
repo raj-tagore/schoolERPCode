@@ -26,11 +26,6 @@ const model = ref([
 		type: "string",
 	},
 	{
-		label: "Is Active",
-		key: "is_active",
-		type: "boolean",
-	},
-	{
 		label: "Description",
 		key: "description",
 		type: "string",
@@ -50,6 +45,11 @@ const model = ref([
 		fetchOptions: getTeachers,
 		fetchOptionsInfo: getTeacherInfoFromObj,
 		searchField: "name",
+	},
+	{
+		label: "Is Active",
+		key: "is_active",
+		type: "boolean",
 	},
 ]);
 </script>
