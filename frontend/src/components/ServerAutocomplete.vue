@@ -1,6 +1,7 @@
 <template>
 	<!--- update:modelValue is a special event that is emitted when you want to indicate to vue that model's value has been changed --->
 	<v-autocomplete
+		chips
 		:value="selectedItem"
 		:items="results"
 		:loading="loading"
@@ -11,7 +12,6 @@
 		@input="selectedItem = $event.target.value"
 		@update:modelValue="emit('update:modelValue', $event)"
 		@update:search="debouncedFetchResults"
-
 	>
 		<template v-slot:append-item>
 			<div v-if="hasMore" v-intersect="debouncedFetchResults" class="pa-4 teal--text">
