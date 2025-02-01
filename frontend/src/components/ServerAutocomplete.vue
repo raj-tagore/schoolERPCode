@@ -18,6 +18,9 @@
 			<div v-if="hasMore" v-intersect="debouncedFetchResults" class="pa-4 teal--text">
 				Loading more items ...
 			</div>
+			<div v-else>
+				No more items to load
+			</div>
 		</template>
 	</v-autocomplete>
 </template>
