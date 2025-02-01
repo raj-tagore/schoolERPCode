@@ -3,6 +3,7 @@ import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import StudentPage from "./views/StudentPage.vue";
 import StudentsPage from "./views/StudentsPage.vue";
 import EditStudentsPage from "./views/EditStudentsPage.vue";
+import CreateStudentPage from "./views/CreateStudentPage.vue";
 import { api } from "@/services/api";
 
 export default [
@@ -20,21 +21,21 @@ export default [
                     to: { name: "Students", params: props },
                 },
                 {
-                    title: "Edit Students",
-                    to: { name: "EditStudents", params: props },
+                    title: "Create Student",
+                    to: { name: "CreateStudent", params: props },
                 },
             ],
         },
         children: [
             {
-                path: "edit/",
-                component: EditStudentsPage,
-                name: "EditStudents",
-            },
-            {
                 path: "",
                 component: StudentsPage,
                 name: "Students",
+            },
+            {
+                path: "create/",
+                component: CreateStudentPage,
+                name: "CreateStudent",
             },
             {
                 path: ":studentId",
@@ -65,7 +66,7 @@ export default [
                     },
                     {
 						path: "edit/",
-                        component: EmptyLayout,
+                        component: EditStudentsPage,
                         name: "EditStudent",
                         props: true,
                     },

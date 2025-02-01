@@ -4,6 +4,7 @@ import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import AssignmentsPage from "./views/AssignmentsPage.vue";
 import AssignmentPage from "./views/AssignmentPage.vue";
 import EditAssignmentPage from "./views/EditAssignmentPage.vue"
+import CreateAssignmentPage from "./views/CreateAssignmentPage.vue"
 
 export default [
     {
@@ -18,6 +19,10 @@ export default [
                     title: "All Assignments",
                     to: { name: "Assignments" },
                 },
+                {
+                    title: "Create Assignment",
+                    to: { name: "CreateAssignment" },
+                },
             ],
         },
         children: [
@@ -25,6 +30,11 @@ export default [
                 path: "",
                 component: AssignmentsPage,
                 name: "Assignments",
+            },
+            {
+                path: "create/",
+                component: CreateAssignmentPage,
+                name: "CreateAssignment",
             },
             {
                 path: ":assignmentId/",

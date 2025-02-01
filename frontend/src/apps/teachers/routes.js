@@ -16,21 +16,11 @@ export default [
             getMenu: (props) => [
                 {
                     title: "View Teachers",
-                    to: { name: "Students", params: props },
-                },
-                {
-                    title: "Edit Teachers",
-                    to: { name: "EditTeachers", params: props },
+                    to: { name: "Teachers", params: props },
                 },
             ],
         },
         children: [
-            {
-                path: "edit/",
-				component: EmptyLayout,
-                //component: EditTeachersPage,
-                name: "EditTeachers",
-            },
             {
                 path: "",
                 component: TeachersPage,

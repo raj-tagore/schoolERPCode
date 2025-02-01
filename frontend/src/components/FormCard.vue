@@ -20,6 +20,20 @@
 						:rules="[v => !!v || `${field.label} is required`]"
 						required
 					></v-textarea>
+					<v-select
+						v-if="field.type === 'select'"
+						:label="field.label"
+						v-model="newValue[field.key]"
+						:items="field.items"
+					></v-select>
+					<v-text-field
+						v-if="field.type === 'datetime'"
+						:label="field.label"
+						type="datetime-local"
+						v-model="newValue[field.key]"
+						:rules="[v => !!v || `${field.label} is required`]"
+						required
+					></v-text-field>
 					<ServerAutocomplete
 						v-if="field.type === 'number'"
 						v-model="newValue[field.key]"
