@@ -20,7 +20,7 @@ import {
 	getClassrooms,
 } from "@/apps/classrooms/api.js";
 import { getSubjectInfoFromObj, getSubjects } from "@/apps/subjects/api.js";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
 import FilterCard from "@/components/FilterCard.vue";
 
@@ -33,9 +33,7 @@ const filters = ref({
 });
 
 const filtersChanged = (newFilters) => {
-	for (const key of Object.keys(newFilters)) {
-		filters.value[key] = newFilters[key];
-	}
+	Object.assign(filters.value, newFilters);
 };
 
 const filtersInfo = ref([
