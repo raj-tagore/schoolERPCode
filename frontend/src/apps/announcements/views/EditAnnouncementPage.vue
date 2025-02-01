@@ -5,7 +5,7 @@
 			title="Announcement"
 			actionName="Update"
 			:model="model"
-			:action="handleUpdate"
+			:action="updateAnnouncement"
 		/>
 	</v-container>
 </template>
@@ -95,15 +95,6 @@ const model = ref([
 	},
 ]);
 
-const handleUpdate = async (formData) => {
-	try {
-		await updateAnnouncement(props.announcementId, formData);
-		return { success: true };
-	} catch (error) {
-		console.error("Failed to update announcement:", error);
-		return { success: false, error };
-	}
-};
 
 onMounted(async () => {
 	announcement.value = await getAnnouncement(props.announcementId);

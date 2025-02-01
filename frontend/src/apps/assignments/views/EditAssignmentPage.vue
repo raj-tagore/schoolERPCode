@@ -5,7 +5,7 @@
 			title="Assignment"
 			actionName="Update"
 			:model="model"
-			:action="handleUpdate"
+			:action="updateAssignment"
 		/>
 	</v-container>
 </template>
@@ -65,16 +65,6 @@ const model = ref([
 		type: "boolean",
 	},
 ]);
-
-const handleUpdate = async (formData) => {
-	try {
-		await updateAssignment(props.assignmentId, formData);
-		return { success: true };
-	} catch (error) {
-		console.error("Failed to update assignment:", error);
-		return { success: false, error };
-	}
-};
 
 onMounted(async () => {
 	assignment.value = await getAssignment(props.assignmentId);

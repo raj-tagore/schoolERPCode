@@ -10,8 +10,8 @@ const getAssignments = async (filter) =>
 const getAssignment = async (id) =>
     (await api.get(`api/assignments/${id}`)).data;
 
-const updateAssignment = async (id, data) =>
-    await api.put(`api/assignments/${id}/`, data);
+const updateAssignment = async (assignment) =>
+    await api.put(`api/assignments/${assignment.id}/`, assignment);
 
 const createAssignment = async (data) =>
     await api.post("api/assignments/create/", data);
