@@ -5,7 +5,7 @@
 		</v-card-title>
 		<v-card-text>
 			<v-row>
-				<v-col cols="12" lg="6" v-for="field in model">
+				<v-col cols="12" :lg="field.type === 'longstring' ? 12 : 6" v-for="field in model">
 					<v-text-field 
 						v-if="field.type === 'string'"
 						:label="field.label" 
@@ -13,6 +13,13 @@
 						:rules="[v => !!v || `${field.label} is required`]"
 						required
 					></v-text-field>
+					<v-textarea 
+						v-if="field.type === 'longstring'"
+						:label="field.label" 
+						v-model="newValue[field.key]"
+						:rules="[v => !!v || `${field.label} is required`]"
+						required
+					></v-textarea>
 					<v-select
 						v-if="field.type === 'select'"
 						:label="field.label"
@@ -77,6 +84,11 @@ const props = defineProps({
 	// - label: String
 	// - key: String
 	// - type: String
+	//   - 'string'
+	//   - 'number'
+	//   - 'boolean'
+	//	 - 'array'
+	//   - 'longstring'
 	// - fetchOptions: Function?
 	// - fetchOptionsInfo: Function?
 	// - searchField: String?
