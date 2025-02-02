@@ -25,7 +25,6 @@ import AttachmentInputButton from "@/components/AttachmentInputButton.vue";
 import { ref, watch } from "vue";
 
 const attachments = ref([]);
-
 const attachment = ref({});
 
 const props = defineProps({
@@ -59,7 +58,6 @@ const removeAttachment = (item) => {
 }
 
 watch(attachment, (newAttachment) => {
-	console.log(newAttachment);
 	if (newAttachment) {
 		attachments.value.push(newAttachment);
 		attachment.value = null;
@@ -67,7 +65,6 @@ watch(attachment, (newAttachment) => {
 });
 
 watch(attachments.value, (attachments) => {
-	console.log(attachments);
 	emit(
 		"update:modelValue",
 		attachments.map((a) => a.id),
