@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import SubmitButton from "@/components/SubmitButton.vue";
 import ServerAutocomplete from "@/components/ServerAutocomplete.vue";
 
