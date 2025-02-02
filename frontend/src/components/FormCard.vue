@@ -71,6 +71,13 @@
 						required
 						show-size
 					/>
+					<AttachmentsInputList
+						v-if="field.type === 'attachment_list'"
+						v-model="newValue[field.key]"
+						:getButtonText="(attachment) => attachment?.name ? `Attached file ${ attachment?.name}` : field.label"
+						required
+						show-size
+					/>
 				</v-col>
 			</v-row>
 			<SubmitButton 
@@ -86,6 +93,7 @@ import { ref } from "vue";
 import SubmitButton from "@/components/SubmitButton.vue";
 import ServerAutocomplete from "@/components/ServerAutocomplete.vue";
 import AttachmentInputButton from "@/components/AttachmentInputButton.vue";
+import AttachmentsInputList from "@/components/AttachmentsInputList.vue";
 
 const props = defineProps({
 	title: {
@@ -107,6 +115,7 @@ const props = defineProps({
 	//   - 'longstring'
 	//   - 'file'
 	//   - 'attachment'
+	//   - 'attachment_list'
 	// - fetchOptions: Function?
 	// - fetchOptionsInfo: Function?
 	// - searchField: String?

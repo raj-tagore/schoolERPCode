@@ -85,7 +85,7 @@ const model = ref([
 	{
 		label: "Attach File",
 		key: "attachments",
-		type: "attachment",
+		type: "attachment_list",
 		defaultValue: null,
 	},
 ]);
