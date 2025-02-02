@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import SubmitButton from "@/components/SubmitButton.vue";
 import ServerAutocomplete from "@/components/ServerAutocomplete.vue";
 
@@ -117,7 +117,6 @@ const newValue = ref(
 		return acc;
 	}, {}),
 );
-
 
 const handleAction = async () => {
 	try {
