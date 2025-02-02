@@ -82,5 +82,11 @@ const model = ref([
 		searchField: "name",
 		defaultValue: [],
 	},
+	{
+		label: "Attach File",
+		key: "attached_file",
+		type: "attachment",
+		defaultValue: null,
+	},
 ]);
 </script>

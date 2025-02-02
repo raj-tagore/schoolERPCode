@@ -15,7 +15,7 @@
 						:title="title"
 						actionName="Create"
 						:model="model"
-						:action="handleCreateAttachment"
+						:action="handleCreateAttachment.bind({isActive})"
 					/>
 				</v-card-text>
 				<v-card-actions>
@@ -31,35 +31,45 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import FormCard from "@/components/FormCard.vue";
 import { createAttachment } from "@/apps/attachments/api";
 
 const props = defineProps({
-	buttonText: {
-		type: String,
-		default: "Add Attachment",
+	getButtonText: {
+		type: Function,
+		default: () => "Add Attachment",
 	},
 	title: {
 		type: String,
 		default: "Add Attachment",
 	},
-	onCreate: {
-		type: Function,
-		default: () => {},
+	modelValue: {
+		type: Number,
+		required: true,
 	},
 });
 
-const handleCreateAttachment = async (data) => {
+const attachment = ref(null);
+
+const buttonText = computed(() => {
+	const newButtonText = props.getButtonText(attachment.value);
+	return newButtonText ? newButtonText : "Add Attachment";
+});
+
+const emit = defineEmits("update:modelValue");
+
+async function handleCreateAttachment(data) {
 	try {
-		const newAttachment = await createAttachment(data);
-		await props.onCreate(newAttachment);
+		attachment.value = await createAttachment(data);
+		emit("update:modelValue", attachment?.value?.id);
+		this.isActive.value = false;
 		return { success: true };
 	} catch (error) {
 		console.error(`Failed to ${props.actionName} ${props.title}:`, error);
 		return { success: false, error };
 	}
-};
+}
 
 const model = ref([
 	{

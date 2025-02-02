@@ -9,12 +9,14 @@ const getAnnouncement = async (id) =>
 const updateAnnouncement = async (announcement) =>
     await api.put(`api/announcements/${announcement.id}/`, announcement);
 
-const createAnnouncement = async (data) =>
-	await api.post("api/announcements/create/", data);
+const createAnnouncement = async (data) => {
+    console.log(data);
+    return await api.post("api/announcements/create/", data);
+};
 
 export {
     getAnnouncements,
     getAnnouncement,
     updateAnnouncement,
-	createAnnouncement,
+    createAnnouncement,
 };
