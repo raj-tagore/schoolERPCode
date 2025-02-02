@@ -45,7 +45,7 @@ const props = defineProps({
 		default: "Add Attachment",
 	},
 	modelValue: {
-		type: Number,
+		type: Array,
 		required: true,
 	},
 });
@@ -62,7 +62,7 @@ const emit = defineEmits("update:modelValue");
 async function handleCreateAttachment(data) {
 	try {
 		attachment.value = await createAttachment(data);
-		emit("update:modelValue", attachment?.value?.id);
+		emit("update:modelValue", attachment?.value?.map((a) => a.id));
 		this.isActive.value = false;
 		return { success: true };
 	} catch (error) {

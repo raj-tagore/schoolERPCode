@@ -62,6 +62,8 @@
 						:label="field.label"
 						required
 						show-size
+						multiple
+						counter
 					></v-file-input>
 					<AttachmentInputButton
 						v-if="field.type === 'attachment'"
