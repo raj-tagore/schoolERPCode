@@ -61,8 +61,9 @@ const emit = defineEmits("update:modelValue");
 
 async function handleCreateAttachment(data) {
 	try {
+		console.log(data);
 		attachment.value = await createAttachment(data);
-		emit("update:modelValue", attachment?.value?.map((a) => a.id));
+		emit("update:modelValue", attachment?.value?.id);
 		this.isActive.value = false;
 		return { success: true };
 	} catch (error) {
