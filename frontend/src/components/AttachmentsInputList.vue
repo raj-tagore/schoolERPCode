@@ -6,6 +6,11 @@
 					<v-col>
 						{{item.file.name}}
 					</v-col>
+					<v-col>
+						<v-btn @click="removeAttachment(item)">
+							<v-icon>mdi-close</v-icon>
+						</v-btn>
+					</v-col>
 				</v-row>
 			</v-card-text>
 		</v-card>
@@ -42,6 +47,16 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update:modelValue", "update:attachmentItems"]);
+
+const removeAttachment = (item) => {
+	const idx = attachments.value.map((a) => a.id).indexOf(item.id);
+	if (idx < 0) {
+		console.error("Attachment idx when removing from attachments is negative")
+		console.error("This should never happen")
+		return
+	}
+	attachments.value.splice(idx, 1)
+}
 
 watch(attachment, (newAttachment) => {
 	console.log(newAttachment);
