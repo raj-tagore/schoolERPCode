@@ -1,7 +1,7 @@
 <template>
 	<FormCard
 		:title="title"
-		actionName="Create"
+		actionName="Add"
 		:model="model"
 		:action="handleCreateAttachment"
 	/>
@@ -15,7 +15,7 @@ import { createAttachment } from "@/apps/attachments/api";
 const props = defineProps({
 	title: {
 		type: String,
-		default: "Add Attachment",
+		default: "Attachment",
 	},
 	required: {
 		type: Boolean,

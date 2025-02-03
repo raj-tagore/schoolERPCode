@@ -1,10 +1,9 @@
 <template>
 	<v-container>
 		<FormCard
-			title="Attachment"
-			actionName="Create"
+			title=""
+			actionName=""
 			:model="model"
-			:action="() => {}"
 		/>
 	</v-container>
 </template>

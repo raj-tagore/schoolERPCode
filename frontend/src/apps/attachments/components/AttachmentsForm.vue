@@ -1,8 +1,6 @@
 <template>
-	<v-row>
-		<AttachmentForm :required="required" :title="title" @update:attachment="attachmentAdded" />
-	</v-row>
-	<v-row v-for="item in attachments">
+	<AttachmentForm :required="required" :title="title" @update:attachment="attachmentAdded" />
+	<v-col v-for="item in attachments">
 		<v-card :title="item.name">
 			<v-card-text>
 				<v-col>
@@ -15,7 +13,7 @@
 				</v-col>
 			</v-card-text>
 		</v-card>
-	</v-row>
+	</v-col>
 </template>
 
 <script setup>
@@ -27,11 +25,11 @@ const attachments = ref([]);
 const props = defineProps({
 	title: {
 		type: String,
-		default: "Add Attachments",
+		default: "Attachments",
 	},
 	required: {
 		type: Boolean,
-	}
+	},
 });
 
 const emit = defineEmits(["update:attachments"]);

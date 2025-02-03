@@ -5,7 +5,7 @@
 		</v-card-title>
 		<v-card-text>
 			<v-row>
-				<v-col cols="12" :lg="field.type === 'longstring' ? 12 : 6" v-for="field in model">
+				<v-col cols="12" :lg="[ 'longstring', 'attachment', 'attachment_list' ].includes(field.type) ? 12 : 6" v-for="field in model">
 					<v-text-field 
 						v-if="field.type === 'string'"
 						:label="field.label" 
@@ -70,19 +70,20 @@
 					></v-file-input>
 					<AttachmentForm
 						v-if="field.type === 'attachment'"
-						@update:attachments="(v) => newValue[field.key] = v"
+						@update:attachment="(v) => newValue[field.key] = v?.id"
 						:required="field.required"
 						show-size
 					/>
 					<AttachmentsForm
 						v-if="field.type === 'attachment_list'"
-						@update:attachment="(v) => newValue[field.key] = v"
+						@update:attachments="(v) => newValue[field.key] = v?.map(({ id }) => id)"
 						:required="field.required"
 						show-size
 					/>
 				</v-col>
 			</v-row>
 			<SubmitButton 
+				v-if="action"
 				:onSubmit="handleAction"
 				:submitText="actionName"
 			/>
