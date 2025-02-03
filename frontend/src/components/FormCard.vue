@@ -11,20 +11,21 @@
 						:label="field.label" 
 						v-model="newValue[field.key]"
 						:rules="[v => !!v || `${field.label} is required`]"
-						required
+						:required="field.required"
 					></v-text-field>
 					<v-textarea 
 						v-if="field.type === 'longstring'"
 						:label="field.label" 
 						v-model="newValue[field.key]"
 						:rules="[v => !!v || `${field.label} is required`]"
-						required
+						:required="field.required"
 					></v-textarea>
 					<v-select
 						v-if="field.type === 'select'"
 						:label="field.label"
 						v-model="newValue[field.key]"
 						:items="field.items"
+						:required="field.required"
 					></v-select>
 					<v-text-field
 						v-if="field.type === 'datetime'"
@@ -32,7 +33,7 @@
 						type="datetime-local"
 						v-model="newValue[field.key]"
 						:rules="[v => !!v || `${field.label} is required`]"
-						required
+						:required="field.required"
 					></v-text-field>
 					<ServerAutocomplete
 						v-if="field.type === 'number'"
@@ -41,11 +42,13 @@
 						:getInfo="field.fetchOptionsInfo"
 						:searchField="field.searchField"
 						:label="field.label"
+						:required="field.required"
 					/>
 					<v-checkbox 
 						v-if="field.type === 'boolean'"
 						:label="field.label" 
 						v-model="newValue[field.key]"
+						:required="field.required"
 					></v-checkbox>
 					<ServerAutocomplete
 						v-if="field.type === 'array'"
@@ -55,27 +58,26 @@
 						:searchField="field.searchField"
 						:label="field.label"
 						:multiple='true'
+						:required="field.required"
 					/>
 					<v-file-input
 						v-if="field.type === 'file'"
 						v-model="newValue[field.key]"
 						:label="field.label"
-						required
+						:required="field.required"
 						show-size
 						counter
 					></v-file-input>
-					<AttachmentInputButton
+					<AttachmentForm
 						v-if="field.type === 'attachment'"
-						v-model="newValue[field.key]"
-						:getButtonText="(attachment) => attachment?.name ? `Attached file ${ attachment?.name}` : field.label"
-						required
+						@update:attachments="(v) => newValue[field.key] = v"
+						:required="field.required"
 						show-size
 					/>
-					<AttachmentsInputList
+					<AttachmentsForm
 						v-if="field.type === 'attachment_list'"
-						v-model="newValue[field.key]"
-						:getButtonText="(attachment) => attachment?.name ? `Attached file ${ attachment?.name}` : field.label"
-						required
+						@update:attachment="(v) => newValue[field.key] = v"
+						:required="field.required"
 						show-size
 					/>
 				</v-col>
@@ -92,8 +94,8 @@
 import { ref } from "vue";
 import SubmitButton from "@/components/SubmitButton.vue";
 import ServerAutocomplete from "@/components/ServerAutocomplete.vue";
-import AttachmentInputButton from "@/components/AttachmentInputButton.vue";
-import AttachmentsInputList from "@/components/AttachmentsInputList.vue";
+import AttachmentForm from "@/apps/attachments/components/AttachmentForm.vue";
+import AttachmentsForm from "@/apps/attachments/components/AttachmentsForm.vue";
 
 const props = defineProps({
 	title: {
@@ -120,6 +122,7 @@ const props = defineProps({
 	// - fetchOptionsInfo: Function?
 	// - searchField: String?
 	// - defaultValue: Any
+	// - required
 	model: {
 		type: Array,
 		required: true,
