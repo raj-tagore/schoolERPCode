@@ -7,7 +7,7 @@ from allocation.models import Subject
 class Period(models.Model):
     start = models.TimeField(null=False)
     end = models.TimeField(null=False)
-    choices = [
+    CHOICES = [
         (0, "Monday"),
         (1, "Tuesday"),
         (2, "Wednesday"),
@@ -16,7 +16,7 @@ class Period(models.Model):
         (5, "Saturday"),
         (6, "Sunday"),
     ]
-    day = models.IntegerChoices(null=False, choices=choices)
+    day = models.IntegerChoices(null=False, choices=CHOICES)
 
 
 class TimeTable(models.Model):
