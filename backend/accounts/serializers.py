@@ -26,7 +26,7 @@ class BasicTeacherSerializer(serializers.ModelSerializer):
 
 class TeacherSerializer(serializers.ModelSerializer):
     user_details = UserReadSerializer(source='user', read_only=True)
-    timetable = TimeTableSerializer(source='subjects', many=True, read_only=True)
+    timetable = TimeTableSerializer(source='subject', many=True, read_only=True)
     class Meta:
         model = Teacher
         fields = '__all__'

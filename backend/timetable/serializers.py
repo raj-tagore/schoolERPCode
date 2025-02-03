@@ -10,7 +10,6 @@ class PeriodSerializer(serializers.ModelSerializer):
 
 
 class TimeTableSerializer(serializers.ModelSerializer):
-    subject = serializers.PrimaryKeyRelatedField(queryset=Subject.objects.all())
     periods = serializers.PrimaryKeyRelatedField(
         many=True, queryset=Period.objects.all(), required=False
     )
@@ -18,4 +17,4 @@ class TimeTableSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TimeTable
-        fields = ["id", "subject", "subject_details", "periods", "periods_details"]
+        fields = "__all__"
