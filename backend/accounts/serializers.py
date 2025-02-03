@@ -1,6 +1,7 @@
 # accounts/serializers.py
  
 from rest_framework import serializers
+from timetable.serializers import TimeTableSerializer
 from .models import Student, Teacher, Parent
 from users.serializers import UserReadSerializer
 
@@ -16,8 +17,16 @@ class ParentSerializer(serializers.ModelSerializer):
         model = Parent
         fields = '__all__'
 
+class BasicTeacherSerializer(serializers.ModelSerializer):
+    user_details = UserReadSerializer(source='user', read_only=True)
+    class Meta:
+        model = Teacher
+        fields = '__all__'
+ 
+
 class TeacherSerializer(serializers.ModelSerializer):
     user_details = UserReadSerializer(source='user', read_only=True)
+    timetable = TimeTableSerializer(source='subjects', many=True, read_only=True)
     class Meta:
         model = Teacher
         fields = '__all__'

@@ -14,6 +14,7 @@ from django.db.models import Count
 
 from .models import Parent, Teacher, Student
 from .serializers import (
+    BasicTeacherSerializer,
     ParentSerializer,
     TeacherSerializer,
     StudentSerializer,
@@ -49,7 +50,7 @@ class CreateParent(CreateAPIView):
 
 
 class AllTeachers(ListAPIView):
-    serializer_class = TeacherSerializer
+    serializer_class = BasicTeacherSerializer
     permission_classes = [IsAuthenticated]
     queryset = Teacher.objects.all()
 

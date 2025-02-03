@@ -4,21 +4,22 @@ from allocation.models import Subject
 
 # Create your models here.
 
+
 class Period(models.Model):
     start = models.TimeField(null=False)
     end = models.TimeField(null=False)
     CHOICES = [
-        (0, "Monday"),
-        (1, "Tuesday"),
-        (2, "Wednesday"),
-        (3, "Thursday"),
-        (4, "Friday"),
-        (5, "Saturday"),
-        (6, "Sunday"),
+        ("MO", "Monday"),
+        ("TU", "Tuesday"),
+        ("WE", "Wednesday"),
+        ("TH", "Thursday"),
+        ("FR", "Friday"),
+        ("SA", "Saturday"),
+        ("SU", "Sunday"),
     ]
-    day = models.IntegerChoices(null=False, choices=CHOICES)
+    day = models.CharField(null=False, choices=CHOICES)
 
 
 class TimeTable(models.Model):
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=False)
-    periods = models.ManyToManyField(Period, on_delete=models.CASCADE, null=False)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    periods = models.ManyToManyField(Period)
