@@ -6,7 +6,7 @@ from .models import TimeTable, Period
 class PeriodSerializer(serializers.ModelSerializer):
     class Meta:
         model = Period
-        fields = ["__all__"]
+        fields = "__all__"
 
 
 class TimeTableSerializer(serializers.ModelSerializer):
