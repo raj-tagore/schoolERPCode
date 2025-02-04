@@ -1,14 +1,23 @@
 from django.db import models
 
+from allocation.models import Classroom, Subject
 from attachments.models import Attachment
+from users.models import User
+
+class Calendar(models.Model):
+    name = models.TextField()
+    description = models.TextField(null=True)
+    classrooms = models.ManyToManyField(Classroom, blank=True)
+    subjects = models.ManyToManyField(Subject, blank=True)
+    users = models.ManyToManyField(User, blank=True)
+
+    is_school_wide = models.BooleanField(default=True)
+   
 
 
 class Event(models.Model):
+    calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE, null=False, related_name="events")
     title = models.TextField()
-    description = models.TextField()
-    attachment = models.ForeignKey(Attachment, on_delete=models.SET_NULL)
-    date = models.DateField(null=False)
-    classroom = models.ForeignKey("Classroom", on_delete=models.SET_NULL)
-
-    REPEAT_PERIOD_CHOICES = [("W", "Weekly"), ("M", "Monthly"), ("Y", "Yearly")]
-    repeat_period = models.CharField(choices=REPEAT_PERIOD_CHOICES, null=False)
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    attachment = models.ForeignKey(Attachment, on_delete=models.SET_NULL, null=True, blank=True)

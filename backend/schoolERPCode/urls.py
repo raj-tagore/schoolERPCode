@@ -29,6 +29,7 @@ urlpatterns = [
     path('api/assignments/', include('assignments.urls')),
     path('api/attachments/', include('attachments.urls')),
     path('api/timetable/', include('timetable.urls')),
+    path('api/events/', include('events.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
