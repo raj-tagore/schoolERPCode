@@ -2,7 +2,7 @@ import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import TeachersPage from "./views/TeachersPage.vue";
 import { api } from "@/services/api";
 import AppSideBarBreadcrumbsLayout from "@/layouts/AppSideBarBreadcrumbsLayout.vue";
-
+import TeacherPage from "./views/TeacherPage.vue";
 
 export default [
     {
@@ -29,7 +29,7 @@ export default [
             {
                 path: ":teacherId",
                 props: true,
-                component: EmptyLayout,
+                component: TeacherPage,
                 meta: {
                     defaultRoute: "Teacher",
                     getDisplayName: async (params) =>

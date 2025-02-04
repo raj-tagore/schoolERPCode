@@ -75,6 +75,24 @@
               {{ parent.user_details.is_active ? 'Active' : 'Inactive' }}
             </v-chip>
           </div>
+
+          <h4 class="text-subtitle-1 mt-4">Children:</h4>
+          <v-list lines="2">
+            <v-list-item 
+              v-for="child in parent.children"
+              :key="child.id"
+              :title="child.user_details.full_name"
+              :subtitle="`Student No: ${child.student_no}`"
+              variant="tonal"
+              rounded="lg"
+              class="ma-2"
+              :to="{ name: 'Student', params: { studentId: child.id } }"
+            >
+              <template v-slot:prepend>
+                <v-icon>mdi-school</v-icon>
+              </template>
+            </v-list-item>
+          </v-list>
         </v-card-text>
       </v-col>
     </v-row>

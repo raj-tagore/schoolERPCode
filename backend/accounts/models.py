@@ -1,6 +1,7 @@
 from django.db import models
 from attachments.models import Attachment
 from users.models import User
+from django.db.models import Q
 
 # Create your models here.
 class Parent(models.Model):
@@ -10,6 +11,12 @@ class Parent(models.Model):
     # occupation = models.CharField('Occupation', max_length=400, blank=True)
     # office_address = models.TextField(blank=True, null=True)
     # annual_income = models.CharField('Annual Income', max_length=50, blank=True)
+
+    @property
+    def children(self):
+        return Student.objects.filter(
+            Q(guardian_1=self) | Q(guardian_2=self)
+        ).distinct()
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name} ({self.user.username})"
