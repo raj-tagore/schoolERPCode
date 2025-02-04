@@ -4,6 +4,8 @@
 		actionName="Add"
 		:model="model"
 		:action="handleCreateAttachment"
+		class="border mb-4"
+		variant="flat"
 	/>
 </template>
 
@@ -29,6 +31,7 @@ const emit = defineEmits(["update:attachment"]);
 async function handleCreateAttachment(data) {
 	attachment.value = await createAttachment(data);
 	emit("update:attachment", attachment?.value);
+	attachment.value = null;  // Reset the attachment after emitting
 }
 
 const model = ref([

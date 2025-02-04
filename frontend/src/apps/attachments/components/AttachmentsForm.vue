@@ -1,19 +1,32 @@
 <template>
-	<AttachmentForm :required="required" :title="title" @update:attachment="attachmentAdded" />
-	<v-col v-for="item in attachments">
-		<v-card :title="item.name">
-			<v-card-text>
-				<v-col>
-					{{item.file.name}}
-				</v-col>
-				<v-col>
-					<v-btn @click="removeAttachment(item)">
-						<v-icon>mdi-close</v-icon>
-					</v-btn>
-				</v-col>
-			</v-card-text>
-		</v-card>
-	</v-col>
+	<v-row>
+		<v-col cols="12" lg="6">
+			<AttachmentForm :required="required" :title="title" @update:attachment="attachmentAdded" />
+		</v-col>
+		<v-col cols="12" lg="6">
+			<v-list density="compact" class="mt-2" v-if="attachments.length > 0">
+				Added Attachments:
+				<v-list-item
+					v-for="item in attachments"
+					:key="item.id"
+					:title="item.name"
+					:subtitle="item.file.name"
+					variant="outlined"
+					class="mb-2"
+				>
+					<template v-slot:append>
+						<v-btn 
+							icon="mdi-close" 
+							size="small" 
+							variant="text" 
+							density="compact"
+							@click="removeAttachment(item)"
+						></v-btn>
+					</template>
+				</v-list-item>
+			</v-list>
+		</v-col>
+	</v-row>
 </template>
 
 <script setup>

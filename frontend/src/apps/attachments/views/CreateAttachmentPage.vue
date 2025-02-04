@@ -4,6 +4,7 @@
 			title=""
 			actionName=""
 			:model="model"
+			variant="flat"
 		/>
 	</v-container>
 </template>
