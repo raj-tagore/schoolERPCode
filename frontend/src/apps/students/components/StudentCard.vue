@@ -49,20 +49,74 @@
               {{ student.user_details.is_active ? 'Active' : 'Inactive' }}
             </v-chip>
           </div>
+
+          <h4 class="text-subtitle-1 mt-4">Guardians:</h4>
+          <v-list lines="2">
+            <v-list-item 
+              v-if="guardian1?.user_details"
+              :title="guardian1.user_details.full_name"
+              :subtitle="guardian1.user_details.email"
+              variant="tonal"
+              rounded="lg"
+              class="ma-2"
+            >
+              <template v-slot:prepend>
+                <v-icon>mdi-account-child</v-icon>
+              </template>
+            </v-list-item>
+            
+            <v-list-item 
+              v-if="guardian2?.user_details"
+              :title="guardian2.user_details.full_name"
+              :subtitle="guardian2.user_details.email"
+              variant="tonal"
+              rounded="lg"
+              class="ma-2"
+            >
+              <template v-slot:prepend>
+                <v-icon>mdi-account-child</v-icon>
+              </template>
+            </v-list-item>
+          </v-list>
         </v-card-text>
+        <v-card-actions>
+            <v-btn
+            v-if="!student.user_details.is_approved"
+            color="warning"
+            :to="{ name: 'EditStudent', params: { studentId: student.id }}"
+            prepend-icon="mdi-check-circle"
+            variant="outlined"
+            >
+            Approve Student
+          </v-btn>
+        </v-card-actions>
       </v-col>
     </v-row>
   </v-card>
 </template>
 
-<script>
-export default {
-  name: 'StudentCard',
-  props: {
-    student: {
-      type: Object,
-      required: true
-    }
+<script setup>
+import { ref, onMounted } from 'vue';
+import { getParent } from '@/apps/parents/api';
+
+const props = defineProps({
+  student: {
+    type: Object,
+    required: true
   }
-}
+});
+
+const guardian1 = ref(null);
+const guardian2 = ref(null);
+
+const fetchGuardians = async () => {
+  if (props.student.guardian_1) {
+    guardian1.value = await getParent(props.student.guardian_1);
+  }
+  if (props.student.guardian_2) {
+    guardian2.value = await getParent(props.student.guardian_2);
+  }
+};
+
+onMounted(fetchGuardians);
 </script>

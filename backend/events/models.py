@@ -1,5 +1,4 @@
 from django.db import models
-
 from attachments.models import Attachment
 
 
