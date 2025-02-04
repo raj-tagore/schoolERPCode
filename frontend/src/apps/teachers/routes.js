@@ -19,6 +19,7 @@ export default [
                     to: { name: "Teachers", params: props },
                 },
             ],
+            icon: 'mdi-account-tie',
         },
         children: [
             {
@@ -45,6 +46,7 @@ export default [
                             to: { name: "EditTeacher", params: props },
                         },
                     ],
+                    icon: 'mdi-account-tie',
                 },
                 children: [
                     {

@@ -19,6 +19,7 @@ export default [
                     to: { name: "Parents", params: props },
                 },
             ],
+            icon: 'mdi-account-child',
         },
         children: [
             {
@@ -45,6 +46,7 @@ export default [
                             to: { name: "EditParent", params: props },
                         },
                     ],
+                    icon: 'mdi-account-child',
                 },
                 children: [
                     {

@@ -25,6 +25,7 @@ export default [
                     to: { name: "CreateClassroom" },
                 },
             ],
+            icon: 'mdi-google-classroom',
         },
         children: [
             {

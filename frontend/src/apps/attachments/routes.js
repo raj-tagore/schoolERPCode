@@ -23,6 +23,7 @@ export default [
                     to: { name: "CreateAttachment", params: props },
                 },
             ],
+            icon: 'mdi-paperclip',
         },
         children: [
             {
