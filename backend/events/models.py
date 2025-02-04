@@ -1,5 +1,4 @@
 from django.db import models
-
 from allocation.models import Classroom, Subject
 from attachments.models import Attachment
 from users.models import User
