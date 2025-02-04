@@ -66,7 +66,6 @@ const getRouteMeta = async (route) => {
 	const routes = route.matched.filter(
 		(route) => route?.meta?.getMenu && route?.meta?.getDisplayName,
 	);
-	console.log(route.matched);
 
 	const routeMeta = {};
 
@@ -78,8 +77,6 @@ const getRouteMeta = async (route) => {
 		routeMeta.current = meta;
 	}
 
-	console.log(current);
-
 	const parent = routes.pop();
 
 	if (parent?.meta) {
@@ -88,8 +85,6 @@ const getRouteMeta = async (route) => {
 		meta.displayName = await parent.meta.getDisplayName(route.params);
 		routeMeta.parent = meta;
 	}
-
-	console.log(parent);
 	return routeMeta;
 };
 
@@ -97,8 +92,6 @@ watch(currentRoute, (route) => {
 	getRouteMeta(route).then((r) => {
 		currentMeta.value = r.current;
 		parentMeta.value = r.parent;
-		console.log("current", currentMeta.value);
-		console.log("parent", parentMeta.value);
 	});
 });
 
@@ -106,8 +99,6 @@ onMounted(() => {
 	getRouteMeta(currentRoute).then((r) => {
 		currentMeta.value = r.current;
 		parentMeta.value = r.parent;
-		console.log("current", currentMeta.value);
-		console.log("parent", parentMeta.value);
 	});
 });
 </script>
