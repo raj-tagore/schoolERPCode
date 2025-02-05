@@ -24,6 +24,7 @@ export default [
                     to: { name: "CreateSubject" },
                 },
             ],
+            icon: 'mdi-book-open-variant'
         },
         children: [
             {

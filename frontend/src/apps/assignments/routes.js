@@ -24,6 +24,7 @@ export default [
                     to: { name: "CreateAssignment" },
                 },
             ],
+            icon: 'mdi-clipboard-text',
         },
         children: [
             {
@@ -53,6 +54,7 @@ export default [
                             to: { name: "EditAssignment", props },
                         },
                     ],
+                    icon: 'mdi-clipboard-text',
                 },
 				children: [
 					{

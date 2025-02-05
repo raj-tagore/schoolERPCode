@@ -13,6 +13,8 @@ class StudentSerializer(serializers.ModelSerializer):
 
 class ParentSerializer(serializers.ModelSerializer):
     user_details = UserReadSerializer(source='user', read_only=True)
+    children = StudentSerializer(many=True, read_only=True)
+
     class Meta:
         model = Parent
         fields = '__all__'

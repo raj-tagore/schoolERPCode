@@ -15,6 +15,7 @@ export default [
             getDisplayName: () => "Students",
             defaultRoute: "Students",
             description: "View and manage students",
+            icon: 'mdi-account-school',
             getMenu: (props) => [
                 {
                     title: "View Students",

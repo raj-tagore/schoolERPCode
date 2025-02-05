@@ -59,6 +59,7 @@
               variant="tonal"
               rounded="lg"
               class="ma-2"
+              :to="{ name: 'Parent', params: { parentId: guardian1.id } }"
             >
               <template v-slot:prepend>
                 <v-icon>mdi-account-child</v-icon>
@@ -72,6 +73,7 @@
               variant="tonal"
               rounded="lg"
               class="ma-2"
+              :to="{ name: 'Parent', params: { parentId: guardian2.id } }"
             >
               <template v-slot:prepend>
                 <v-icon>mdi-account-child</v-icon>

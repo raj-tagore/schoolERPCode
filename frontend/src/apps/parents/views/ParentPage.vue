@@ -5,9 +5,6 @@
         <ParentCard :parent="parent" v-if="parent?.user_details" />
       </v-col>
     </v-row>
-    <v-container>
-      <h4 class="text-h6 mb-4">Children</h4>
-    </v-container>
   </v-container>
 </template>
 
