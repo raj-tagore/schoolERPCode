@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView, CreateAPIView, UpdateAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListAPIView, CreateAPIView
 from timetable.models import Period, TimeTable
 from timetable.permissions import PeriodPermissions, TimeTablePermissions
 from timetable.serializers import PeriodSerializer, TimeTableSerializer

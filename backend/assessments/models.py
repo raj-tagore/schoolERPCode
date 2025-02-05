@@ -19,7 +19,7 @@ class Assessment(models.Model):
     
 class StudentAssessment(models.Model):
     student = models.ForeignKey('accounts.Student', on_delete=models.CASCADE, related_name='assessments')
-    assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE, related_name='students')
+    assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE, related_name='submitted')
     marks = models.IntegerField()
     
     status = models.CharField(max_length=50)
