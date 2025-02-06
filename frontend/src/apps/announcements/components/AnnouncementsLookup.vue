@@ -17,20 +17,20 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { getAnnouncements } from "../api";
 import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
 import FilterCard from "@/components/FilterCard.vue";
 
-const filters = ref({
+const defaultFilters = {
 	title: "",
 	classroom: null,
 	subject: null,
 	signed_by: null,
 	is_school_wide: null,
-});
+};
 
-const filtersInfo = ref([
+const defaultFiltersInfo = [
 	{
 		label: "Search by title",
 		type: "string",
@@ -61,14 +61,29 @@ const filtersInfo = ref([
 			{ title: "Non-School Wide Only", value: "False" },
 		],
 	},
-]);
+];
 
 const props = defineProps({
 	forceMobile: {
 		type: Boolean,
 		default: false,
 	},
+	initialFilters: {
+		type: Object,
+		default: () => ({}),
+	},
+	initialFiltersInfo: {
+		type: Array,
+		default: () => ([]),
+	},
 });
+
+const filters = ref({ ...defaultFilters, ...props.initialFilters });
+
+const filtersInfo = ref(defaultFiltersInfo.map(defaultFilter => {
+  const override = props.initialFiltersInfo.find(f => f.key === defaultFilter.key);
+  return override ? { ...defaultFilter, ...override } : defaultFilter;
+}));
 
 const formatDate = (dateString) =>
 	Intl.DateTimeFormat("en-US", {

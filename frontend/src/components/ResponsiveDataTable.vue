@@ -98,7 +98,6 @@ const title = ref(props.headers[0]);
 const data_headers = ref(props.headers.slice(1, props.headers.length - 1));
 
 watch(props.filters, (f) => {
-	console.log("Responsive Data Table", f);
 	search.value = structuredClone(f);
 }, {deep: true});
 
@@ -106,27 +105,28 @@ const loading = ref(false);
 const itemsLen = ref(10);
 const items = ref([]);
 
+const convertFiltersForBackend = (filters) => {
+	return Object.fromEntries(
+		Object.entries(filters)
+			.filter(([_, value]) => (typeof value === "boolean" ? true : value))
+			.map(([key, value]) => {
+				if (typeof value === "boolean") {
+					return [key, value ? "True" : "False"];
+				}
+				return [key, value];
+			})
+	);
+};
+
 const fetchData = async ({ page, itemsPerPage, search }) => {
 	loading.value = true;
 	try {
-		// Filter out falsy values
-		const filterParams = Object.fromEntries(
-			Object.entries(search)
-				.filter(([_, value]) => (typeof value === "boolean" ? true : value))
-				.map(([key, value]) => {
-					// I blame python and django
-					if (typeof value === "boolean") {
-						if (value) {
-							return [key, "True"];
-						}
-						return [key, "False"];
-					}
-					return [key, value];
-				}),
-		);
+		const filterParams = {
+			...convertFiltersForBackend(search),
+			page_size: itemsPerPage || 10,
+			page: page || 1
+		};
 
-		filterParams.page_size = itemsPerPage || 10;
-		filterParams.page = page || 1;
 		const listing = await props.fetch(filterParams);
 		items.value = listing.results;
 		itemsLen.value = listing.total_records;
@@ -138,7 +138,13 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 };
 
 onMounted(async () => {
-	const listing = await props.fetch({ page_size: 10, page: 1 });
+	const filterParams = {
+		...convertFiltersForBackend(props.filters),
+		page_size: 10,
+		page: 1
+	};
+	
+	const listing = await props.fetch(filterParams);
 	items.value = listing.results;
 	itemsLen.value = listing.total_records;
 });

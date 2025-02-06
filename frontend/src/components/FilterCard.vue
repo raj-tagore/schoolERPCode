@@ -8,16 +8,18 @@
 				:rules="[v => !!v || `${field.label} is required`]"
 				density="comfortable"
 				hide-details
+				:disabled="field.disabled"
 			></v-text-field>
 			<ServerAutocomplete
 				v-if="['number', 'classroom', 'subject', 'teacher'].includes(field.type)"
 				v-model="filters[field.key]"
-				clearable
+				:clearable="!field.disabled"
 				:fetch="getFilterFetch(field)"
 				:getInfo="getFilterInfo(field)"
 				:searchField="field.searchField || 'name'"
 				:label="field.label"
 				density="comfortable"
+				:disabled="field.disabled"
 			/>
 			<v-checkbox 
 				v-if="field.type === 'boolean'"
@@ -48,7 +50,6 @@
 </template>
 
 <script setup>
-import { watch } from "vue";
 import ServerAutocomplete from "@/components/ServerAutocomplete.vue";
 import { getClassrooms, getClassroomInfoFromObj } from "@/apps/classrooms/api";
 import { getSubjects, getSubjectInfoFromObj } from "@/apps/subjects/api";
@@ -72,10 +73,6 @@ const props = defineProps({
 	// - searchField: String? (defaults to 'name')
 	filtersInfo: {
 		type: Array,
-		required: true,
-	},
-	onFilterChange: {
-		type: Function,
 		required: true,
 	},
 });
@@ -109,8 +106,4 @@ const getFilterInfo = (field) => {
 			return field.fetchOptionsInfo;
 	}
 };
-
-watch(filters, (newValue) => {
-	props.onFilterChange?.(structuredClone(newValue));
-}, { deep: true });
 </script>
