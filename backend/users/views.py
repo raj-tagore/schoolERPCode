@@ -57,6 +57,7 @@ class ReadUser(RetrieveAPIView):
     lookup_field = 'id'
 
 class CreateUser(CreateAPIView):
+    queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [DjangoModelPermissions]
 
