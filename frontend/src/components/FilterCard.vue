@@ -77,9 +77,7 @@ const props = defineProps({
 	},
 });
 
-const filters = defineModel({
-	default: {},
-});
+const filters = defineModel();
 
 const getFilterFetch = (field) => {
 	switch (field.type) {
