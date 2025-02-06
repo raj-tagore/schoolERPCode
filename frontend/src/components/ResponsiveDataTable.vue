@@ -89,7 +89,7 @@ const props = defineProps({
 	},
 });
 
-const filters = defineModel({})
+const filters = defineModel({});
 
 const title = ref(props.headers[0]);
 const data_headers = ref(props.headers.slice(1, props.headers.length - 1));
@@ -107,20 +107,20 @@ const convertFiltersForBackend = (filters) => {
 					return [key, value ? "True" : "False"];
 				}
 				return [key, value];
-			})
+			}),
 	);
 };
 
 const fetchData = async ({ page, itemsPerPage, search }) => {
 	loading.value = true;
 	try {
-		console.log("search", search)
+		console.log("search", search);
 		const filterParams = {
 			...convertFiltersForBackend(search),
 			page_size: itemsPerPage || 10,
-			page: page || 1
+			page: page || 1,
 		};
-		console.log("ResponsiveDataTable", filterParams)
+		console.log("ResponsiveDataTable", filterParams);
 
 		const listing = await props.fetch(filterParams);
 		items.value = listing.results;
@@ -134,11 +134,11 @@ const fetchData = async ({ page, itemsPerPage, search }) => {
 
 onMounted(async () => {
 	const filterParams = {
-		...convertFiltersForBackend(props.filters),
+		filters,
 		page_size: 10,
-		page: 1
+		page: 1,
 	};
-	
+
 	const listing = await props.fetch(filterParams);
 	items.value = listing.results;
 	itemsLen.value = listing.total_records;
