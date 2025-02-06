@@ -94,7 +94,6 @@ const filters = defineModel({})
 const title = ref(props.headers[0]);
 const data_headers = ref(props.headers.slice(1, props.headers.length - 1));
 
-
 const loading = ref(false);
 const itemsLen = ref(10);
 const items = ref([]);
