@@ -114,13 +114,11 @@ const convertFiltersForBackend = (filters) => {
 const fetchData = async ({ page, itemsPerPage, search }) => {
 	loading.value = true;
 	try {
-		console.log("search", search);
 		const filterParams = {
 			...convertFiltersForBackend(search),
 			page_size: itemsPerPage || 10,
 			page: page || 1,
 		};
-		console.log("ResponsiveDataTable", filterParams);
 
 		const listing = await props.fetch(filterParams);
 		items.value = listing.results;
