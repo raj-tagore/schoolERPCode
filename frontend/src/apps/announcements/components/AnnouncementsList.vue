@@ -1,13 +1,13 @@
 <template>
     <v-card>
-        <v-card-title>{{ title || 'Announcements' }}</v-card-title>
+        <v-card-title v-if="title">{{ title }}</v-card-title>
         <v-card-subtitle v-if="subtitle">{{ subtitle }}</v-card-subtitle>
         <v-card-text>
             <v-list lines="two" density="default">
                 <v-list-item 
-                    v-for="(announcement, index) in AnnouncementsData" 
+                    v-for="(announcement, index) in AnnouncementsData.slice(0, 3)" 
                     :key="index"
-                    class="ma-2 pa-2 border"
+                    class="ma-1 pa-2 border"
                 >
                     <v-list-item-content>
                         <v-list-item-title>{{ announcement?.title || 'Untitled' }}</v-list-item-title>
@@ -32,6 +32,15 @@
                 No announcements available
             </div>
         </v-card-text>
+        <v-card-actions class="justify-center">
+            <v-btn 
+                :to="{ name: 'Announcements' }"
+                variant="outlined"
+                density="comfortable"
+            >
+                View All
+            </v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 

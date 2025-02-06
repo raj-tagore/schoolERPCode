@@ -13,6 +13,7 @@
 		@update:modelValue="emit('update:modelValue', $event)"
 		@update:search="debouncedFetchResults"
 		:clearable="clearable"
+		density="comfortable"
 	>
 		<template v-slot:append-item>
 			<div v-if="hasMore" v-intersect="debouncedFetchResults" class="pa-4">

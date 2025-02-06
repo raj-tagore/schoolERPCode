@@ -10,12 +10,12 @@
 				hide-details
 			></v-text-field>
 			<ServerAutocomplete
-				v-if="field.type === 'number'"
+				v-if="['number', 'classroom', 'subject', 'teacher'].includes(field.type)"
 				v-model="filters[field.key]"
 				clearable
-				:fetch="field.fetchOptions"
-				:getInfo="field.fetchOptionsInfo"
-				:searchField="field.searchField"
+				:fetch="getFilterFetch(field)"
+				:getInfo="getFilterInfo(field)"
+				:searchField="field.searchField || 'name'"
 				:label="field.label"
 				density="comfortable"
 			/>
@@ -28,9 +28,9 @@
 				v-if="field.type === 'array'"
 				v-model="filters[field.key]"
 				clearable
-				:fetch="field.fetchOptions"
-				:getInfo="field.fetchOptionsInfo"
-				:searchField="field.searchField"
+				:fetch="getFilterFetch(field)"
+				:getInfo="getFilterInfo(field)"
+				:searchField="field.searchField || 'name'"
 				:label="field.label"
 				:multiple='true'
 				density="comfortable"
@@ -48,8 +48,11 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { watch } from "vue";
 import ServerAutocomplete from "@/components/ServerAutocomplete.vue";
+import { getClassrooms, getClassroomInfoFromObj } from "@/apps/classrooms/api";
+import { getSubjects, getSubjectInfoFromObj } from "@/apps/subjects/api";
+import { getTeachers, getTeacherInfoFromObj } from "@/apps/teachers/api";
 
 const props = defineProps({
 	// Each element for this array will be an object with the following keys:
@@ -59,20 +62,17 @@ const props = defineProps({
 	//   - 'string'
 	//   - 'number'
 	//   - 'boolean'
-	//	 - 'array'
-	//	 - 'n_nary'
-	// - fetchOptions: Function?
-	// - fetchOptionsInfo: Function?
-	// - searchField: String?
+	//   - 'array'
+	//   - 'n_nary'
+	//   - 'classroom'  // New type
+	//   - 'subject'    // New type
+	//   - 'teacher'    // New type
+	// - fetchOptions: Function? (only for custom number/array types)
+	// - fetchOptionsInfo: Function? (only for custom number/array types)
+	// - searchField: String? (defaults to 'name')
 	filtersInfo: {
 		type: Array,
 		required: true,
-	},
-	// The object that will be updated with the filters
-	// The initial values are overwritten by the defaultValues
-	defaultValues: {
-		type: Object,
-		default: () => ({}),
 	},
 	onFilterChange: {
 		type: Function,
@@ -80,11 +80,37 @@ const props = defineProps({
 	},
 });
 
-const filters = ref(props.defaultValues);
-
-const emit = defineEmits(["update:filters"]);
-
-watch(filters.value, (newValue) => {
-	emit("update:filters", structuredClone(newValue));
+const filters = defineModel({
+	default: {},
 });
+
+const getFilterFetch = (field) => {
+	switch (field.type) {
+		case 'classroom':
+			return getClassrooms;
+		case 'subject':
+			return getSubjects;
+		case 'teacher':
+			return getTeachers;
+		default:
+			return field.fetchOptions;
+	}
+};
+
+const getFilterInfo = (field) => {
+	switch (field.type) {
+		case 'classroom':
+			return getClassroomInfoFromObj;
+		case 'subject':
+			return getSubjectInfoFromObj;
+		case 'teacher':
+			return getTeacherInfoFromObj;
+		default:
+			return field.fetchOptionsInfo;
+	}
+};
+
+watch(filters, (newValue) => {
+	props.onFilterChange?.(structuredClone(newValue));
+}, { deep: true });
 </script>

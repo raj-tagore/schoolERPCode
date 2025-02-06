@@ -1,10 +1,13 @@
 <template>
 	<v-card variant="flat">
 		<v-card-title>
-			<FilterCard :filtersInfo="filtersInfo" @update:filters="filtersChanged" :onFilterChange="filtersChanged" />
+			<FilterCard 
+				v-model="filters"
+				:filtersInfo="filtersInfo" 
+			/>
 		</v-card-title>
 		<ResponsiveDataTable 
-			:getToFunction="(item) => ( { name : 'Assignment', params: {assignmentId: item.id}} )" 
+			:getToFunction="(item) => ({name: 'Assignment', params: {assignmentId: item.id}})" 
 			:headers="headers" 
 			:fetch="getAssignments" 
 			:filters="filters"
@@ -14,13 +17,8 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { getAssignments } from "@/apps/assignments/api.js";
-import {
-	getClassroomInfoFromObj,
-	getClassrooms,
-} from "@/apps/classrooms/api.js";
-import { getSubjectInfoFromObj, getSubjects } from "@/apps/subjects/api.js";
-import { onMounted, ref } from "vue";
 import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
 import FilterCard from "@/components/FilterCard.vue";
 
@@ -31,10 +29,6 @@ const filters = ref({
 	subject: null,
 	is_active: null,
 });
-
-const filtersChanged = (newFilters) => {
-	Object.assign(filters.value, newFilters);
-};
 
 const filtersInfo = ref([
 	{
@@ -49,19 +43,13 @@ const filtersInfo = ref([
 	},
 	{
 		label: "Filter by classroom",
-		type: "number",
+		type: "classroom",
 		key: "classroom",
-		fetchOptions: getClassrooms,
-		fetchOptionsInfo: getClassroomInfoFromObj,
-		searchField: "name",
 	},
 	{
 		label: "Filter by subject",
-		type: "number",
+		type: "subject",
 		key: "subject",
-		fetchOptions: getSubjects,
-		fetchOptionsInfo: getSubjectInfoFromObj,
-		searchField: "name",
 	},
 	{
 		label: "Filter by active",
@@ -97,16 +85,4 @@ const headers = [
 	{ title: "Subject", key: "subject_details", formatFunc: (item) => item.name },
 	{ title: "Actions", key: "actions", sortable: false },
 ];
-
-const assignments = ref([]);
-
-const classrooms = ref([]);
-const subjects = ref([]);
-
-onMounted(async () => {
-	classrooms.value = (await getClassrooms()).results;
-	subjects.value = (await getSubjects()).results;
-	// Don't fetch assignments on mount, start with empty table
-	assignments.value = [];
-});
 </script>
