@@ -111,34 +111,27 @@ const convertFiltersForBackend = (filters) => {
 	);
 };
 
-const fetchData = async ({ page, itemsPerPage, search }) => {
+const fetchData = async ({ page = 1, itemsPerPage = 10, search = {} } = {}) => {
 	loading.value = true;
+	
 	try {
-		const filterParams = {
+		const params = {
 			...convertFiltersForBackend(search),
-			page_size: itemsPerPage || 10,
-			page: page || 1,
+			page_size: itemsPerPage,
+			page,
 		};
 
-		const listing = await props.fetch(filterParams);
-		items.value = listing.results;
-		itemsLen.value = listing.total_records;
+		const { results, total_records } = await props.fetch(params);
+		items.value = results;
+		itemsLen.value = total_records;
 	} catch (error) {
 		console.error("Error fetching items:", error);
+		items.value = [];
+		itemsLen.value = 0;
 	} finally {
 		loading.value = false;
 	}
 };
 
-onMounted(async () => {
-	const filterParams = {
-		filters,
-		page_size: 10,
-		page: 1,
-	};
-
-	const listing = await props.fetch(filterParams);
-	items.value = listing.results;
-	itemsLen.value = listing.total_records;
-});
+onMounted(() => fetchData({ search: filters }));
 </script>
