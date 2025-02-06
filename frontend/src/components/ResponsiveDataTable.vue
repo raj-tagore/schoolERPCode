@@ -5,7 +5,7 @@
 		:headers="[]"
 		:items="items"
 		@update:options="fetchData"
-		:search="search"
+		:search="filters"
 		:loading="loading"
 	>
 		<template #headers={}></template>
@@ -42,7 +42,7 @@
 		:headers="headers"
 		:items="items"
 		@update:options="fetchData"
-		:search="search"
+		:search="filters"
 		:loading="loading"
 	>
 		<template #item="{ item }">
@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import { useDisplay } from "vuetify";
 const { mobile } = useDisplay();
 
@@ -81,10 +81,6 @@ const props = defineProps({
 		type: Function,
 		required: true,
 	},
-	filters: {
-		type: Object,
-		required: true,
-	},
 	getToFunction: {
 		type: Function,
 	},
@@ -93,13 +89,11 @@ const props = defineProps({
 	},
 });
 
-const search = ref({});
+const filters = defineModel({})
+
 const title = ref(props.headers[0]);
 const data_headers = ref(props.headers.slice(1, props.headers.length - 1));
 
-watch(props.filters, (f) => {
-	search.value = structuredClone(f);
-}, {deep: true});
 
 const loading = ref(false);
 const itemsLen = ref(10);
@@ -121,11 +115,13 @@ const convertFiltersForBackend = (filters) => {
 const fetchData = async ({ page, itemsPerPage, search }) => {
 	loading.value = true;
 	try {
+		console.log("search", search)
 		const filterParams = {
 			...convertFiltersForBackend(search),
 			page_size: itemsPerPage || 10,
 			page: page || 1
 		};
+		console.log("ResponsiveDataTable", filterParams)
 
 		const listing = await props.fetch(filterParams);
 		items.value = listing.results;

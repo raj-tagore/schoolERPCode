@@ -9,7 +9,7 @@
 		<ResponsiveDataTable 
 			:getToFunction="(item) => ({name: 'Assignment', params: {assignmentId: item.id}})" 
 			:headers="headers" 
-			:fetch="getAssignments" 
+			v-model="getAssignments" 
 			:filters="filters"
       		:forceMobile="forceMobile"
     	/>

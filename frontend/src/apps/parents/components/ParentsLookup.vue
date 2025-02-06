@@ -16,7 +16,7 @@
 			<ResponsiveDataTable
 				:headers="headers"
 				:fetch="getParents"
-				:filters="filters"
+				v-model="filters"
 				:getToFunction="(item) => ({name: 'Parent', params: {parentId: item.id}})"
 			/>
 		</v-card>

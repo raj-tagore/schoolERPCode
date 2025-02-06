@@ -10,7 +10,7 @@
       :getToFunction="(item) => ({name: 'Announcement', params: {announcementId: item.id}})" 
       :headers="headers" 
       :fetch="getAnnouncements" 
-      :filters="filters"
+      v-model="filters"
       :forceMobile="forceMobile"
     />
   </v-card>

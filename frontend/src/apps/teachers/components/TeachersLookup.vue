@@ -27,7 +27,7 @@
 			<ResponsiveDataTable
 				:headers="headers"
 				:fetch="getTeachers"
-				:filters="filters"
+				v-model="filters"
 				:getToFunction="(item) => ({name: 'Teacher', params: {teacherId: item.id}})"
 			/>
 		</v-card>
