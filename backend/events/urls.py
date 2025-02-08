@@ -1,10 +1,13 @@
-from django.urls import path
-from .views import AllCalendars, AllEvents, AnyCalendar, AnyEvent, CreateCalendar, CreateEvent
+from django.urls import path, include
+from .views import (
+    AllEvents,
+    AnyEvent,
+    CreateEvent,
+    calendars_viewset,
+)
 
 urlpatterns = [
-    path("calendar/all/", AllCalendars.as_view()),
-    path("calendar/<int:id>/", AnyCalendar.as_view()),
-    path("calendar/create/", CreateCalendar.as_view()),
+    path("calendar/", include(calendars_viewset)),
     path("all/", AllEvents.as_view()),
     path("<int:id>/", AnyEvent.as_view()),
     path("create/", CreateEvent.as_view()),

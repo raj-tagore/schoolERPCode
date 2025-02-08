@@ -1,7 +1,3 @@
-from rest_framework.generics import (
-    RetrieveUpdateDestroyAPIView,
-    CreateAPIView,
-)
 from rest_framework.viewsets import ModelViewSet
 from .models import Assignment, SubmittedAssignment
 from .serializers import (
@@ -14,17 +10,19 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from schoolERPCode.viewsets import get_standard_model_viewset
 
-def assignment_filter(self, queryset):
-    request = self.request
-    id = request.query_params.get("id")
-    title = request.query_params.get("title")
-    description = request.query_params.get("description")
-    is_active = request.query_params.get("is_active")
-    release_at = request.query_params.get("release_at")
-    due_at = request.query_params.get("due_at")
-    subject = request.query_params.get("subject")
-    classroom = request.query_params.get("classroom")
 
+def assignment_filter(
+    self,
+    queryset,
+    id,
+    title,
+    description,
+    is_active,
+    release_at,
+    due_at,
+    subject,
+    classroom,
+):
     if id:
         queryset = queryset.filter(id=id)
     if title:
@@ -46,9 +44,9 @@ def assignment_filter(self, queryset):
 
 assignment_viewset = get_standard_model_viewset(
     queryset=Assignment.objects.all(),
-    serializer=AssignmentSerializer,
-    basic_serializer=BasicAssignmentSerializer,
-    permission=AssignmentPermissions,
+    serializer_class=AssignmentSerializer,
+    basic_serializer_class=BasicAssignmentSerializer,
+    permission_class=AssignmentPermissions,
     filter_queryset=assignment_filter,
 )
 

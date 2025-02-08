@@ -10,6 +10,8 @@ from rest_framework.generics import (
 )
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
+
+
 # Create your views here.
 class AllAttendances(ListAPIView):
     queryset = Attendance.objects.all()

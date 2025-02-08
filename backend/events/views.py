@@ -12,53 +12,38 @@ from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
 from rest_framework.response import Response
 
-
-class AllCalendars(ListAPIView):
-    queryset = Calendar.objects.all()
-    serializer_class = CalendarSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        request = self.request
-
-        id = request.query_params.get("id")
-        name = request.query_params.get("name")
-        description = request.query_params.get("description")
-        is_school_wide = request.query_params.get("is_school_wide")
-        classrooms = request.query_params.get("classrooms")
-        subjects = request.query_params.get("subjects")
-        users = request.query_params.get("users")
-
-        if id:
-            queryset = queryset.filter(id=id)
-        if name:
-            queryset = queryset.filter(name__icontains=name)
-        if description:
-            queryset = queryset.filter(description__icontains=description)
-        if is_school_wide:
-            queryset = queryset.filter(is_school_wide=is_school_wide)
-        if classrooms:
-            queryset = queryset.filter(classrooms__id__in=classrooms)
-        if subjects:
-            queryset = queryset.filter(subjects__id__in=subjects)
-        if users:
-            queryset = queryset.filter(users__id__in=users)
-
-        return queryset
+from schoolERPCode.viewsets import get_standard_model_viewset
 
 
-class AnyCalendar(RetrieveUpdateDestroyAPIView):
-    serializer_class = CalendarSerializer
-    permission_classes = [IsAuthenticated, DjangoModelPermissions]
-    queryset = Calendar.objects.all()
-    lookup_field = "id"
+def calendars_filter(
+    self, queryset, name, description, is_school_wide, classrooms, subjects, users
+):
+    if id:
+        queryset = queryset.filter(id=id)
+    if name:
+        queryset = queryset.filter(name__icontains=name)
+    if description:
+        queryset = queryset.filter(description__icontains=description)
+    if is_school_wide:
+        queryset = queryset.filter(is_school_wide=is_school_wide)
+    if classrooms:
+        queryset = queryset.filter(classrooms__id__in=classrooms)
+    if subjects:
+        queryset = queryset.filter(subjects__id__in=subjects)
+    if users:
+        queryset = queryset.filter(users__id__in=users)
+
+    return queryset
 
 
-class CreateCalendar(CreateAPIView):
-    queryset = Calendar.objects.all()
-    serializer_class = CalendarSerializer
-    permission_classes = [DjangoModelPermissions]
+calenders_viewset = get_standard_model_viewset(
+    queryset=Calendar.objects.all(),
+    serializer_class=CalendarSerializer,
+    basic_serializer_class=CalendarSerializer,
+    permission_class=EventPermissions,
+    filter_queryset=calendars_filter,
+)
+
 
 
 class AllEvents(ListAPIView):
@@ -89,7 +74,9 @@ class AllEvents(ListAPIView):
         if calendar:
             events_queryset = events_queryset.filter(calendar__id=calendar)
             calendar = Calendar.objects.get(id=calendar)
-            assessment_queryset = assessment_queryset.filter(subject__in=calendar.subjects.all())
+            assessment_queryset = assessment_queryset.filter(
+                subject__in=calendar.subjects.all()
+            )
 
         event_data = EventSerializer(events_queryset, many=True).data
         assessment_data = BasicAssessmentSerializer(assessment_queryset, many=True).data
