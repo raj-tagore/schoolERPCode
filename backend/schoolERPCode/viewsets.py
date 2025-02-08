@@ -2,16 +2,18 @@ from rest_framework.generics import (
     ListAPIView,
     RetrieveUpdateDestroyAPIView,
     CreateAPIView,
+    RetrieveAPIView,
 )
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from django.urls import path
+from rest_framework.response import Response
 
 
 def get_standard_model_viewset(
     queryset,
     serializer_class,
     basic_serializer_class,
-    permission_class = None,
+    permission_class=None,
     filter_queryset=lambda self, queryset: queryset,
 ):
     # Necessary because we can't have access variables of functions inside of class declaration
@@ -62,6 +64,21 @@ def get_standard_model_viewset(
         queryset = BaseContainer.get_queryset()
         serializer_class = BaseContainer.get_basic_serializer_class()
 
+    class PermissionView(RetrieveAPIView):
+        queryset = BaseContainer.get_queryset()
+        permission_class = []
+
+        def retrieve(self, request, *args, **kwargs):
+            instance = self.get_object()
+            if hasattr(permission_class, "get_permissions"):
+                return Response(permission_class.get_permissions(request, instance))
+
+            return Response(["GET", "POST", "PUT", "DELETE", "PATCH"])
+
+    def general_permission_view(request):
+        if hasattr(permission_class, "get_general_permissions"):
+            permission_class.get_general_permissions(request.user)
+
     return [
         path("all", AllItems.as_view()),
         path(
@@ -71,5 +88,13 @@ def get_standard_model_viewset(
         path(
             "create/",
             CreateItem.as_view(),
+        ),
+        path(
+            "permissions/<int:id>/",
+            PermissionView.as_view(),
+        ),
+        path(
+            "permissions/",
+            general_permission_view,
         ),
     ]
