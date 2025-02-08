@@ -11,8 +11,6 @@ router.register(r"", MarkSubmittedAssignment)
 
 urlpatterns = [
     path("mark/", include(router.urls)),
+    path("", include(assignment_viewset)),
 ]
 
-urlpatterns.extend(
-    assignment_viewset
-)

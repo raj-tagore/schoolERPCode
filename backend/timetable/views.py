@@ -1,77 +1,44 @@
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListAPIView, CreateAPIView
 from timetable.models import Period, TimeTable
 from timetable.permissions import PeriodPermissions, TimeTablePermissions
 from timetable.serializers import PeriodSerializer, TimeTableSerializer
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
-# Create your views here.
-class AllPeriods(ListAPIView):
-    queryset = Period.objects.all()
-    serializer_class = PeriodSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        request = self.request
-
-        id = request.query_params.get('id')
-        start = request.query_params.get('start')
-        end = request.query_params.get('end')
-        day = request.query_params.get('day')
-
-        if id:
-            queryset = queryset.filter(id=id)
-        if start:
-            queryset = queryset.filter(start=start)
-        if end:
-            queryset = queryset.filter(end=end)
-        if day:
-            queryset = queryset.filter(day=day)
-
-        return queryset
-
-class AnyPeriod(RetrieveUpdateDestroyAPIView):
-    serializer_class = PeriodSerializer
-    permission_classes = [IsAuthenticated, PeriodPermissions]
-    queryset = Period.objects.all()
-    lookup_field = 'id'
-
-class CreatePeriod(CreateAPIView):
-    queryset = Period.objects.all()
-    serializer_class = PeriodSerializer
-    permission_classes = [DjangoModelPermissions]
+from schoolERPCode.viewsets import get_standard_model_viewset
 
 
-class AllTimeTables(ListAPIView):
-    queryset = TimeTable.objects.all()
-    serializer_class = TimeTableSerializer
-    permission_classes = [IsAuthenticated]
+def periods_filter(self, queryset, id, start, end, day):
+    if id:
+        queryset = queryset.filter(id=id)
+    if start:
+        queryset = queryset.filter(start=start)
+    if end:
+        queryset = queryset.filter(end=end)
+    if day:
+        queryset = queryset.filter(day=day)
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        request = self.request
+    return queryset
 
-        id = request.query_params.get('id')
-        subject = request.query_params.get('name')
-        periods = request.query_params.get('periods')
+periods_viewset = get_standard_model_viewset(
+    queryset=Period.objects.all(),
+    serializer_class=PeriodSerializer,
+    basic_serializer_class=PeriodSerializer,
+    filter_queryset=periods_filter,
+    permission_class=PeriodPermissions,
+)
 
-        if id:
-            queryset = queryset.filter(id=id)
-        if subject:
-            queryset = queryset.filter(subject__id=subject)
-        if periods:
-            queryset = queryset.filter(periods__id=subject)
+def timetable_filter(self, queryset, id, subject, periods):
+    if id:
+        queryset = queryset.filter(id=id)
+    if subject:
+        queryset = queryset.filter(subject__id=subject)
+    if periods:
+        queryset = queryset.filter(periods__id=subject)
 
-        return queryset
+    return queryset
 
-class AnyTimeTable(RetrieveUpdateDestroyAPIView):
-    serializer_class = TimeTableSerializer
-    permission_classes = [IsAuthenticated, TimeTablePermissions]
-    queryset = TimeTable.objects.all()
-    lookup_field = 'id'
-
-class CreateTimeTable(CreateAPIView):
-    queryset = TimeTable.objects.all()
-    serializer_class = TimeTableSerializer
-    permission_classes = [DjangoModelPermissions]
-
+timetable_viewset = get_standard_model_viewset(
+    queryset=TimeTable.objects.all(),
+    serializer_class=TimeTableSerializer,
+    basic_serializer_class=TimeTableSerializer,
+    permission_class=TimeTablePermissions,
+    filter_queryset=timetable_filter,
+)
