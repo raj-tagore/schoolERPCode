@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 
+ALL_PERMISSIONS = ["GET", "POST", "PUT", "DELETE", "PATCH"]
 
 def get_standard_model_viewset(
     queryset,
@@ -72,17 +73,17 @@ def get_standard_model_viewset(
 
         def retrieve(self, request, *args, **kwargs):
             instance = self.get_object()
-            if hasattr(permission_class, "get_permissions"):
+            if permission_class and hasattr(permission_class, "get_permissions"):
                 return Response(permission_class.get_permissions(request, instance))
 
-            return Response(["GET", "POST", "PUT", "DELETE", "PATCH"])
+            return Response(ALL_PERMISSIONS)
 
     @api_view(['GET'])  
     @permission_classes([AllowAny])
     def general_permission_view(request):
-        if hasattr(permission_class, "get_general_permissions"):
+        if permission_class and hasattr(permission_class, "get_general_permissions"):
             return Response(permission_class.get_general_permissions(request.user))
-        return Response(["GET", "POST", "PUT", "DELETE", "PATCH"])
+        return Response(ALL_PERMISSIONS)
 
     return [
         path("all", AllItems.as_view()),
