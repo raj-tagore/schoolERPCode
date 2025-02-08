@@ -34,7 +34,7 @@
         </v-card-text>
         <v-card-actions class="justify-center">
             <v-btn 
-                :to="{ name: 'Announcements' }"
+                :to="{ name: to || 'Announcements' }"
                 variant="outlined"
                 density="comfortable"
             >
@@ -55,6 +55,7 @@ const props = defineProps({
 	},
 	title: String,
 	subtitle: String,
+    to: String,
 });
 
 const AnnouncementsData = ref([]);
