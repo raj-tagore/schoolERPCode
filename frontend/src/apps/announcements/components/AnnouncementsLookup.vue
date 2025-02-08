@@ -71,6 +71,16 @@ const defaultFiltersInfo = [
 		type: "boolean",
 		key: "is_expired",
 	},
+	{
+		label: "Release Date Range",
+		type: "dates",
+		key: ["released_start", "released_end"],
+	},
+	{
+		label: "Expiry Date Range",
+		type: "dates",
+		key: ["expired_start", "expired_end"],
+	}
 ];
 
 const props = defineProps({

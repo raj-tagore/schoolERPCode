@@ -45,6 +45,21 @@
 				hide-details
 				density="comfortable"
 			></v-select>
+			<v-date-input
+				v-if="field.type === 'dates'"
+				color="primary"
+				:label="field.label" 
+				:multiple="field.key.length"
+				density="comfortable"
+				clearable
+				:disabled="field.disabled"
+				@update:modelValue="(value) => [...value].sort((a,b) => a - b).forEach((e, i) => {console.log(i, e);filters[field.key[i]] = e})"
+			></v-date-input>
+			<!--- The above one-liner does the following
+			- Gets the dates in an array from datepicker
+			- Sorts them, treating them as a number
+			- Assigns the corresponding date to the corresponding field in filter
+			--->
 		</v-col>
 	</v-row>
 </template>
@@ -58,7 +73,7 @@ import { getTeachers, getTeacherInfoFromObj } from "@/apps/teachers/api";
 const props = defineProps({
 	// Each element for this array will be an object with the following keys:
 	// - label: String
-	// - key: String
+	// - key: String & [String] for date range
 	// - type: String
 	//   - 'string'
 	//   - 'number'
@@ -68,6 +83,7 @@ const props = defineProps({
 	//   - 'classroom'  // New type
 	//   - 'subject'    // New type
 	//   - 'teacher'    // New type
+	//   - 'dates'
 	// - fetchOptions: Function? (only for custom number/array types)
 	// - fetchOptionsInfo: Function? (only for custom number/array types)
 	// - searchField: String? (defaults to 'name')
@@ -81,11 +97,11 @@ const filters = defineModel();
 
 const getFilterFetch = (field) => {
 	switch (field.type) {
-		case 'classroom':
+		case "classroom":
 			return getClassrooms;
-		case 'subject':
+		case "subject":
 			return getSubjects;
-		case 'teacher':
+		case "teacher":
 			return getTeachers;
 		default:
 			return field.fetchOptions;
@@ -94,11 +110,11 @@ const getFilterFetch = (field) => {
 
 const getFilterInfo = (field) => {
 	switch (field.type) {
-		case 'classroom':
+		case "classroom":
 			return getClassroomInfoFromObj;
-		case 'subject':
+		case "subject":
 			return getSubjectInfoFromObj;
-		case 'teacher':
+		case "teacher":
 			return getTeacherInfoFromObj;
 		default:
 			return field.fetchOptionsInfo;

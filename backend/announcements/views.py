@@ -9,6 +9,7 @@ from schoolERPCode.viewsets import get_standard_model_viewset
 
 
 def filter_announcements(self, queryset, **kwargs):
+    print(kwargs)
     if "id" in kwargs:
         queryset = queryset.filter(id=kwargs["id"])
     if "title" in kwargs:
@@ -23,8 +24,14 @@ def filter_announcements(self, queryset, **kwargs):
         queryset = queryset.filter(signed_by__id=kwargs["signed_by"])
     if "is_released" in kwargs and kwargs["is_released"] == "True":
         queryset = queryset.filter(release_at__lte=datetime.datetime.now())
-    if "is_expired" in kwargs and kwargs["is_expired"] == "True":
-        queryset = queryset.filter(expiry_at__lte=datetime.datetime.now())
+    if "released_start" in kwargs:
+        queryset = queryset.filter(release_at__gte=kwargs["released_start"])
+    if "released_end" in kwargs:
+        queryset = queryset.filter(release_at__lte=kwargs["released_end"])
+    if "expired_start" in kwargs:
+        queryset = queryset.filter(expiry_at__gte=kwargs["expired_start"])
+    if "expired_end" in kwargs:
+        queryset = queryset.filter(expiry_at__lte=kwargs["expired_end"])
 
     return queryset
 
