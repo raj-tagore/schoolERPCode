@@ -7,7 +7,8 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from django.urls import path
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 
 
 def get_standard_model_viewset(
@@ -77,6 +78,7 @@ def get_standard_model_viewset(
             return Response(["GET", "POST", "PUT", "DELETE", "PATCH"])
 
     @api_view(['GET'])  
+    @permission_classes([AllowAny])
     def general_permission_view(request):
         if hasattr(permission_class, "get_general_permissions"):
             return Response(permission_class.get_general_permissions(request.user))
