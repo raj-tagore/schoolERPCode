@@ -61,6 +61,16 @@ const defaultFiltersInfo = [
 			{ title: "Non-School Wide Only", value: "False" },
 		],
 	},
+	{
+		label: "Is Released",
+		type: "boolean",
+		key: "is_released",
+	},
+	{
+		label: "Is Expired",
+		type: "boolean",
+		key: "is_expired",
+	},
 ];
 
 const props = defineProps({
