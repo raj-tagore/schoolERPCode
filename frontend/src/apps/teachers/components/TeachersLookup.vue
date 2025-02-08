@@ -2,27 +2,10 @@
 	<v-container>
 		<v-card variant="flat">
 			<v-card-title>
-				<v-row>
-					<v-col cols="12" md="6">
-						<v-text-field
-							v-model="filters.name"
-							label="Search by name"
-							density="compact"
-							hide-details
-						></v-text-field>
-					</v-col>
-					<v-col cols="12" md="6">
-						<v-autocomplete
-							v-model="filters.classrooms"
-							:items="classrooms"
-							label="Filter by classroom"
-							:item-props="getClassroomInfoFromObj"
-							density="compact"
-							clearable
-							hide-details
-						></v-autocomplete>
-					</v-col>
-				</v-row>
+				<FilterCard 
+					v-model="filters"
+					:filtersInfo="filtersInfo" 
+				/>
 			</v-card-title>
 			<ResponsiveDataTable
 				:headers="headers"
@@ -39,6 +22,7 @@ import { ref, onMounted } from "vue";
 import { getTeachers } from "@/apps/teachers/api";
 import { getClassrooms, getClassroomInfoFromObj } from "@/apps/classrooms/api";
 import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
+import FilterCard from "@/components/FilterCard.vue";
 
 const classrooms = ref([]);
 
@@ -46,6 +30,19 @@ const filters = ref({
 	name: "",
 	classrooms: null,
 });
+
+const filtersInfo = ref([
+	{
+		label: "Search by name",
+		type: "string",
+		key: "name",
+	},
+	{
+		label: "Filter by classroom",
+		type: "classroom",
+		key: "classrooms",
+	},
+]);
 
 const headers = [
 	{ title: "Name", key: "user_details", formatFunc: (ud) => ud.full_name },
