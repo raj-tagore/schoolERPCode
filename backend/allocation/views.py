@@ -11,21 +11,19 @@ from .permissions import ClassroomPermissions, SubjectPermissions
 from schoolERPCode.viewsets import get_standard_model_viewset
 
 
-def classroom_filter(
-    self, queryset, id, name, standard, class_teacher, student, teacher
-):
-    if id:
-        queryset = queryset.filter(id=id)
-    if name:
-        queryset = queryset.filter(name__icontains=name)
-    if standard:
-        queryset = queryset.filter(standards__id=standard)
-    if class_teacher:
-        queryset = queryset.filter(class_teacher__id=class_teacher)
-    if student:
-        queryset = queryset.filter(students__id=student)
-    if teacher:
-        queryset = queryset.filter(other_teachers__id=teacher)
+def classroom_filter(self, queryset, **kwargs):
+    if "id" in kwargs:
+        queryset = queryset.filter(id=kwargs["id"])
+    if "name" in kwargs:
+        queryset = queryset.filter(name__icontains=kwargs["name"])
+    if "standard" in kwargs:
+        queryset = queryset.filter(standards__id=kwargs["standard"])
+    if "class_teacher" in kwargs:
+        queryset = queryset.filter(class_teacher__id=kwargs["class_teacher"])
+    if "student" in kwargs:
+        queryset = queryset.filter(students__id=kwargs["student"])
+    if "teacher" in kwargs:
+        queryset = queryset.filter(other_teachers__id=kwargs["teacher"])
 
     return queryset
 
@@ -64,21 +62,19 @@ class JoinClassroomView(UpdateAPIView):
         )
 
 
-def subject_filter(
-    self, queryset, id, name, is_active, description, classroom, main_teacher
-):
-    if id:
-        queryset = queryset.filter(id=id)
-    if name:
-        queryset = queryset.filter(name__icontains=name)
-    if is_active:
-        queryset = queryset.filter(is_active=is_active)
-    if description:
-        queryset = queryset.filter(description__icontains=description)
-    if classroom:
-        queryset = queryset.filter(classroom__id=classroom)
-    if main_teacher:
-        queryset = queryset.filter(main_teacher__id=main_teacher)
+def subject_filter(self, queryset, **kwargs):
+    if "id" in kwargs:
+        queryset = queryset.filter(id=kwargs["id"])
+    if "name" in kwargs:
+        queryset = queryset.filter(name__icontains=kwargs["name"])
+    if "is_active" in kwargs:
+        queryset = queryset.filter(is_active=kwargs["is_active"])
+    if "description" in kwargs:
+        queryset = queryset.filter(description__icontains=kwargs["description"])
+    if "classroom" in kwargs:
+        queryset = queryset.filter(classroom__id=kwargs["classroom"])
+    if "main_teacher" in kwargs:
+        queryset = queryset.filter(main_teacher__id=kwargs["main_teacher"])
 
     return queryset
 

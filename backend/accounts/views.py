@@ -14,12 +14,15 @@ from .serializers import (
 
 from schoolERPCode.viewsets import get_standard_model_viewset
 
-def parent_filter(self, queryset, name):
-    if name:
+
+def parent_filter(self, queryset, **kwargs):
+    if "name" in kwargs:
         queryset = queryset.filter(
-            Q(user__first_name__icontains=name) | Q(user__last_name__icontains=name)
+            Q(user__first_name__icontains=kwargs["name"])
+            | Q(user__last_name__icontains=kwargs["name"])
         )
     return queryset
+
 
 parent_viewset = get_standard_model_viewset(
     queryset=Parent.objects.all(),
@@ -28,23 +31,29 @@ parent_viewset = get_standard_model_viewset(
     filter_queryset=parent_filter,
 )
 
+
 def teacher_filter(
-    self, queryset, classrooms_leading, classrooms_assisting, classrooms, name
+    self,
+    queryset,
+    **kwargs,
 ):
-    if id:
-        queryset = queryset.filter(id=id)
-    if classrooms_leading:
-        queryset = queryset.filter(classrooms_leading__id=classrooms_leading)
-    if classrooms_assisting:
-        queryset = queryset.filter(classrooms_assisting__id=classrooms_assisting)
-    if classrooms:
+    if "id" in kwargs:
+        queryset = queryset.filter(id=kwargs["id"])
+    if "classrooms_leading" in kwargs:
+        queryset = queryset.filter(classrooms_leading__id=kwargs["classrooms_leading"])
+    if "classrooms_assisting" in kwargs:
         queryset = queryset.filter(
-            Q(classrooms_leading__id=classrooms)
-            | Q(classrooms_assisting__id=classrooms)
+            classrooms_assisting__id=kwargs["classrooms_assisting"]
+        )
+    if "classrooms" in kwargs:
+        queryset = queryset.filter(
+            Q(classrooms_leading__id=kwargs["classrooms"])
+            | Q(classrooms_assisting__id=kwargs["classrooms"])
         ).distinct()
-    if name:
+    if "name" in kwargs:
         queryset = queryset.filter(
-            Q(user__first_name__icontains=name) | Q(user__last_name__icontains=name)
+            Q(user__first_name__icontains=kwargs["name"])
+            | Q(user__last_name__icontains=kwargs["name"])
         )
     return queryset
 
@@ -56,26 +65,29 @@ teacher_viewset = get_standard_model_viewset(
     filter_queryset=teacher_filter,
 )
 
-def student_filter(self, queryset, classrooms, name):
-    if id:
-        queryset = queryset.filter(id=id)
-    if classrooms:
-        queryset = queryset.filter(classrooms__id=classrooms)
-    if name:
+
+def student_filter(self, queryset, **kwargs):
+    if "classrooms" in kwargs:
+        queryset = queryset.filter(classrooms__id=kwargs["classrooms"])
+    if "name" in kwargs:
         queryset = queryset.filter(
-            Q(user__first_name__icontains=name) | Q(user__last_name__icontains=name)
+            Q(user__first_name__icontains=kwargs["name"])
+            | Q(user__last_name__icontains=kwargs["name"])
         )
     return queryset
 
+
 student_viewset = get_standard_model_viewset(
-    queryset = Student.objects.all(),
-    serializer_class = StudentSerializer,
+    queryset=Student.objects.all(),
+    serializer_class=StudentSerializer,
     basic_serializer_class=StudentSerializer,
     filter_queryset=student_filter,
 )
 
+
 class StudentStats(APIView):
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         stats = {
             "total": Student.objects.count(),
@@ -86,6 +98,7 @@ class StudentStats(APIView):
 
 class ParentStats(APIView):
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         stats = {
             "total": Parent.objects.count(),
@@ -96,6 +109,7 @@ class ParentStats(APIView):
 
 class TeacherStats(APIView):
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         stats = {
             "total": Teacher.objects.count(),

@@ -15,23 +15,21 @@ from rest_framework.response import Response
 from schoolERPCode.viewsets import get_standard_model_viewset
 
 
-def calendars_filter(
-    self, queryset, name, description, is_school_wide, classrooms, subjects, users
-):
-    if id:
-        queryset = queryset.filter(id=id)
-    if name:
-        queryset = queryset.filter(name__icontains=name)
-    if description:
-        queryset = queryset.filter(description__icontains=description)
-    if is_school_wide:
-        queryset = queryset.filter(is_school_wide=is_school_wide)
-    if classrooms:
-        queryset = queryset.filter(classrooms__id__in=classrooms)
-    if subjects:
-        queryset = queryset.filter(subjects__id__in=subjects)
-    if users:
-        queryset = queryset.filter(users__id__in=users)
+def calendars_filter(self, queryset, **kwargs):
+    if "id" in kwargs:
+        queryset = queryset.filter(id=kwargs["id"])
+    if "name" in kwargs:
+        queryset = queryset.filter(name__icontains=kwargs["name"])
+    if "description" in kwargs:
+        queryset = queryset.filter(description__icontains=kwargs["description"])
+    if "is_school_wide" in kwargs:
+        queryset = queryset.filter(is_school_wide=kwargs["is_school_wide"])
+    if "classrooms" in kwargs:
+        queryset = queryset.filter(classrooms__id__in=kwargs["classrooms"])
+    if "subjects" in kwargs:
+        queryset = queryset.filter(subjects__id__in=kwargs["subjects"])
+    if "users" in kwargs:
+        queryset = queryset.filter(users__id__in=kwargs["users"])
 
     return queryset
 
@@ -43,7 +41,6 @@ calendars_viewset = get_standard_model_viewset(
     permission_class=EventPermissions,
     filter_queryset=calendars_filter,
 )
-
 
 
 class AllEvents(ListAPIView):

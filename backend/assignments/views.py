@@ -11,34 +11,23 @@ from rest_framework.response import Response
 from schoolERPCode.viewsets import get_standard_model_viewset
 
 
-def assignment_filter(
-    self,
-    queryset,
-    id,
-    title,
-    description,
-    is_active,
-    release_at,
-    due_at,
-    subject,
-    classroom,
-):
-    if id:
-        queryset = queryset.filter(id=id)
-    if title:
-        queryset = queryset.filter(title__icontains=title)
-    if description:
-        queryset = queryset.filter(description__icontains=description)
-    if is_active:
-        queryset = queryset.filter(is_active=is_active)
-    if release_at:
-        queryset = queryset.filter(release_at=release_at)
-    if due_at:
-        queryset = queryset.filter(due_at=due_at)
-    if subject:
-        queryset = queryset.filter(subject__id=subject)
-    if classroom:
-        queryset = queryset.filter(subject__classroom__id=classroom)
+def assignment_filter(self, queryset, **kwargs):
+    if "id" in kwargs:
+        queryset = queryset.filter(id=kwargs["id"])
+    if "title" in kwargs:
+        queryset = queryset.filter(title__icontains=kwargs["title"])
+    if "description" in kwargs:
+        queryset = queryset.filter(description__icontains=kwargs["description"])
+    if "is_active" in kwargs:
+        queryset = queryset.filter(is_active=kwargs["is_active"])
+    if "release_at" in kwargs:
+        queryset = queryset.filter(release_at=kwargs["release_at"])
+    if "due_at" in kwargs:
+        queryset = queryset.filter(due_at=kwargs["due_at"])
+    if "subject" in kwargs:
+        queryset = queryset.filter(subject__id=kwargs["subject"])
+    if "classroom" in kwargs:
+        queryset = queryset.filter(subject__classroom__id=kwargs["classroom"])
     return queryset
 
 

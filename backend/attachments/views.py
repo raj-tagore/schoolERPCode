@@ -4,25 +4,27 @@ from .models import Attachment
 
 from schoolERPCode.viewsets import get_standard_model_viewset
 
-def attachment_filter(self, queryset, id, name, is_active, created_at_start, created_at_end, updated_at_start, updated_at_end, additional_info):
-    if id:
-        queryset = queryset.filter(id=id)
-    if name:
-        queryset = queryset.filter(name__icontains=name)
-    if is_active:
-        queryset = queryset.filter(is_active=is_active)
-    if created_at_start:
-        queryset = queryset.filter(created_at__gte=created_at_start)
-    if created_at_end:
-        queryset = queryset.filter(created_at__lte=created_at_end)
-    if updated_at_start:
-        queryset = queryset.filter(updated_at__gte=updated_at_start)
-    if updated_at_end:
-        queryset = queryset.filter(updated_at__lte=updated_at_end)
-    if additional_info:
-        queryset = queryset.filter(additional_info__icontains=additional_info)
+
+def attachment_filter(self, queryset, **kwargs):
+    if "id" in kwargs:
+        queryset = queryset.filter(id=kwargs["id"])
+    if "name" in kwargs:
+        queryset = queryset.filter(name__icontains=kwargs["name"])
+    if "is_active" in kwargs:
+        queryset = queryset.filter(is_active=kwargs["is_active"])
+    if "created_at_start" in kwargs:
+        queryset = queryset.filter(created_at__gte=kwargs["created_at_start"])
+    if "created_at_end" in kwargs:
+        queryset = queryset.filter(created_at__lte=kwargs["created_at_end"])
+    if "updated_at_start" in kwargs:
+        queryset = queryset.filter(updated_at__gte=kwargs["updated_at_start"])
+    if "updated_at_end" in kwargs:
+        queryset = queryset.filter(updated_at__lte=kwargs["updated_at_end"])
+    if "additional_info" in kwargs:
+        queryset = queryset.filter(additional_info__icontains=kwargs["additional_info"])
 
     return queryset
+
 
 attachments_viewset = get_standard_model_viewset(
     queryset=Attachment.objects.all(),

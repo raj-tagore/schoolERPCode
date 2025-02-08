@@ -37,8 +37,11 @@ def get_standard_model_viewset(
         serializer_class = BaseContainer.get_basic_serializer_class()
 
         def get_queryset(self):
+            req_params = {}
+            for key in self.request.GET.keys():
+                req_params[key] = self.request.query_params.get(key)
             return BaseContainer.get_filter_queryset()(
-                self, super().get_queryset(), **self.request.GET
+                self, super().get_queryset(), **req_params
             )
 
     class AnyItem(RetrieveUpdateDestroyAPIView):
