@@ -7,7 +7,7 @@
             <SubjectCard :subject="subject"></SubjectCard>
           </v-col>
           <v-col cols="12" lg="4" v-if="subject">
-            <AnnouncementsList :filter="{ subject: subject.id }" />
+            <AnnouncementsList :filter="{ subject: subject.id }" :to="`SubjectAnnouncements`" :title="`Announcements`" />
           </v-col>
         </v-row>
     </v-col>

@@ -5,6 +5,8 @@ import { api } from "@/services/api";
 import SubjectsPage from "./views/SubjectsPage.vue";
 import AppSideBarBreadcrumbsLayout from "@/layouts/AppSideBarBreadcrumbsLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
+import SubjectAnnouncementsPage from "./views/SubjectAnnouncementsPage.vue";
+import { getSubject } from "./api";
 
 export default [
     {
@@ -46,10 +48,10 @@ export default [
                 component: EmptyLayout,
                 meta: {
                     defaultRoute: "Subject",
-                    getDisplayName: async (props) =>
-                        (await api.get(`api/allocation/subjects/${props.subjectId}`)).data
-                            .name,
-
+                    getDisplayName: async (props) => {
+                        const subject = await getSubject(props.subjectId);
+                        return `${subject.name} [${subject.classroom_details.name}]`;
+                    },
                     getMenu: (props) => [
                         {
                             title: "View Subject",
@@ -58,6 +60,10 @@ export default [
                         {
                             title: "Edit Subject",
                             to: { name: "EditSubject", props },
+                        },
+                        {
+                            title: "Announcements",
+                            to: { name: "SubjectAnnouncements", props },
                         },
                     ],
                 },
@@ -72,6 +78,12 @@ export default [
                         path: "edit/",
                         component: EditSubjectPage,
                         name: "EditSubject",
+                        props: true,
+                    },
+                    {
+                        path: "announcements/",
+                        component: SubjectAnnouncementsPage,
+                        name: "SubjectAnnouncements",
                         props: true,
                     },
                 ],

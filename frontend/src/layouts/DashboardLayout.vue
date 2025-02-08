@@ -14,6 +14,10 @@
 						</v-card>
 					</v-list-item>
 
+					<v-list-item :to="{ name: 'Dashboard' }">
+						<v-list-item-title>Dashboard</v-list-item-title>
+					</v-list-item>
+					<v-divider class="mb-4"></v-divider>
 					<RecursiveList v-for="item in appsMenu" :item="item" />
 
 				</v-list>
