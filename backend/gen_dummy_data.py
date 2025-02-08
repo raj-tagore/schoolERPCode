@@ -36,6 +36,8 @@ data = {
     "subject": [],
     "announcement": [],
     "assignment": [],
+    "calendar": [],
+    "event": [],
 }
 
 subject_teachers = {
@@ -48,6 +50,7 @@ subject_teachers = {
 
 hasher = BCryptSHA256PasswordHasher()
 password = hasher.encode("Pass1234#", hasher.salt())
+
 
 def add_user(
     username: str, email: str, first_name: str, last_name: str, groups: int
@@ -277,6 +280,68 @@ for i in range(announcements_per_school):
             "attachments": [],
         }
     )
+
+
+def add_calendar(name, description, classrooms, subjects, users, is_school_wide):
+    data["calendar"].append(
+        {
+            "id": len(data["calendar"]) + 1,
+            "name": name,
+            "description": description,
+            "classrooms": classrooms,
+            "subjects": subjects,
+            "users": users,
+            "is_school_wide": is_school_wide,
+        }
+    )
+
+
+for i in range(len(data["classroom"])):
+    classrooms = random.choices(data["classroom"], k=3)
+    for j in range(30):
+        subjects = random.choices(data["subject"])
+        for k in range(30):
+            users = random.choices(data["user"])
+            add_calendar(
+                f"Calendar {(100 * i) + (10 * j) + (k)}",
+                f"Short Description about Calendar{(100 * i) + (10 * j) + (k)}",
+                classrooms,
+                subjects,
+                users,
+                random.randint(0,6) % 2 == 0,
+            )
+
+
+def add_event(calendar, title, start, end):
+    data["event"].append(
+        {
+            "id": len(data["event"]) + 1,
+            "title": title,
+            "start": start,
+            "end": end,
+        }
+    )
+
+
+for calendar in data["calendar"]:
+    for i in range(30):
+        add_event(
+            calendar["id"],
+            f"Event {i} for Calendar {calendar['id']}",
+            datetime.datetime(
+                hour=random.randint(7, 18),
+                day=10 + random.randint(1, 7),
+                month=2,
+                year=2025,
+            ),
+            datetime.datetime(
+                hour=random.randint(7, 18),
+                day=10 + random.randint(1, 7),
+                month=2,
+                year=2025,
+            ),
+        )
+
 
 for m_name, values in data.items():
     with open(
