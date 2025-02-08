@@ -31,5 +31,5 @@ announcement_viewset = get_standard_model_viewset(
     serializer_class=AnnouncementSerializer,
     filter_queryset=filter_announcements,
     basic_serializer_class=AnnouncementSerializer,
-    permission=AnnouncementPermissions,
+    permission_class=AnnouncementPermissions,
 )

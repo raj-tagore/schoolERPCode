@@ -11,7 +11,7 @@ def get_standard_model_viewset(
     queryset,
     serializer_class,
     basic_serializer_class,
-    permission_class,
+    permission_class = None,
     filter_queryset=lambda self, queryset: queryset,
 ):
     # Necessary because we can't have access variables of functions inside of class declaration

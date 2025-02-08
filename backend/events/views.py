@@ -36,7 +36,7 @@ def calendars_filter(
     return queryset
 
 
-calenders_viewset = get_standard_model_viewset(
+calendars_viewset = get_standard_model_viewset(
     queryset=Calendar.objects.all(),
     serializer_class=CalendarSerializer,
     basic_serializer_class=CalendarSerializer,

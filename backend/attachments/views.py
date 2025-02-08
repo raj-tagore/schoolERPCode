@@ -24,7 +24,7 @@ def attachment_filter(self, queryset, id, name, is_active, created_at_start, cre
 
     return queryset
 
-attachment_viewset = get_standard_model_viewset(
+attachments_viewset = get_standard_model_viewset(
     queryset=Attachment.objects.all(),
     serializer_class=AttachmentSerializer,
     filter_queryset=attachment_filter,

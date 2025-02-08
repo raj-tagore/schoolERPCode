@@ -35,7 +35,7 @@ classroom_viewset = get_standard_model_viewset(
     serializer_class=ClassroomSerializer,
     basic_serializer_class=ClassroomSerializer,
     filter_queryset=classroom_filter,
-    permission=ClassroomPermissions,
+    permission_class=ClassroomPermissions,
 )
 
 
@@ -88,5 +88,5 @@ subject_viewset = get_standard_model_viewset(
     serializer_class=SubjectSerializer,
     basic_serializer_class=SubjectSerializer,
     filter_queryset=subject_filter,
-    permission=SubjectPermissions,
+    permission_class=SubjectPermissions,
 )
