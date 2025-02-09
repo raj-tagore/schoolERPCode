@@ -86,7 +86,7 @@ def get_standard_model_viewset(
         return Response(ALL_PERMISSIONS)
 
     return [
-        path("all", AllItems.as_view()),
+        path("all/", AllItems.as_view()),
         path(
             "<int:id>/",
             AnyItem.as_view(),

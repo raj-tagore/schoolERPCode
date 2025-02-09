@@ -39,15 +39,17 @@ printf "school1\nschool1\nschool1.localhost\n\n" | $PYTHON_RUNNER manage.py crea
 export DJANGO_SETTINGS_MODULE=schoolERPCode.settings
 
 
-$SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (1, 'Admin')" "schoolERPDB"
-$SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (2, 'Teacher')" "schoolERPDB"
-$SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (3, 'Student')" "schoolERPDB"
-$SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (4, 'Parent')" "schoolERPDB"
+# $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (1, 'Admin')" "schoolERPDB"
+# $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (2, 'Teacher')" "schoolERPDB"
+# $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (3, 'Student')" "schoolERPDB"
+# $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (4, 'Parent')" "schoolERPDB"
 
 $PYTHON_RUNNER import_dummy_data.py 2> /dev/null
 
 export DJANGO_SUPERUSER_USERNAME=sandy
 export DJANGO_SUPERUSER_PASSWORD=san
 export DJANGO_SUPERUSER_EMAIL=san@san.com
+export DJANGO_SUPERUSER_FIRST_NAME=Sandy
+export DJANGO_SUPERUSER_LAST_NAME=San
 
-$PYTHON_RUNNER manage.py createsuperuser --noinput
+$PYTHON_RUNNER manage.py createsuperuser --noinput 

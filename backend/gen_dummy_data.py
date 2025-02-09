@@ -53,8 +53,7 @@ password = hasher.encode("Pass1234#", hasher.salt())
 
 
 def add_user(
-    username: str, email: str, first_name: str, last_name: str, groups: int
-) -> int:
+    username: str, email: str, first_name: str, last_name: str) -> int:
     user_id = len(data["user"]) + 1
     data["user"].append(
         {
@@ -65,7 +64,6 @@ def add_user(
             "first_name": first_name,
             "last_name": last_name,
             "school": 2,
-            "groups": groups,
         }
     )
     return user_id
@@ -78,7 +76,6 @@ def add_teacher(teacher_num: int, subject: str) -> int:
         "teacher{}for{}@testerp.shouldnotexist.com".format(teacher_num, subject),
         "Teacher {}".format(teacher_num),
         "For {}".format(subject),
-        2,
     )
     teacher = {
         "id": teacher_id,
@@ -103,7 +100,6 @@ def add_guardian(student_id: int, guardian_num: int) -> int:
         "guardian{}for{}".format(guardian_num, student_id),
         "Guardian {}".format(guardian_num),
         "For {}".format(student_id),
-        4,
     )
     guardian_id = len(data["parent"]) + 1
     data["parent"].append(
@@ -129,7 +125,6 @@ def add_student(student_num: int, standard: int, section: int) -> int:
         ),
         "Student {}".format(student_num + 1),
         "For {}-{}".format(standard_idx + 1, chr((ord("A") + section_idx))),
-        3,
     )
     data["student"].append(
         {

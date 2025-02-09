@@ -34,10 +34,12 @@ const filtersInfo = ref([
 	{
 		label: "Search by name",
 		type: "string",
+		key: "name",
 	},
 	{
 		label: "Filter by classroom",
 		type: "classroom",
+		key: "classrooms",
 	},
 ]);
 

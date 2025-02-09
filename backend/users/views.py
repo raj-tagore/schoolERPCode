@@ -47,3 +47,4 @@ class ReadUser(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     lookup_field = "id"
+
