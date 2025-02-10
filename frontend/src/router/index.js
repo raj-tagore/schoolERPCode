@@ -63,12 +63,6 @@ router.beforeEach((to, from, next) => {
             return next({ name: "Login" });
         }
     }
-    if (to.matched.some((record) => record.meta.requiresAccount)) {
-        const account = authStore.getAccount;
-        if (!account) {
-            return next({ name: "register" });
-        }
-    }
     next();
 });
 

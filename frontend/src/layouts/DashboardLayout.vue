@@ -7,10 +7,15 @@
 					<v-list-item>
 						<v-card class="ma-2 mb-4" 
 							:title="user.first_name + ' ' + user.last_name"
-							:subtitle="user.account?.type || 'No linked account'">
+							:subtitle="account?.group_details?.name || 'No linked account'">
 							<template v-slot:append>
 								<v-btn icon="mdi-logout" @click="logoutHandler" size="small" variant="text"/>
 							</template>
+							<!-- <v-card-text>
+								<v-chip label>
+									{{ account?.group_details?.name || 'No access level' }}
+								</v-chip>
+							</v-card-text> -->
 						</v-card>
 					</v-list-item>
 
@@ -59,6 +64,7 @@ const authStore = useAuthStore();
 const appsMenu = ref();
 
 const user = computed(() => authStore.user);
+const account = computed(() => authStore.account);
 
 function logoutHandler() {
 	router.push({ name: "Login" });
