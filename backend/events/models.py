@@ -19,5 +19,5 @@ class Event(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     attachment = models.ForeignKey(Attachment, on_delete=models.SET_NULL, null=True, blank=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="calendars")
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="events")
 
