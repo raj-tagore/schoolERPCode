@@ -14,9 +14,7 @@ const currentRouteMeta = async (route) => {
         .filter((route) => route?.meta?.getMenu);
 
     const routeMeta = {};
-
     const app = routes.shift();
-
     const current = routes.pop();
 
     if (app?.meta) {
@@ -53,4 +51,4 @@ export {
 	defaultRouteFilter,
 	currentRouteMeta,
 	getAppsMeta,
-}
+} 

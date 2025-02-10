@@ -30,7 +30,7 @@ const routes = [
         ],
     },
     {
-        path: "/access_denies",
+        path: "/access_denied",
         name: "Access Denied",
         component: AccessDeniedPage,
     },
