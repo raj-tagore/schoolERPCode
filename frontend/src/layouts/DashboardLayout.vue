@@ -55,6 +55,7 @@ import { useRouter } from "vue-router";
 import RecursiveList from "@/components/RecursiveList.vue";
 
 import appRoutes from "@/router/app";
+import { getAppsMeta } from "@/router/menu";
 
 const { mdAndUp } = useDisplay();
 const leftDrawer = ref(mdAndUp.value);
@@ -71,17 +72,9 @@ function logoutHandler() {
 	authStore.logout();
 }
 
-const getRouteMeta = async (route) =>
-	Promise.all(
-		route
-			.filter((route) => route?.meta?.getDisplayName && !route.props)
-			.map(async (route) => ({
-				title: await route.meta.getDisplayName(),
-				to: { name: route.meta.defaultRoute },
-			})),
-	);
-
-getRouteMeta(appRoutes).then((menu) => {
+// Equivalent to awaiting the funciton and then assigning to appsMenu.value
+// Couldn't await because there was no gaurantee there would be a Suspense component at the root
+getAppsMeta(appRoutes).then((menu) => {
 	appsMenu.value = menu;
 });
 </script>
