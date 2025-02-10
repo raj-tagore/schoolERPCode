@@ -8,6 +8,7 @@ import HomePage from "@/views/HomePage.vue";
 import LoginPage from "@/views/LoginPage.vue";
 import DashboardPage from "@/views/DashboardPage.vue";
 import AllAppsPage from "@/views/AllAppsPage.vue";
+import AccessDeniedPage from "@/views/AccessDeniedPage.vue"
 // Routes in Apps
 import appRoutes from "@/router/app";
 
@@ -29,22 +30,27 @@ const routes = [
         ],
     },
     {
+        path: "/access_denies",
+        name: "Access Denied",
+        component: AccessDeniedPage,
+    },
+    {
         path: "/app/",
         component: DashboardLayout,
         children: [
-			{
+            {
                 path: "",
                 name: "All Apps",
                 component: AllAppsPage,
                 meta: { requiresAuth: true },
-			},
+            },
             {
                 path: "dashboard/",
                 name: "Dashboard",
                 component: DashboardPage,
                 meta: { requiresAuth: true },
             },
-			...appRoutes,
+            ...appRoutes,
         ],
     },
 ];
@@ -62,6 +68,15 @@ router.beforeEach((to, from, next) => {
         if (!token) {
             return next({ name: "Login" });
         }
+    }
+    if (
+        !to.matched.every((route) =>
+            route.meta?.permission
+                ? useAuthStore().hasPermission(route.meta.permission)
+                : true,
+        )
+    ) {
+            return next({ name: "Access Denied" });
     }
     next();
 });
