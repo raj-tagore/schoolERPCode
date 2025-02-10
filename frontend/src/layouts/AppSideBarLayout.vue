@@ -20,7 +20,7 @@
 					<v-card v-if="routeMeta.current.displayName" class="mb-4 ma-4">
 						<v-card-title>{{ routeMeta.current.displayName }}</v-card-title>
 					</v-card>
-					<RecursiveList v-for="item in currentMeta.menu" :item="item" />
+					<RecursiveList v-for="item in routeMeta.current.menu" :item="item" />
 				</span>
 			</v-navigation-drawer>
 				<v-fab 
