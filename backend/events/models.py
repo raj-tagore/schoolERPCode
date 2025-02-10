@@ -9,6 +9,7 @@ class Calendar(models.Model):
     classrooms = models.ManyToManyField(Classroom, blank=True)
     subjects = models.ManyToManyField(Subject, blank=True)
     users = models.ManyToManyField(User, blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="calendars")
 
     is_school_wide = models.BooleanField(default=True)
 
@@ -18,3 +19,5 @@ class Event(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     attachment = models.ForeignKey(Attachment, on_delete=models.SET_NULL, null=True, blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="calendars")
+

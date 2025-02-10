@@ -1,18 +1,17 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.permissions import BasePermission
+from schoolERPCode.viewsets import ALL_PERMISSIONS
+
 
 class EventPermissions(BasePermission):
-    def has_object_permission(self, request, view, obj):
+    def get_permissions(request, obj):
         if request.user.is_superuser:
+            return ALL_PERMISSIONS
+        if request.user.id in obj.calendar.created_by:
+            return ["GET", "DELETE", "PATCH"]
+        if request.user.id in obj.calendar.users:
+            return ["GET"]
+        return []
+        
+    def has_object_permission(self, request, view, obj):
+        if request.method in self.__class__.get_permissions(request, obj):
             return True
-
-        if "Admin" in [group.name for group in request.user.groups.all()]:
-            return True
-
-        # Check if user is in the 'Teacher' group
-        if "Teacher" in [group.name for group in request.user.groups.all()]:
-            # Check if user is teaching or assisting in any related classroom
-            return True
-        if "Student" in [group.name for group in request.user.groups.all()]:
-            if request.method in SAFE_METHODS:
-                return True
-        return False
