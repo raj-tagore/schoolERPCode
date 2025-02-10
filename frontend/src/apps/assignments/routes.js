@@ -27,7 +27,7 @@ export default [
             icon: 'mdi-clipboard-text',
         },
         children: [
-            {
+            { 
                 path: "",
                 component: AssignmentsPage,
                 name: "Assignments",
