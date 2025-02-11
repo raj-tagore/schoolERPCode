@@ -13,7 +13,12 @@
                         <v-list-item-title>{{ announcement?.title || 'Untitled' }}</v-list-item-title>
                         <v-list-item-subtitle class="mb-2">{{ announcement?.description || 'No description available' }}</v-list-item-subtitle>
                         <v-list-item-text class="text-end">
-                            <p>Signed by: {{ announcement?.signed_by_details?.user_details?.full_name || 'Unknown' }}</p>
+                            <v-chip
+                                size="small"
+                                color="primary"
+                            >
+                                Signed by: {{ announcement?.signed_by_details?.user_details?.full_name || 'Unknown' }}
+                            </v-chip>
                         </v-list-item-text>
                     </v-list-item-content>
                     <template v-slot:append>

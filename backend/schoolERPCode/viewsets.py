@@ -56,7 +56,7 @@ def get_standard_model_viewset(
             BaseContainer.get_permission_class(),
         ]
         queryset = BaseContainer.get_queryset()
-        serializer_class = BaseContainer.get_basic_serializer_class()
+        serializer_class = BaseContainer.get_serializer_class()
         lookup_field = "id"
 
     class CreateItem(CreateAPIView):

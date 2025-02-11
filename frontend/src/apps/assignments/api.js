@@ -3,7 +3,7 @@ import { api } from "@/services/api";
 const getAssignments = async (filter) =>
     (
         await api.get("api/assignments/all", {
-            params: { page_size: 10000, ...filter },
+            params: { filter },
         })
     ).data;
 

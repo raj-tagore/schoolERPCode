@@ -10,7 +10,6 @@ class Calendar(models.Model):
     subjects = models.ManyToManyField(Subject, blank=True)
     users = models.ManyToManyField(User, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="calendars")
-
     is_school_wide = models.BooleanField(default=True)
 
 class Event(models.Model):
