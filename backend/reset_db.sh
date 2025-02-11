@@ -44,7 +44,7 @@ export DJANGO_SETTINGS_MODULE=schoolERPCode.settings
 # $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (3, 'Student')" "schoolERPDB"
 # $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (4, 'Parent')" "schoolERPDB"
 
-$PYTHON_RUNNER import_dummy_data.py 2> /dev/null
+$PYTHON_RUNNER import_dummy_data.py 2> import_err.log
 
 export DJANGO_SUPERUSER_USERNAME=sandy
 export DJANGO_SUPERUSER_PASSWORD=san

@@ -52,8 +52,7 @@ hasher = BCryptSHA256PasswordHasher()
 password = hasher.encode("Pass1234#", hasher.salt())
 
 
-def add_user(
-    username: str, email: str, first_name: str, last_name: str) -> int:
+def add_user(username: str, email: str, first_name: str, last_name: str) -> int:
     user_id = len(data["user"]) + 1
     data["user"].append(
         {
@@ -277,7 +276,9 @@ for i in range(announcements_per_school):
     )
 
 
-def add_calendar(name, description, classrooms, subjects, users, is_school_wide):
+def add_calendar(
+    name, description, classrooms, subjects, users, is_school_wide, created_by
+):
     data["calendar"].append(
         {
             "id": len(data["calendar"]) + 1,
@@ -287,33 +288,38 @@ def add_calendar(name, description, classrooms, subjects, users, is_school_wide)
             "subjects": subjects,
             "users": users,
             "is_school_wide": is_school_wide,
+            "created_by": created_by,
         }
     )
 
 
-for i in range(len(data["classroom"])):
-    classrooms = random.choices(data["classroom"], k=3)
-    for j in range(30):
-        subjects = random.choices(data["subject"])
-        for k in range(30):
-            users = random.choices(data["user"])
+for i in range(int(len(data["classroom"]) / 2)):
+    classrooms = [x["id"] for x in random.choices(data["classroom"], k=3)]
+    for j in range(3):
+        subjects = [x["id"] for x in random.choices(data["subject"], k=3)]
+        for k in range(3):
+            users = [x["id"] for x in random.choices(data["user"], k=3)]
+
             add_calendar(
                 f"Calendar {(100 * i) + (10 * j) + (k)}",
                 f"Short Description about Calendar{(100 * i) + (10 * j) + (k)}",
                 classrooms,
                 subjects,
                 users,
-                random.randint(0,6) % 2 == 0,
+                random.randint(0, 6) % 2 == 0,
+                random.choice(data["teacher"])["user"],
             )
 
 
-def add_event(calendar, title, start, end):
+def add_event(calendar, title, start, end, created_by):
     data["event"].append(
         {
             "id": len(data["event"]) + 1,
             "title": title,
             "start": start,
             "end": end,
+            "calendar": calendar,
+            "created_by": created_by,
         }
     )
 
@@ -335,6 +341,7 @@ for calendar in data["calendar"]:
                 month=2,
                 year=2025,
             ),
+            random.choice(data["teacher"])["user"],
         )
 
 

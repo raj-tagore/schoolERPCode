@@ -2,3 +2,4 @@
 */migrations/*.py
 dummy_data/
 media/
+*.log
