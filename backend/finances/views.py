@@ -111,4 +111,6 @@ def create_order(request):
 @permission_classes([AllowAny])
 def payment_hook(request):
     webhook_body = request.body
+    request.data
+
     return Response(webhook_body)

@@ -32,9 +32,9 @@ $PYTHON_RUNNER manage.py makemigrations
 
 $PYTHON_RUNNER manage.py migrate
 
-printf "public\nlocalhost\nlocalhost\n\n" | $PYTHON_RUNNER manage.py create_tenant
+printf "public\nlocalhost\n\n\nlocalhost\n\n" | $PYTHON_RUNNER manage.py create_tenant
 
-printf "school1\nschool1\nschool1.localhost\n\n" | $PYTHON_RUNNER manage.py create_tenant
+printf "school1\nschool1\n\n\nschool1.localhost\n\n" | $PYTHON_RUNNER manage.py create_tenant
 
 export DJANGO_SETTINGS_MODULE=schoolERPCode.settings
 

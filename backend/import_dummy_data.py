@@ -2,6 +2,7 @@ import csv
 import django
 from django_tenants.utils import tenant_context
 
+django.setup()
 
 from users.models import User
 from tenants.models import School
@@ -11,7 +12,6 @@ from announcements.models import Announcement
 from assignments.models import Assignment
 from events.models import Calendar, Event
 
-django.setup()
 
 tenant = School.objects.filter(name="school1")[0]
 

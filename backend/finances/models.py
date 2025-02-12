@@ -42,3 +42,6 @@ class Record(models.Model):
     payment_status = models.CharField(choices=PAYMENT_STATUSES, null=True)
     purpose = models.ForeignKey(Purpose, null=False, on_delete=models.CASCADE)
     payee = models.ForeignKey(Payee, null=True, on_delete=models.CASCADE)
+
+class RazorpayOrderEvent():
+    pass
