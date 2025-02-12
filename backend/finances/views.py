@@ -7,6 +7,10 @@ from .serializers import (
     BasicRecordSerializer,
 )
 from schoolERPCode.viewsets import get_standard_model_viewset
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+import json
 # Create your views here.
 
 
@@ -71,3 +75,40 @@ record_views = get_standard_model_viewset(
     basic_serializer_class=BasicRecordSerializer,
     filter_queryset=record_filter,
 )
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def create_order(request):
+    tenant = getattr(request, "tenant", None)
+    if not tenant:
+        return Response({"error": "tenant not given"}, status=400)
+    if "amount" not in request.data:
+        return Response({"error": "amount not given"}, status=400)
+    if "purpose" not in request.data:
+        return Response({"error": "purpose not given"}, status=400)
+    if "student" not in request.data:
+        return Response({"error": "student not given"}, status=400)
+    client = tenant.get_razorpay_client()
+    return Response(
+        client.order.create(
+            {
+                "amount": request.data["amount"],
+                "currency": "INR",
+                "payment_capture": "1",
+                "notes": {
+                    "purpose_id": request.data["purpose"],
+                    "student_id": request.data["student"],
+                    "tenant_id": tenant.id,
+                },
+            }
+        )
+    )
+
+
+# TODO: Implement this properly after adding types everywhere
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def payment_hook(request):
+    webhook_body = request.body
+    return Response(webhook_body)
