@@ -7,6 +7,7 @@ import AppSideBarBreadcrumbsLayout from "@/layouts/AppSideBarBreadcrumbsLayout.v
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import SubjectAnnouncementsPage from "./views/SubjectAnnouncementsPage.vue";
 import { getSubject } from "./api";
+import SubjectAssignmentsPage from "./views/SubjectAssignmentsPage.vue";
 
 export default [
     {
@@ -65,6 +66,10 @@ export default [
                             title: "Announcements",
                             to: { name: "SubjectAnnouncements", props },
                         },
+                        {
+                            title: "Assignments",
+                            to: { name: "SubjectAssignments", props },
+                        },
                     ],
                 },
                 children: [
@@ -84,6 +89,12 @@ export default [
                         path: "announcements/",
                         component: SubjectAnnouncementsPage,
                         name: "SubjectAnnouncements",
+                        props: true,
+                    },
+                    {
+                        path: "assignments/",
+                        component: SubjectAssignmentsPage,
+                        name: "SubjectAssignments",
                         props: true,
                     },
                 ],

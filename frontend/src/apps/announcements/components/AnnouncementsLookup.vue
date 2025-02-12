@@ -4,7 +4,7 @@
       <FilterCard 
         v-model="filters"
         :filtersInfo="filtersInfo" 
-      />
+      /> 
     </v-card-title>
     <ResponsiveDataTable 
       :getToFunction="(item) => ({name: 'Announcement', params: {announcementId: item.id}})" 
