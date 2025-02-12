@@ -9,7 +9,6 @@ from schoolERPCode.viewsets import get_standard_model_viewset
 
 
 def filter_announcements(self, queryset, **kwargs):
-    print(kwargs)
     if "id" in kwargs:
         queryset = queryset.filter(id=kwargs["id"])
     if "title" in kwargs:
