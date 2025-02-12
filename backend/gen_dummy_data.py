@@ -3,13 +3,16 @@ import datetime
 import random
 from django.contrib.auth.hashers import BCryptSHA256PasswordHasher
 import os
+from faker import Faker
+import uuid
 
 class Config:
     def __init__(self):
+        self.faker = Faker()
         self.classrooms_len = 50
-        self.teachers_per_subject = 3
-        self.parents_len = 50
         self.students_per_classroom = 50
+        self.teachers_per_subject = 3
+        self.guardians_per_student = 2
         self.announcements_per_subject = 5
         self.announcements_per_classroom = 5
         self.announcements_per_school = 10
@@ -24,7 +27,6 @@ class Config:
             "Social Studies": [],
         }
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
-        self.lorem = "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
 
 class DataStore:
     def __init__(self):
@@ -62,20 +64,30 @@ class DataStore:
                     writer.writerow(row)
 
 class UserGenerator:
-    def __init__(self, data_store):
+    def __init__(self, data_store, config):
         self.data_store = data_store
+        self.config = config
 
-    def add_user(self, username: str, email: str, first_name: str, last_name: str) -> int:
+    def add_user(self, role: str) -> int:
+        """Generate a user with realistic data based on their role"""
+        first_name = self.config.faker.first_name()
+        last_name = self.config.faker.last_name()
+        username = f"{first_name.lower()}.{last_name.lower()}"
+        
         user_id = len(self.data_store.data["user"]) + 1
         self.data_store.data["user"].append(
             {
                 "id": user_id,
-                "username": username,
-                "email": email,
+                "username": f"{username}_{role}_{user_id}",
+                "email": f"{username}_{user_id}@school.example.com",
                 "password": self.data_store.password,
                 "first_name": first_name,
                 "last_name": last_name,
                 "school": 2,
+                "is_active": True,
+                "is_staff": False,
+                "is_superuser": False,
+                "is_approved": True 
             }
         )
         return user_id
@@ -86,20 +98,16 @@ class TeacherGenerator:
         self.user_generator = user_generator
         self.config = config
 
-    def add_teacher(self, teacher_num: int, subject: str) -> int:
+    def add_teacher(self, subject: str) -> int:
         teacher_id = len(self.data_store.data["teacher"]) + 1
-        user_id = self.user_generator.add_user(
-            f"Teacher {teacher_num} for {subject}",
-            f"teacher{teacher_num}for{subject}@testerp.com",
-            f"Teacher {teacher_num}",
-            f"For {subject}",
-        )
+        user_id = self.user_generator.add_user("teacher")
+        
         teacher = {
             "id": teacher_id,
             "user": user_id,
-            "identifier": teacher_id + 69420,
-            "phone": 8456123568 + user_id,
-            "whatsapp": 9885456523 + user_id,
+            "identifier": self.config.faker.unique.random_number(digits=6),
+            "phone": self.config.faker.numerify("+91##########"),
+            "whatsapp": self.config.faker.numerify("+91##########"),
         }
         self.config.subjects[subject].append(teacher)
         self.data_store.data["teacher"].append(teacher)
@@ -107,49 +115,58 @@ class TeacherGenerator:
 
     def generate_all_teachers(self):
         for subject in self.config.subjects.keys():
-            for teacher_num in range(self.config.teachers_per_subject):
-                self.add_teacher(teacher_num, subject)
+            for _ in range(self.config.teachers_per_subject):
+                self.add_teacher(subject)
 
-class StudentGenerator:
-    def __init__(self, data_store, user_generator):
+class GuardianGenerator:
+    def __init__(self, data_store, user_generator, config):
         self.data_store = data_store
         self.user_generator = user_generator
+        self.config = config
 
-    def add_guardian(self, student_id: int, guardian_num: int) -> int:
-        user_id = self.user_generator.add_user(
-            f"Guardian {guardian_num} for {student_id}",
-            f"guardian{guardian_num}for{student_id}",
-            f"Guardian {guardian_num}",
-            f"For {student_id}",
-        )
+    def add_guardian(self) -> int:
+        """Generate a guardian (parent) with realistic data"""
         guardian_id = len(self.data_store.data["parent"]) + 1
-        self.data_store.data["parent"].append(
-            {
-                "id": guardian_id,
-                "user": user_id,
-                "identifier": 621 + guardian_id,
-                "phone": 9898989898 + guardian_id,
-                "whatsapp": 9898989898 + guardian_id,
-            }
-        )
+        user_id = self.user_generator.add_user("guardian")
+        
+        guardian = {
+            "id": guardian_id,
+            "user": user_id,
+            "phone": self.config.faker.numerify("+91##########"),
+            "whatsapp": self.config.faker.numerify("+91##########"),
+        }
+        
+        self.data_store.data["parent"].append(guardian)
         return guardian_id
 
-    def add_student(self, student_num: int, standard: int, section: int) -> int:
+    def generate_guardians_for_student(self, student_id: int) -> tuple:
+        """Generate two guardians for a student and return their IDs"""
+        guardian1_id = self.add_guardian()
+        guardian2_id = self.add_guardian()
+        return (guardian1_id, guardian2_id)
+
+class StudentGenerator:
+    def __init__(self, data_store, user_generator, guardian_generator, config):
+        self.data_store = data_store
+        self.user_generator = user_generator
+        self.guardian_generator = guardian_generator
+        self.config = config
+
+    def add_student(self, standard: int, section: int) -> int:
         student_id = len(self.data_store.data["student"]) + 1
-        user_id = self.user_generator.add_user(
-            f"Student {student_num + 1} of Class {standard + 1}-{chr(ord('A') + section)}",
-            f"student{student_num + 1}of_class{standard + 1}{chr(ord('A') + section)}@testerp.shouldnotexist.com",
-            f"Student {student_num + 1}",
-            f"For {standard + 1}-{chr(ord('A') + section)}",
-        )
+        user_id = self.user_generator.add_user("student")
+        
+        # Generate guardians using GuardianGenerator
+        guardian1_id, guardian2_id = self.guardian_generator.generate_guardians_for_student(student_id)
+        
         self.data_store.data["student"].append(
             {
                 "id": student_id,
                 "user": user_id,
-                "student_no": 621 + student_id,
-                "roll_no": 42 + student_id,
-                "guardian_1": self.add_guardian(student_id, 1),
-                "guardian_2": self.add_guardian(student_id, 2),
+                "student_no": str(self.config.faker.unique.random_number(digits=6)),
+                "roll_no": str(random.randint(1, 50)),
+                "guardian_1": guardian1_id,
+                "guardian_2": guardian2_id,
             }
         )
         return student_id
@@ -163,10 +180,12 @@ class ClassroomGenerator:
     def add_classroom(self, standard: int, section: int) -> int:
         classroom_id = len(self.data_store.data["classroom"]) + 1
 
+        # Select teachers for the classroom
         teachers = []
         for t in self.config.subjects.values():
             teachers.append(random.choice(t)["id"])
 
+        # Create subjects for the classroom
         for subject_name, s_teachers in self.config.subjects.items():
             teacher = None
             for s_teacher in map(lambda t: t["id"], s_teachers):
@@ -184,21 +203,24 @@ class ClassroomGenerator:
                 }
             )
 
+        # Set class teacher and generate students
         class_teacher = teachers.pop()
         students = []
 
         for student_idx in range(random.randint(40, 45)):
-            students.append(self.student_generator.add_student(student_idx, standard, section))
+            students.append(self.student_generator.add_student(standard, section))
 
+        # Create classroom entry matching the model
         self.data_store.data["classroom"].append(
             {
                 "id": classroom_id,
                 "name": f"Class {standard + 1}-{chr(ord('A') + section)}",
                 "is_active": classroom_id % 2 == 0,
-                "standard": standard + 1,
+                "standard": str(standard + 1),  # Changed to string as per model
                 "students": students,
                 "class_teacher": class_teacher,
                 "other_teachers": teachers,
+                "join_code": str(uuid.uuid4()),  # Added join_code field
             }
         )
         return classroom_id
@@ -208,83 +230,92 @@ class ClassroomGenerator:
             for section_idx in range(self.config.sections):
                 self.add_classroom(standard_idx, section_idx)
 
-class ContentGenerator:
+class AssignmentGenerator:
     def __init__(self, data_store, config):
         self.data_store = data_store
         self.config = config
 
     def generate_assignments(self):
         for subject in self.data_store.data["subject"]:
-            for i in range(self.config.assignment_per_subject):
+            for _ in range(self.config.assignment_per_subject):
+                due_date = self.config.faker.date_time_between(
+                    start_date='+1d',
+                    end_date='+30d'
+                )
                 self.data_store.data["assignment"].append(
                     {
-                        "title": f"Assignment {i + 1} for {subject['name']}",
-                        "description": f"Assignment description for assignment id {i + 1} for Subject: {subject['description']}",
-                        "is_active": i % 2 == 0,
-                        "release_at": datetime.datetime.now() - datetime.timedelta(days=random.randint(3, 6)),
-                        "due_at": datetime.datetime.now() + datetime.timedelta(days=random.randint(-2, 10)),
+                        "title": self.config.faker.sentence(nb_words=6)[:50],  # Limit to max_length=50
+                        "description": self.config.faker.text(max_nb_chars=500),
+                        "is_active": random.choice([True, False]),
+                        "release_at": due_date - datetime.timedelta(days=random.randint(5, 15)),
+                        "due_at": due_date,
                         "subject": subject["id"],
                     }
                 )
 
-    def generate_announcements(self):
-        priorities = ["low", "medium", "high"]
+class AnnouncementGenerator:
+    def __init__(self, data_store, config):
+        self.data_store = data_store
+        self.config = config
+        self.priorities = ['low', 'medium', 'high']  # Matches model's PRIORITY_CHOICES
 
+    def _create_announcement(self, is_school_wide: bool) -> dict:
+        expiry_date = self.config.faker.date_time_between(
+            start_date='+1d',
+            end_date='+30d'
+        )
+        return {
+            "id": len(self.data_store.data["announcement"]) + 1,
+            "title": self.config.faker.sentence(nb_words=8)[:50],  # Limit to max_length=50
+            "description": self.config.faker.text(max_nb_chars=1000),
+            "is_active": random.choice([True, False]),
+            "is_school_wide": is_school_wide,
+            "created_by": random.choice(self.data_store.data["teacher"])["id"],
+            "signed_by": random.choice(self.data_store.data["teacher"])["id"],
+            "created_at": self.config.faker.date_time_between(
+                start_date='-30d',
+                end_date='now'
+            ),
+            "release_at": expiry_date - datetime.timedelta(days=random.randint(5, 15)),
+            "expiry_at": expiry_date,
+            "priority": random.choice(self.priorities),
+            "classrooms": [],
+            "subjects": [],
+            "attachments": [],
+        }
+
+    def generate_all_announcements(self):
         # Generate regular announcements
-        for i in range(100):
-            self.data_store.data["announcement"].append(
-                {
-                    "id": len(self.data_store.data["announcement"]) + 1,
-                    "title": f"Announcement {len(self.data_store.data['announcement'])}",
-                    "description": self.config.lorem,
-                    "is_active": len(self.data_store.data["announcement"]) % 2 == 0,
-                    "is_school_wide": False,
-                    "created_by": random.choice(self.data_store.data["teacher"])["id"],
-                    "signed_by": random.choice(self.data_store.data["teacher"])["id"],
-                    "release_at": datetime.datetime.now() - datetime.timedelta(days=random.randint(3, 6)),
-                    "expiry_at": datetime.datetime.now() + datetime.timedelta(days=random.randint(-2, 10)),
-                    "priority": random.choice(priorities),
-                    "classrooms": [],
-                    "subjects": [],
-                    "attachments": [],
-                }
-            )
+        for _ in range(1000):
+            announcement = self._create_announcement(False)
+            self.data_store.data["announcement"].append(announcement)
 
-        # Assign announcements to classrooms and subjects
+        # Assign to classrooms and subjects
         for classroom in self.data_store.data["classroom"]:
-            for announcement in random.choices(self.data_store.data["announcement"], k=random.randint(2, 3)):
+            for announcement in random.choices(
+                self.data_store.data["announcement"],
+                k=random.randint(2, 3)
+            ):
                 announcement["classrooms"].append(classroom["id"])
 
         for subject in self.data_store.data["subject"]:
-            for announcement in random.choices(self.data_store.data["announcement"], k=random.randint(2, 3)):
+            for announcement in random.choices(
+                self.data_store.data["announcement"],
+                k=random.randint(2, 3)
+            ):
                 announcement["subjects"].append(subject["id"])
 
-        # Add school-wide announcements
-        for i in range(self.config.announcements_per_school):
-            self.data_store.data["announcement"].append(
-                {
-                    "id": len(self.data_store.data["announcement"]) + 1,
-                    "title": f"School-wide Announcement {len(self.data_store.data['announcement'])}",
-                    "description": self.config.lorem,
-                    "is_active": len(self.data_store.data["announcement"]) % 2 == 0,
-                    "is_school_wide": True,
-                    "created_by": random.choice(self.data_store.data["teacher"])["id"],
-                    "signed_by": random.choice(self.data_store.data["teacher"])["id"],
-                    "release_at": datetime.datetime.now() - datetime.timedelta(days=random.randint(3, 6)),
-                    "expiry_at": datetime.datetime.now() + datetime.timedelta(days=random.randint(-2, 10)),
-                    "priority": random.choice(priorities),
-                    "classrooms": [],
-                    "subjects": [],
-                    "attachments": [],
-                }
-            )
+        # Generate school-wide announcements
+        for _ in range(self.config.announcements_per_school):
+            announcement = self._create_announcement(True)
+            self.data_store.data["announcement"].append(announcement)
 
 class CalendarGenerator:
     def __init__(self, data_store, config):
         self.data_store = data_store
         self.config = config
 
-    def add_calendar(self, name, description, classrooms, subjects, users, is_school_wide):
+    def add_calendar(self, name: str, description: str, classrooms: list, subjects: list, users: list, is_school_wide: bool):
         self.data_store.data["calendar"].append(
             {
                 "id": len(self.data_store.data["calendar"]) + 1,
@@ -294,73 +325,84 @@ class CalendarGenerator:
                 "subjects": subjects,
                 "users": users,
                 "is_school_wide": is_school_wide,
+                "created_by": random.choice(self.data_store.data["user"])["id"],
             }
         )
 
-    def add_event(self, calendar, title, start, end):
+    def add_event(self, calendar_id: int):
+        start_time = self.config.faker.date_time_between(
+            start_date='+1d',
+            end_date='+90d'
+        )
+        duration_hours = random.randint(1, 8)
+        
         self.data_store.data["event"].append(
             {
                 "id": len(self.data_store.data["event"]) + 1,
-                "title": title,
-                "start": start,
-                "end": end,
+                "calendar": calendar_id,
+                "title": self.config.faker.sentence(nb_words=6),
+                "start": start_time,
+                "end": start_time + datetime.timedelta(hours=duration_hours),
+                "attachment": None,
+                "created_by": random.choice(self.data_store.data["user"])["id"],
             }
         )
 
-    def generate_calendars_and_events(self):
-        # Classroom calendars
+    def generate_calendars(self):
+        # Create one calendar per classroom
         for classroom in self.data_store.data["classroom"]:
-            subjects = random.choices(self.data_store.data["subject"], k=2)
-            users = random.choices(self.data_store.data["user"], k=3)
+            subjects = random.sample(self.data_store.data["subject"], k=min(2, len(self.data_store.data["subject"])))
+            users = random.sample(self.data_store.data["user"], k=min(3, len(self.data_store.data["user"])))
             self.add_calendar(
-                f"Calendar for {classroom['name']}",
-                f"Calendar for classroom {classroom['name']}",
-                [classroom["id"]],
-                subjects,
-                users,
-                False,
+                name=f"Calendar for {classroom['name']}",
+                description=f"Calendar for classroom {classroom['name']}",
+                classrooms=[classroom["id"]],
+                subjects=[s["id"] for s in subjects],
+                users=[u["id"] for u in users],
+                is_school_wide=False
             )
 
-        # School-wide calendars
+        # Add a few school-wide calendars
         for i in range(3):
             self.add_calendar(
-                f"School Calendar {i+1}",
-                f"School-wide calendar {i+1}",
-                [], [], [], True,
+                name=f"School Calendar {i+1}",
+                description=f"School-wide calendar {i+1}",
+                classrooms=[],
+                subjects=[],
+                users=[],
+                is_school_wide=True
             )
 
-        # Generate events for each calendar
+    def generate_events(self):
+        # Generate 5-10 events for each calendar
         for calendar in self.data_store.data["calendar"]:
-            for i in range(random.randint(5, 10)):
-                start_time = datetime.datetime(
-                    hour=random.randint(7, 16),
-                    day=10 + random.randint(1, 7),
-                    month=2,
-                    year=2025,
-                )
-                end_time = start_time + datetime.timedelta(hours=random.randint(1, 3))
-                self.add_event(
-                    calendar["id"],
-                    f"Event {i+1} for {calendar['name']}",
-                    start_time,
-                    end_time,
-                )
+            for _ in range(random.randint(5, 10)):
+                self.add_event(calendar["id"])
+
+    def generate_calendars_and_events(self):
+        self.generate_calendars()
+        self.generate_events()
+
 
 def main():
     config = Config()
     data_store = DataStore()
-    user_generator = UserGenerator(data_store)
+    
+    # Initialize generators in dependency order
+    user_generator = UserGenerator(data_store, config)
+    guardian_generator = GuardianGenerator(data_store, user_generator, config)
     teacher_generator = TeacherGenerator(data_store, user_generator, config)
-    student_generator = StudentGenerator(data_store, user_generator)
+    student_generator = StudentGenerator(data_store, user_generator, guardian_generator, config)
     classroom_generator = ClassroomGenerator(data_store, student_generator, config)
-    content_generator = ContentGenerator(data_store, config)
+    assignment_generator = AssignmentGenerator(data_store, config)
+    announcement_generator = AnnouncementGenerator(data_store, config)
     calendar_generator = CalendarGenerator(data_store, config)
 
     # Generate all data
     teacher_generator.generate_all_teachers()
     classroom_generator.generate_all_classrooms()
-    content_generator.generate_assignments()
-    content_generator.generate_announcements()
+    assignment_generator.generate_assignments()
+    announcement_generator.generate_all_announcements()
     calendar_generator.generate_calendars_and_events()
 
     # Save to CSV
