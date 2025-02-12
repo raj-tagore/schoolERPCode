@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import Group
-from attachments.models import Attachment
 from users.models import User
 from django.db.models import Q
 

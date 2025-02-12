@@ -12,7 +12,7 @@ class TenantAwareAuthBackend(BaseBackend):
             raise Http404('tenant not given')
         user = User.objects.get(username=username)
         if user.check_password(password):
-            if user.school == tenant or str(user.school) == 'public' or (user.is_superuser and user.school == None):
+            if user.school == tenant or str(user.school) == 'public' or (user.is_superuser and user.school is None):
                 return None
             raise PermissionDenied('User and School mismatch')
         raise AuthenticationFailed('Wrong Credentials')

@@ -1,16 +1,12 @@
 from typing import override
-from django_tenants.utils import tenant_context
 from rest_framework import status
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient, TenantRequestFactory
 from rest_framework.test import force_authenticate
 
 from schoolERPCode.setup_tests import create_test_superuser
-from tenants.models import School
 from users.models import User
 
-
-from django_tenants.test.cases import TenantTestCase
 
 from users.views import CreateUser
 
