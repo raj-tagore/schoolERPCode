@@ -34,11 +34,11 @@ class Record(models.Model):
         ("CHE", "Cheque"),
     ]
     PAYMENT_STATUSES = [("S", "Sucess"), ("P", "Pending"), ("F", "Failed")]
-    student = models.ForeignKey(Student, null=False)
+    student = models.ForeignKey(Student, null=False, on_delete=models.CASCADE)
     amount = models.IntegerField(null=False)
     datetime = models.DateTimeField(auto_now_add=True)
     payment_type = models.CharField(null=True, choices=PAYMENT_TYPES)
     payment_id = models.IntegerField(null=True)
     payment_status = models.CharField(choices=PAYMENT_STATUSES, null=True)
-    purpose = models.ForeignKey(Purpose, null=False)
-    payee = models.ForeignKey(Payee, null=True)
+    purpose = models.ForeignKey(Purpose, null=False, on_delete=models.CASCADE)
+    payee = models.ForeignKey(Payee, null=True, on_delete=models.CASCADE)

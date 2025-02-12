@@ -28,7 +28,7 @@ urlpatterns = [
     path('api/announcements/', include('announcements.urls')),
     path('api/assignments/', include('assignments.urls')),
     path('api/attachments/', include('attachments.urls')),
-    path('api/timetables/', include('timetables.urls')),
+    path('api/timetable/', include('timetable.urls')),
     path('api/events/', include('events.urls')),
     path('api/finances/', include('finances.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

@@ -55,6 +55,7 @@ TENANT_APPS = (
     'attendance',
     'timetable',
     'events',
+    'finances',
 )
     
 
