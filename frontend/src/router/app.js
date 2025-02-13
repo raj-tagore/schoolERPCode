@@ -6,6 +6,7 @@ import teachersRoutes from "@/apps/teachers/routes"
 import announcementsRoutes from "@/apps/announcements/routes"
 import assignmentsRoutes from "@/apps/assignments/routes"
 import attachmentRoutes from "@/apps/attachments/routes"
+import calendarRoutes from "@/apps/calendar/routes"
 
 export default [
     ...classroomsRoutes,
@@ -16,4 +17,5 @@ export default [
     ...announcementsRoutes,
     ...assignmentsRoutes,
     ...attachmentRoutes,
+    ...calendarRoutes,
 ];

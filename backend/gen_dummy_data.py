@@ -290,20 +290,10 @@ class AnnouncementGenerator:
             announcement = self._create_announcement(False)
             self.data_store.data["announcement"].append(announcement)
 
-        # Assign to classrooms and subjects
-        for classroom in self.data_store.data["classroom"]:
-            for announcement in random.choices(
-                self.data_store.data["announcement"],
-                k=random.randint(2, 3)
-            ):
-                announcement["classrooms"].append(classroom["id"])
-
-        for subject in self.data_store.data["subject"]:
-            for announcement in random.choices(
-                self.data_store.data["announcement"],
-                k=random.randint(2, 3)
-            ):
-                announcement["subjects"].append(subject["id"])
+        # Assign every announcement to 1-3 classrooms
+        for announcement in self.data_store.data["announcement"]:
+            classroom_ids = [classroom["id"] for classroom in random.sample(self.data_store.data["classroom"], k=random.randint(1, 3))]
+            announcement["classrooms"] = classroom_ids
 
         # Generate school-wide announcements
         for _ in range(self.config.announcements_per_school):
@@ -315,7 +305,7 @@ class CalendarGenerator:
         self.data_store = data_store
         self.config = config
 
-    def add_calendar(self, name: str, description: str, classrooms: list, subjects: list, users: list, is_school_wide: bool):
+    def add_calendar(self, name: str, description: str, classrooms: list, subjects: list, is_school_wide: bool):
         self.data_store.data["calendar"].append(
             {
                 "id": len(self.data_store.data["calendar"]) + 1,
@@ -323,9 +313,8 @@ class CalendarGenerator:
                 "description": description,
                 "classrooms": classrooms,
                 "subjects": subjects,
-                "users": users,
                 "is_school_wide": is_school_wide,
-                "created_by": random.choice(self.data_store.data["user"])["id"],
+                "created_by": random.choice(self.data_store.data["teacher"])["id"],
             }
         )
 
@@ -344,21 +333,19 @@ class CalendarGenerator:
                 "start": start_time,
                 "end": start_time + datetime.timedelta(hours=duration_hours),
                 "attachment": None,
-                "created_by": random.choice(self.data_store.data["user"])["id"],
+                "created_by": random.choice(self.data_store.data["teacher"])["id"],
             }
         )
 
     def generate_calendars(self):
         # Create one calendar per classroom
+        # Not assigning any calendars to subjects
         for classroom in self.data_store.data["classroom"]:
-            subjects = random.sample(self.data_store.data["subject"], k=min(2, len(self.data_store.data["subject"])))
-            users = random.sample(self.data_store.data["user"], k=min(3, len(self.data_store.data["user"])))
             self.add_calendar(
                 name=f"Calendar for {classroom['name']}",
                 description=f"Calendar for classroom {classroom['name']}",
                 classrooms=[classroom["id"]],
-                subjects=[s["id"] for s in subjects],
-                users=[u["id"] for u in users],
+                subjects=[],
                 is_school_wide=False
             )
 
@@ -369,7 +356,6 @@ class CalendarGenerator:
                 description=f"School-wide calendar {i+1}",
                 classrooms=[],
                 subjects=[],
-                users=[],
                 is_school_wide=True
             )
 

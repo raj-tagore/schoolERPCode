@@ -6,7 +6,7 @@ from .models import Calendar, Event
 class CalendarAdmin(ImportExportModelAdmin):
     list_display = ('name', 'is_school_wide', 'created_by')
     search_fields = ('name', 'description')
-    filter_horizontal = ('classrooms', 'subjects', 'users')
+    filter_horizontal = ('classrooms', 'subjects')
 
 @admin.register(Event)
 class EventAdmin(ImportExportModelAdmin):

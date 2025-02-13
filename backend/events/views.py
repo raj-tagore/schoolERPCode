@@ -9,9 +9,7 @@ from rest_framework.generics import (
     CreateAPIView,
 )
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
-
 from rest_framework.response import Response
-
 from schoolERPCode.viewsets import get_standard_model_viewset
 
 
