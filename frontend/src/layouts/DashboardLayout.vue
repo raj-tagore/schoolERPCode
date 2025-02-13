@@ -68,8 +68,14 @@ const user = computed(() => authStore.user);
 const account = computed(() => authStore.account);
 
 function logoutHandler() {
-	router.push({ name: "Login" });
-	authStore.logout();
+	router.push({ name: "Login" })
+		.then(() => {
+			authStore.logout();
+		})
+		.catch((error) => {
+			console.error('Navigation failed:', error);
+			authStore.logout();  // Still logout even if navigation fails
+		});
 }
 
 // Equivalent to awaiting the funciton and then assigning to appsMenu.value

@@ -17,6 +17,7 @@
             <AssignmentsList 
               :filter="{ subject: subject.id }" 
               :title="`Assignments`" 
+              :to="`SubjectAssignments`"
             />
           </v-col>
         </v-row>
