@@ -8,9 +8,13 @@ from .serializers import (
 )
 from schoolERPCode.viewsets import get_standard_model_viewset
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from types import SimpleNamespace
+from tenants.models import School
+from django_tenants.utils import tenant_context
 import json
+from django.db.models import Sum
 # Create your views here.
 
 
@@ -59,8 +63,8 @@ def record_filter(self, queryset, **kwargs):
         queryset = queryset.filter(datetime__lte=kwargs["datetime_end"])
     if "payment_type" in kwargs:
         queryset = queryset.filter(payment_type=kwargs["payment_type"])
-    if "payment_id" in kwargs:
-        queryset = queryset.filter(payment_id=kwargs["payment_id"])
+    if "order_id" in kwargs:
+        queryset = queryset.filter(order_id=kwargs["order_id"])
     if "payment_status" in kwargs:
         queryset = queryset.filter(payment_status=kwargs["payment_status"])
     if "purpose" in kwargs:
@@ -78,39 +82,72 @@ record_views = get_standard_model_viewset(
 
 
 @api_view(["POST"])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def create_order(request):
+    tenant = getattr(request, "tenant", None)
+    # The default amount is the amount pending
+    student = getattr(request.user, "student_account", None)
+    if not tenant:
+        return Response({"error": "tenant not given"}, status=400)
+    if "amount" in request.data:
+        amount = request.data["amount"]
+    if "purpose" in request.data:
+        purpose = request.data["purpose"]
+    if "student" in request.data:
+        student = request.data["student"]
+    amount = Record.objects.filter(student=student).aggregate(Sum("amount"))[
+        "amount__sum"
+    ]
+
+    if amount and amount < 0:
+        amount = -amount
+
+    purpose = getattr(
+        Record.objects.filter(student=student).filter(amount__lt=0).last(),
+        "purpose",
+        None,
+    )
+
+    client = tenant.get_razorpay_client()
+    order = client.order.create(
+        {
+            "amount": amount,
+            "currency": "INR",
+            "notes": {
+                "purpose_id": purpose,
+                "student_id": student,
+                "tenant_id": tenant.id,
+            },
+        }
+    )
+
+    Record.objects.create(
+        student_id=student,
+        amount=amount,
+        order_id=order.id,
+        purpose_id=purpose,
+        payment_status="P",
+    )
+
+    return Response(order)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def check_order(request):
     tenant = getattr(request, "tenant", None)
     if not tenant:
         return Response({"error": "tenant not given"}, status=400)
-    if "amount" not in request.data:
-        return Response({"error": "amount not given"}, status=400)
-    if "purpose" not in request.data:
-        return Response({"error": "purpose not given"}, status=400)
-    if "student" not in request.data:
-        return Response({"error": "student not given"}, status=400)
     client = tenant.get_razorpay_client()
-    return Response(
-        client.order.create(
-            {
-                "amount": request.data["amount"],
-                "currency": "INR",
-                "payment_capture": "1",
-                "notes": {
-                    "purpose_id": request.data["purpose"],
-                    "student_id": request.data["student"],
-                    "tenant_id": tenant.id,
-                },
-            }
-        )
-    )
-
-
-# TODO: Implement this properly after adding types everywhere
-@api_view(["POST"])
-@permission_classes([AllowAny])
-def payment_hook(request):
-    webhook_body = request.body
-    request.data
-
-    return Response(webhook_body)
+    order = client.order.fetch(request.data["order_id"])
+    last_record = Record.objects.filter(order_id=order.id).last()
+    if last_record:
+        if last_record.payment_status == "S":
+            return Response({"error": "Payment already successful"}, status=400)
+        else:
+            if order["status"] == "paid":
+                last_record.payment_status = "S"
+                last_record.save()
+        return Response(last_record)
+    else:
+        return Response({"error": "Order not found"}, status=400)
