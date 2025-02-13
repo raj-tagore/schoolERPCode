@@ -134,6 +134,38 @@ def create_order(request):
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
+def verify_payment(request):
+    tenant = getattr(request, "tenant", None)
+    if not tenant:
+        return Response({"error": "tenant not given"}, status=400)
+    client = tenant.get_razorpay_client()
+    client.utility.verify_payment_signature(
+        {
+            "razorpay_order_id": request.data["razorpay_order_id"],
+            "razorpay_payment_id": request.data["razorpay_payment_id"],
+            "razorpay_signature": request.data["razorpay_signature"],
+        }
+    )
+    order = client.order.fetch(request.data["order_id"])
+    last_record = Record.objects.filter(order_id=order.id).last()
+    if last_record:
+        if last_record.payment_status == "S":
+            return Response({"error": "Payment already successful"}, status=400)
+        else:
+            if order["status"] == "paid":
+                last_record.payment_status = "S"
+                last_record.save()
+                client.payment.capture(
+                    request.data["razorpay_payment_id"],
+                    {"amount": order["amount"], "currency": "INR"},
+                )
+        return Response(last_record)
+    else:
+        return Response({"error": "Order not found"}, status=400)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def check_order(request):
     tenant = getattr(request, "tenant", None)
     if not tenant:
