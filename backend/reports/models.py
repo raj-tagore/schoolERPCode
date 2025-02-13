@@ -23,5 +23,3 @@ class AttendanceReport:
     date = models.DateField(null=False)
     classroom = models.ForeignKey(Classroom, on_delete=models.SET_NULL, null=True, related_name='report')
     remarks = models.TextField()
-
-
