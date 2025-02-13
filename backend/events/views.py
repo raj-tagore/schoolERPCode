@@ -57,6 +57,7 @@ class AllEvents(ListAPIView):
         calendar = request.query_params.get("calendar")
         start = request.query_params.get("start")
         end = request.query_params.get("end")
+        classroom = request.query_params.get("end")
 
         # Need to add filters for both models
         if title:
@@ -74,6 +75,10 @@ class AllEvents(ListAPIView):
             assessment_queryset = assessment_queryset.filter(
                 subject__in=calendar.subjects.all()
             )
+        if classroom:
+            events_queryset = events_queryset.filter(calendar__classrooms__id=classroom)
+            assessment_queryset = assessment_queryset.filter(subject__classroom__id=classroom)
+
 
         event_data = EventSerializer(events_queryset, many=True).data
         assessment_data = BasicAssessmentSerializer(assessment_queryset, many=True).data
