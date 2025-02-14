@@ -10,8 +10,17 @@
 				hide-details
 				:disabled="field.disabled"
 			></v-text-field>
+			<v-number-input
+				v-if="field.type === 'integer'"
+				:label="field.label" 
+				v-model="filters[field.key]"
+				:rules="[v => !!v || `${field.label} is required`]"
+				density="comfortable"
+				hide-details
+				:disabled="field.disabled"
+			></v-number-input>
 			<ServerAutocomplete
-				v-if="['number', 'classroom', 'subject', 'teacher'].includes(field.type)"
+				v-if="['number', 'classroom', 'subject', 'teacher', 'payment_purpose'].includes(field.type)"
 				v-model="filters[field.key]"
 				:clearable="!field.disabled"
 				:fetch="getFilterFetch(field)"
@@ -65,10 +74,17 @@
 </template>
 
 <script setup>
+import { getClassroomInfoFromObj, getClassrooms } from "@/apps/classrooms/api";
+import {
+	getPayeeInfoFromObj,
+	getPayees,
+	getPaymentPurposeInfoFromObj,
+	getPaymentPurposes,
+} from "@/apps/finances/api";
+import { getSubjectInfoFromObj, getSubjects } from "@/apps/subjects/api";
+import { getTeacherInfoFromObj, getTeachers } from "@/apps/teachers/api";
+
 import ServerAutocomplete from "@/components/ServerAutocomplete.vue";
-import { getClassrooms, getClassroomInfoFromObj } from "@/apps/classrooms/api";
-import { getSubjects, getSubjectInfoFromObj } from "@/apps/subjects/api";
-import { getTeachers, getTeacherInfoFromObj } from "@/apps/teachers/api";
 
 const props = defineProps({
 	// Each element for this array will be an object with the following keys:
@@ -76,13 +92,15 @@ const props = defineProps({
 	// - key: String & [String] for date range
 	// - type: String
 	//   - 'string'
+	//   - 'integer'
 	//   - 'number'
 	//   - 'boolean'
 	//   - 'array'
 	//   - 'n_nary'
-	//   - 'classroom'  // New type
-	//   - 'subject'    // New type
-	//   - 'teacher'    // New type
+	//   - 'classroom'
+	//   - 'subject'
+	//   - 'teacher'
+	//   - 'payment_purpose'
 	//   - 'dates'
 	// - fetchOptions: Function? (only for custom number/array types)
 	// - fetchOptionsInfo: Function? (only for custom number/array types)
@@ -103,6 +121,10 @@ const getFilterFetch = (field) => {
 			return getSubjects;
 		case "teacher":
 			return getTeachers;
+		case "payment_purpose":
+			return getPaymentPurposes;
+		case "payee":
+			return getPayees;
 		default:
 			return field.fetchOptions;
 	}
@@ -116,6 +138,10 @@ const getFilterInfo = (field) => {
 			return getSubjectInfoFromObj;
 		case "teacher":
 			return getTeacherInfoFromObj;
+		case "payment_purpose":
+			return getPaymentPurposeInfoFromObj;
+		case "payee":
+			return getPayeeInfoFromObj;
 		default:
 			return field.fetchOptionsInfo;
 	}
