@@ -7,9 +7,9 @@
       /> 
     </v-card-title>
     <ResponsiveDataTable 
-      :getToFunction="(item) => ({name: 'Calendar', params: {calendarId: item.id}})" 
+      :getToFunction="(item) => ({name: 'Event', params: {eventId: item.id}})" 
       :headers="headers" 
-      :fetch="getCalendars" 
+      :fetch="getEvents" 
       v-model="filters"
       :forceMobile="forceMobile"
     />
@@ -18,23 +18,25 @@
 
 <script setup>
 import { ref } from "vue";
-import { getCalendars } from "../api";
+import { getEvents } from "../api";
 import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
 import FilterCard from "@/components/FilterCard.vue";
 
 const defaultFilters = {
-  name: "",
+  title: "",
   classroom: null,
   subject: null,
   created_by: null,
   is_school_wide: null,
+  start: null,
+  end: null,
 };
 
 const defaultFiltersInfo = [
   {
-    label: "Search by name",
+    label: "Search by title",
     type: "string",
-    key: "name",
+    key: "title",
   },
   {
     label: "Filter by classroom",
@@ -56,10 +58,15 @@ const defaultFiltersInfo = [
     type: "n_nary",
     key: "is_school_wide",
     fetchOptions: () => [
-      { title: "All Calendars", value: null },
+      { title: "All Events", value: null },
       { title: "School Wide Only", value: "True" },
-      { title: "Class Specific Only", value: "False" },
+      { title: "Non-School Wide Only", value: "False" },
     ],
+  },
+  {
+    label: "Date Range",
+    type: "dates",
+    key: ["start", "end"],
   },
 ];
 
@@ -85,19 +92,19 @@ const filtersInfo = ref(defaultFiltersInfo.map(defaultFilter => {
   return override ? { ...defaultFilter, ...override } : defaultFilter;
 }));
 
+const formatDate = (dateString) =>
+  Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  }).format(new Date(dateString));
+
 const headers = [
-  { title: "Name", key: "name" },
-  { title: "Description", key: "description" },
-  { 
-    title: "Created By", 
-    key: "created_by_details",
-    formatFunc: (createdBy) => createdBy?.user_details?.full_name,
-  },
-  { 
-    title: "Type", 
-    key: "is_school_wide",
-    formatFunc: (isSchoolWide) => isSchoolWide ? "School Wide" : "Class Specific",
-  },
+  { title: "Title", key: "title" },
+  { title: "Start Time", key: "start", formatFunc: formatDate },
+  { title: "End Time", key: "end", formatFunc: formatDate },
   { title: "Actions", key: "actions", sortable: false },
 ];
 </script>

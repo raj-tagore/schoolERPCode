@@ -1,14 +1,13 @@
 from rest_framework import serializers
-from .models import Calendar, Event
-
-class CalendarSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Calendar
-        fields = "__all__"
+from .models import Event
+from accounts.serializers import TeacherSerializer
 
 class EventSerializer(serializers.ModelSerializer):
+    created_by_details = TeacherSerializer(source='created_by', read_only=True)
+    
     class Meta:
         model = Event
-        fields = ["id", "calendar", "title", "start", "end", "attachment"]
+        fields = ["id", "title", "start", "end", "description", "classrooms", 
+                  "subjects", "is_school_wide", "attachment", "created_by", "created_by_details"]
 
 

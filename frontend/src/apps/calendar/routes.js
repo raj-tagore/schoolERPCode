@@ -1,20 +1,20 @@
-import CalendarPage from "@/apps/calendar/views/CalendarPage.vue";
-import CalendarsPage from "@/apps/calendar/views/CalendarsPage.vue";
+import EventsPage from "@/apps/calendar/views/EventsPage.vue";
+import EventPage from "@/apps/calendar/views/EventPage.vue";
 import AppSideBarBreadcrumbsLayout from "@/layouts/AppSideBarBreadcrumbsLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
 
 export default [
     {
-        path: "calendar/",
+        path: "events/",
         component: AppSideBarBreadcrumbsLayout,
         meta: {
-            getDisplayName: () => "Calendar",
-            defaultRoute: "Calendars",
-            description: "View and manage calendars",
+            getDisplayName: () => "Events",
+            defaultRoute: "Events",
+            description: "View and manage events",
             getMenu: () => [
                 {
-                    title: "All Calendars",
-                    to: { name: "Calendars" },
+                    title: "All Events",
+                    to: { name: "Events" },
                 }
             ],
             icon: 'mdi-calendar'
@@ -22,27 +22,27 @@ export default [
         children: [
             {
                 path: "",
-                component: CalendarsPage,
-                name: "Calendars",
+                component: EventsPage,
+                name: "Events",
             },
             {
-                path: ":calendarId/",
+                path: ":eventId/",
                 component: EmptyLayout,
                 meta: {
-                    defaultRoute: "Calendar",
-                    getDisplayName: (props) => `Calendar View`,
+                    defaultRoute: "Event",
+                    getDisplayName: (props) => `Event View`,
                     getMenu: (props) => [
                         {
-                            title: "View Calendar",
-                            to: { name: "Calendar", props },
+                            title: "View Event",
+                            to: { name: "Event", props },
                         }
                     ],
                 },
                 children: [
                     {
                         path: "",
-                        component: CalendarPage,
-                        name: "Calendar",
+                        component: EventPage,
+                        name: "Event",
                         props: true,
                     }
                 ],

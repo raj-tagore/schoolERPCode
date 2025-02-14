@@ -39,7 +39,6 @@ class DataStore:
             "subject": [],
             "announcement": [],
             "assignment": [],
-            "calendar": [],
             "event": [],
         }
         self.hasher = BCryptSHA256PasswordHasher()
@@ -300,75 +299,43 @@ class AnnouncementGenerator:
             announcement = self._create_announcement(True)
             self.data_store.data["announcement"].append(announcement)
 
-class CalendarGenerator:
+class EventGenerator:
     def __init__(self, data_store, config):
         self.data_store = data_store
         self.config = config
 
-    def add_calendar(self, name: str, description: str, classrooms: list, subjects: list, is_school_wide: bool):
-        self.data_store.data["calendar"].append(
-            {
-                "id": len(self.data_store.data["calendar"]) + 1,
-                "name": name,
-                "description": description,
-                "classrooms": classrooms,
-                "subjects": subjects,
-                "is_school_wide": is_school_wide,
-                "created_by": random.choice(self.data_store.data["teacher"])["id"],
-            }
-        )
-
-    def add_event(self, calendar_id: int):
+    def add_event(self, classrooms: list = None, subjects: list = None, is_school_wide: bool = False):
+        # Generate start dates between 30 days ago and 180 days in the future
         start_time = self.config.faker.date_time_between(
-            start_date='+1d',
-            end_date='+90d'
+            start_date='-30d',
+            end_date='+180d'
         )
         duration_hours = random.randint(1, 8)
+        end_time = start_time + datetime.timedelta(hours=duration_hours)
         
-        self.data_store.data["event"].append(
-            {
-                "id": len(self.data_store.data["event"]) + 1,
-                "calendar": calendar_id,
-                "title": self.config.faker.sentence(nb_words=6),
-                "start": start_time,
-                "end": start_time + datetime.timedelta(hours=duration_hours),
-                "attachment": None,
-                "created_by": random.choice(self.data_store.data["teacher"])["id"],
-            }
-        )
-
-    def generate_calendars(self):
-        # Create one calendar per classroom
-        # Not assigning any calendars to subjects
-        for classroom in self.data_store.data["classroom"]:
-            self.add_calendar(
-                name=f"Calendar for {classroom['name']}",
-                description=f"Calendar for classroom {classroom['name']}",
-                classrooms=[classroom["id"]],
-                subjects=[],
-                is_school_wide=False
-            )
-
-        # Add a few school-wide calendars
-        for i in range(3):
-            self.add_calendar(
-                name=f"School Calendar {i+1}",
-                description=f"School-wide calendar {i+1}",
-                classrooms=[],
-                subjects=[],
-                is_school_wide=True
-            )
+        self.data_store.data["event"].append({
+            "id": len(self.data_store.data["event"]) + 1,
+            "title": self.config.faker.sentence(nb_words=6),
+            "description": self.config.faker.text(max_nb_chars=500),
+            "start": start_time,
+            "end": end_time,
+            "classrooms": classrooms or [],
+            "subjects": subjects or [],
+            "is_school_wide": is_school_wide,
+            "attachment": None,
+            "created_by": random.choice(self.data_store.data["teacher"])["id"],
+        })
 
     def generate_events(self):
-        # Generate 5-10 events for each calendar
-        for calendar in self.data_store.data["calendar"]:
+        # Generate classroom-specific events
+        for classroom in self.data_store.data["classroom"]:
+            # Generate 5-10 events per classroom
             for _ in range(random.randint(5, 10)):
-                self.add_event(calendar["id"])
+                self.add_event(classrooms=[classroom["id"]], is_school_wide=False)
 
-    def generate_calendars_and_events(self):
-        self.generate_calendars()
-        self.generate_events()
-
+        # Generate school-wide events
+        for _ in range(10):  # Generate 10 school-wide events
+            self.add_event(is_school_wide=True)
 
 def main():
     config = Config()
@@ -382,14 +349,14 @@ def main():
     classroom_generator = ClassroomGenerator(data_store, student_generator, config)
     assignment_generator = AssignmentGenerator(data_store, config)
     announcement_generator = AnnouncementGenerator(data_store, config)
-    calendar_generator = CalendarGenerator(data_store, config)
+    event_generator = EventGenerator(data_store, config)
 
     # Generate all data
     teacher_generator.generate_all_teachers()
     classroom_generator.generate_all_classrooms()
     assignment_generator.generate_assignments()
     announcement_generator.generate_all_announcements()
-    calendar_generator.generate_calendars_and_events()
+    event_generator.generate_events()
 
     # Save to CSV
     data_store.save_to_csv(config)
