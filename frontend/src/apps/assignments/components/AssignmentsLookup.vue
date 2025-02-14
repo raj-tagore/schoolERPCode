@@ -22,15 +22,15 @@ import { getAssignments } from "@/apps/assignments/api.js";
 import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
 import FilterCard from "@/components/FilterCard.vue";
 
-const filters = ref({
+const defaultFilters = {
 	title: "",
 	description: "",
 	classroom: null,
 	subject: null,
 	is_active: null,
-});
+};
 
-const filtersInfo = ref([
+const defaultFiltersInfo = [
 	{
 		label: "Search by title",
 		type: "string",
@@ -61,14 +61,30 @@ const filtersInfo = ref([
 			{ title: "All", value: null },
 		],
 	},
-]);
+];
 
 const props = defineProps({
 	forceMobile: {
 		type: Boolean,
 		default: false,
 	},
+	initialFilters: {
+		type: Object,
+		default: () => ({}),
+	},
+	initialFiltersInfo: {
+		type: Array,
+		default: () => ([]),
+	},
 });
+
+const filters = ref({ ...defaultFilters, ...props.initialFilters });
+console.log(filters.value);
+
+const filtersInfo = ref(defaultFiltersInfo.map(defaultFilter => {
+	const override = props.initialFiltersInfo.find(f => f.key === defaultFilter.key);
+	return override ? { ...defaultFilter, ...override } : defaultFilter;
+}));
 
 // Properly parses the date string, Date() constructor doesn't work well with ISO strings
 const formatDate = (dateString) =>

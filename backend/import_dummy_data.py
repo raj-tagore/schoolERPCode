@@ -10,7 +10,7 @@ from accounts.models import Teacher, Parent, Student
 from allocation.models import Classroom, Subject
 from announcements.models import Announcement
 from assignments.models import Assignment
-from events.models import Calendar, Event
+from events.models import Event
 
 
 tenant = School.objects.filter(name="school1")[0]
@@ -50,7 +50,6 @@ dummy_files = [
 	("dummy_data/Subject.csv", Subject),
 	("dummy_data/Announcement.csv", Announcement),
 	("dummy_data/Assignment.csv", Assignment),
-	("dummy_data/Calendar.csv", Calendar),
 	("dummy_data/Event.csv", Event),
 ]
 

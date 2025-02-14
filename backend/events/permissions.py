@@ -6,7 +6,7 @@ class EventPermissions(BasePermission):
     def get_permissions(request, obj):
         if request.user.is_superuser:
             return ALL_PERMISSIONS
-        if request.user.id in obj.calendar.created_by:
+        if request.user.id in obj.created_by:
             return ["GET", "DELETE", "PATCH"]
         if request.user.id in obj.calendar.users:
             return ["GET"]

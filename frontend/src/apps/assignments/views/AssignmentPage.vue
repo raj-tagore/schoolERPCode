@@ -51,14 +51,21 @@
 					<v-col lg="4">
 						<v-card variant="flat">
 							<v-card-text>
-								<h4 class="text-subtitle-1">Created by:</h4>
+								<h4 class="text-subtitle-1">Subject Teacher:</h4>
 								<v-list lines="2">
 									<v-list-item 
-										:title="assignment?.created_by_details?.user_details?.full_name"
-										:subtitle="assignment?.created_by_details?.user_details?.email"
+										link
+										v-if="assignment?.subject_details?.classroom_details?.class_teacher_details"
+										:title="assignment?.subject_details?.classroom_details?.class_teacher_details?.user_details?.full_name"
+										:subtitle="assignment?.subject_details?.classroom_details?.class_teacher_details?.user_details?.email"
 										variant="flat"
 										rounded="lg"
-										:to="'#'"
+										:to="{ 
+											name: 'Teacher', 
+											params: { 
+												teacherId: assignment?.subject_details?.classroom_details?.class_teacher_details?.id 
+											}
+										}"
 									/>
 								</v-list>
 
@@ -74,8 +81,8 @@
 										:to="{ name: 'Subject', params: { subjectId: assignment.subject }}"
 										link
 									>
-										{{ assignment.subject_details.name }} 
-										({{ assignment.subject_details.classroom_details?.name }})
+										{{ assignment.subject_details?.name }} 
+										({{ assignment.subject_details?.classroom_details?.name }})
 									</v-chip>
 								</div>
 

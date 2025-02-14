@@ -6,8 +6,11 @@ import teachersRoutes from "@/apps/teachers/routes"
 import announcementsRoutes from "@/apps/announcements/routes"
 import assignmentsRoutes from "@/apps/assignments/routes"
 import attachmentRoutes from "@/apps/attachments/routes"
+<<<<<<< HEAD
 import financesRoutes from "@/apps/finances/routes"
+=======
 import calendarRoutes from "@/apps/events/routes"
+>>>>>>> 06df651fd6ba89f0518a2b1112285fd6c2b73151
 
 export default [
     ...classroomsRoutes,
@@ -18,6 +21,9 @@ export default [
     ...announcementsRoutes,
     ...assignmentsRoutes,
     ...attachmentRoutes,
+<<<<<<< HEAD
     ...financesRoutes,
+=======
     ...calendarRoutes,
+>>>>>>> 06df651fd6ba89f0518a2b1112285fd6c2b73151
 ];
