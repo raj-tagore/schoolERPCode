@@ -30,12 +30,11 @@ export default [
             {
                 path: ":recordId",
                 props: true,
-                component: RecordPage,
+                component: EmptyLayout,
                 meta: {
                     defaultRoute: "Record",
                     getDisplayName: async (params) =>
-                        (await api.get(`api/accounts/records/${params.recordId}/`)).data
-                            .id,
+                        (await api.get(`api/finances/record/${params.recordId}/`)).data.id,
                     getMenu: (props) => [
                         {
                             title: "View Record",
@@ -47,17 +46,18 @@ export default [
                 children: [
                     {
                         path: "",
-                        component: EmptyLayout,
-                        //component: StudentPage,
-                        name: "Teacher",
+                        component: RecordPage,
+                        name: "Record",
                         props: true,
                     },
+                    /*
                     {
                         path: "edit/",
                         component: EmptyLayout,
                         name: "EditTeacher",
                         props: true,
                     },
+                    */
                 ],
             },
         ],

@@ -20,7 +20,7 @@
 				:disabled="field.disabled"
 			></v-number-input>
 			<ServerAutocomplete
-				v-if="['number', 'classroom', 'subject', 'teacher', 'payment_purpose'].includes(field.type)"
+				v-if="['number', 'classroom', 'subject', 'teacher', 'student', 'payment_purpose'].includes(field.type)"
 				v-model="filters[field.key]"
 				:clearable="!field.disabled"
 				:fetch="getFilterFetch(field)"
@@ -83,6 +83,7 @@ import {
 } from "@/apps/finances/api";
 import { getSubjectInfoFromObj, getSubjects } from "@/apps/subjects/api";
 import { getTeacherInfoFromObj, getTeachers } from "@/apps/teachers/api";
+import { getStudentInfoFromObj, getStudents } from "@/apps/students/api";
 
 import ServerAutocomplete from "@/components/ServerAutocomplete.vue";
 
@@ -100,6 +101,7 @@ const props = defineProps({
 	//   - 'classroom'
 	//   - 'subject'
 	//   - 'teacher'
+	//   - 'student'
 	//   - 'payment_purpose'
 	//   - 'dates'
 	// - fetchOptions: Function? (only for custom number/array types)
@@ -125,6 +127,8 @@ const getFilterFetch = (field) => {
 			return getPaymentPurposes;
 		case "payee":
 			return getPayees;
+		case "student":
+			return getStudents;
 		default:
 			return field.fetchOptions;
 	}
@@ -142,6 +146,8 @@ const getFilterInfo = (field) => {
 			return getPaymentPurposeInfoFromObj;
 		case "payee":
 			return getPayeeInfoFromObj;
+		case "student":
+			return getStudentInfoFromObj;
 		default:
 			return field.fetchOptionsInfo;
 	}

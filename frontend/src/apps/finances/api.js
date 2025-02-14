@@ -1,6 +1,8 @@
+import { api } from "@/services/api";
+
 const getRecords = async (filter) =>
     (
-        await api.get("api/finances/records/all", {
+        await api.get("api/finances/record/all", {
             params: filter,
         })
     ).data;
@@ -26,7 +28,7 @@ const getPaymentPurposeInfoFromObj = (item) => ({
 
 const getPayees = async (filter) =>
     (
-        await api.get("api/finances/payees/all", {
+        await api.get("api/finances/payee/all", {
             params: filter,
         })
     ).data;

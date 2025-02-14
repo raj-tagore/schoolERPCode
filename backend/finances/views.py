@@ -18,6 +18,7 @@ def purpose_filter(self, queryset, **kwargs):
         queryset = queryset.filter(name__icontains=kwargs["name"])
     if "description" in kwargs:
         queryset = queryset.filter(description__icontains=kwargs["description"])
+    return queryset
 
 
 purpose_views = get_standard_model_viewset(
@@ -35,6 +36,7 @@ def payee_filter(self, queryset, **kwargs):
         queryset = queryset.filter(email__icontains=kwargs["email"])
     if "phone" in kwargs:
         queryset = queryset.filter(phone__icontains=kwargs["phone"])
+    return queryset
 
 
 payee_views = get_standard_model_viewset(
@@ -66,6 +68,7 @@ def record_filter(self, queryset, **kwargs):
         queryset = queryset.filter(purpose=kwargs["purpose"])
     if "payee" in kwargs:
         queryset = queryset.filter(payee=kwargs["payee"])
+    return queryset
 
 
 record_views = get_standard_model_viewset(

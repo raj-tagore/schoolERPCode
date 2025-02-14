@@ -52,14 +52,9 @@ const filtersInfo = ref([
 		key: "amount_end",
 	},
 	{
-		label: "Filter by minimum date",
-		type: "date",
-		key: "datetime_start",
-	},
-	{
-		label: "Filter by maximum date",
-		type: "date",
-		key: "datetime_end",
+		label: "Filter by Date",
+		type: "dates",
+		key: ["datetime_start", "datetime_end"],
 	},
 	{
 		label: "Filter by payment type",
@@ -126,7 +121,7 @@ const headers = [
 	{ title: "Date", key: "datetime", formatFunc: formatDate },
 	{ title: "Payment Type", key: "payment_type" },
 	{ title: "Payment Status", key: "payment_status" },
-	{ title: "Payee", key: "payee_details", formatFunc: (payee) => payee.user_details.full_name },
+	{ title: "Payee", key: "payee_details", formatFunc: (payee) => payee.email },
 	{ title: "Actions", key: "actions", sortable: false },
 ];
 </script>
