@@ -13,19 +13,20 @@
 		@update:modelValue="emit('update:modelValue', $event)"
 		@update:search="debouncedFetchResults"
 		:clearable="clearable"
+		density="comfortable"
 	>
 		<template v-slot:append-item>
-			<div v-if="hasMore" v-intersect="debouncedFetchResults" class="pa-4 teal--text">
+			<div v-if="hasMore" v-intersect="debouncedFetchResults" class="pa-4">
 				Loading more items ...
 			</div>
-			<div v-else>
+			<div v-else class="pa-4">
 				No more items to load
 			</div>
 		</template>
 	</v-autocomplete>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -86,19 +87,24 @@ const hasMore = ref(true);
 const triggered = ref(false);
 const reTriggered = ref(false);
 
+watch(query.value, () => {
+	hasMore.value = true
+})
+
 const fetchResults = async () => {
 	if (loading.value || !hasMore.value) return;
 	filters.value[props.searchField] = query.value;
 	loading.value = true;
 	try {
 		const listing = await props.fetch(filters.value);
-		if (listing.results.length > 0) {
+		if (!filters?.page || filters?.page <= listing.total_pages) {
 			results.value = [...results.value, ...listing.results];
 			filters.value.page++;
 		} else {
 			hasMore.value = false;
 		}
 	} catch (error) {
+		hasMore.value = false;
 		console.error("API Error:", error);
 	} finally {
 		loading.value = false;

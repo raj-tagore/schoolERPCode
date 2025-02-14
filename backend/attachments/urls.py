@@ -1,8 +1,8 @@
 # myapp/urls.py
 
-from django.urls import path
-from .views import AttachmentUploadView
+from django.urls import path, include
+from .views import attachments_viewset
 
 urlpatterns = [
-    path('upload/', AttachmentUploadView.as_view(), name='attachment-upload'),
+    path("", include(attachments_viewset)),
 ]

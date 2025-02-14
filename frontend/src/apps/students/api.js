@@ -3,7 +3,7 @@ import { api } from "@/services/api";
 const getStudents = async (filter) =>
     (
         await api.get("api/accounts/students/all", {
-            params:  filter ,
+            params:  filter,
         })
     ).data;
 

@@ -1,52 +1,44 @@
 # announcements/views.py
 
-from django.shortcuts import render
 from .models import Announcement
 from .serializers import AnnouncementSerializer
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView, CreateAPIView
-from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
 from .permissions import AnnouncementPermissions
 
+import datetime
+from schoolERPCode.viewsets import get_standard_model_viewset
 
-class AllAnnouncements(ListAPIView):
-    queryset = Announcement.objects.all()
-    serializer_class = AnnouncementSerializer
-    permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        request = self.request
+def filter_announcements(self, queryset, **kwargs):
+    if "id" in kwargs:
+        queryset = queryset.filter(id=kwargs["id"])
+    if "title" in kwargs:
+        queryset = queryset.filter(title__icontains=kwargs["title"])
+    if "classroom" in kwargs:
+        queryset = queryset.filter(classrooms__id=kwargs["classroom"])
+    if "subject" in kwargs:
+        queryset = queryset.filter(subjects__id=kwargs["subject"])
+    if "is_school_wide" in kwargs:
+        queryset = queryset.filter(is_school_wide=kwargs["is_school_wide"])
+    if "signed_by" in kwargs:
+        queryset = queryset.filter(signed_by__id=kwargs["signed_by"])
+    if "is_released" in kwargs and kwargs["is_released"] == "True":
+        queryset = queryset.filter(release_at__lte=datetime.datetime.now())
+    if "released_start" in kwargs:
+        queryset = queryset.filter(release_at__gte=kwargs["released_start"])
+    if "released_end" in kwargs:
+        queryset = queryset.filter(release_at__lte=kwargs["released_end"])
+    if "expired_start" in kwargs:
+        queryset = queryset.filter(expiry_at__gte=kwargs["expired_start"])
+    if "expired_end" in kwargs:
+        queryset = queryset.filter(expiry_at__lte=kwargs["expired_end"])
 
-        id = request.query_params.get('id')
-        title = request.query_params.get('title')
-        classroom = request.query_params.get('classroom') 
-        subject = request.query_params.get('subject') 
-        is_school_wide = request.query_params.get('is_school_wide')
-        signed_by = request.query_params.get('signed_by')
+    return queryset
 
-        if id:
-            queryset = queryset.filter(id=id)
-        if title:
-            queryset = queryset.filter(title__icontains=title)
-        if classroom:
-            queryset = queryset.filter(classrooms__id=classroom)
-        if subject:
-            queryset = queryset.filter(subjects__id=subject)
-        if is_school_wide:
-            queryset = queryset.filter(is_school_wide=is_school_wide)
-        if signed_by:
-            queryset = queryset.filter(signed_by__id=signed_by)
 
-        return queryset
-
-class AnyAnnouncement(RetrieveUpdateDestroyAPIView):
-    serializer_class = AnnouncementSerializer
-    permission_classes = [IsAuthenticated, AnnouncementPermissions]
-    queryset = Announcement.objects.all()
-    lookup_field = 'id'
-
-class CreateAnnouncement(CreateAPIView):
-    queryset = Announcement.objects.all()
-    serializer_class = AnnouncementSerializer
-    permission_classes = [DjangoModelPermissions]
-
+announcement_viewset = get_standard_model_viewset(
+    queryset=Announcement.objects.all(),
+    serializer_class=AnnouncementSerializer,
+    filter_queryset=filter_announcements,
+    basic_serializer_class=AnnouncementSerializer,
+    permission_class=AnnouncementPermissions,
+)

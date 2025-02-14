@@ -23,6 +23,9 @@ importers:
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
+      lottie-web-vue:
+        specifier: ^2.0.7
+        version: 2.0.7
       pinia:
         specifier: ^2.3.0
         version: 2.3.0(vue@3.5.13)
@@ -2649,6 +2652,12 @@ packages:
     resolution: {integrity: sha512-vlP11XfFGyeNQlmEn9tJ66rEW1coA/79m5z6BCkudjbAGE83uhAcGYrBFwfs3AdLiLzGRusRPAbSPK9xZteCmg==}
     engines: {node: '>=4'}
 
+  lottie-web-vue@2.0.7:
+    resolution: {integrity: sha512-YELWt2WiRqqpsI/TVbmL4mRh0u4GSInvJ8eu2sTWCg49n/Bkzub7GlroumFxthk3VFU1k0IiLPpr9TxTePa/0A==}
+
+  lottie-web@5.12.2:
+    resolution: {integrity: sha512-uvhvYPC8kGPjXT3MyKMrL3JitEAmDMp30lVkuq/590Mw9ok6pWcFCwXJveo0t5uqYw1UREQHofD+jVpdjBv8wg==}
+
   lower-case@2.0.2:
     resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
 
@@ -3022,6 +3031,9 @@ packages:
     resolution: {integrity: sha512-5HviZNaZcfqP95rwpv+1HDgUamezbqdSYTyzjTvwtJSnIH+3vnbmWsItli8OFEndS984VT55M3jduxZbX351gg==}
     engines: {node: '>=12'}
 
+  path@0.12.7:
+    resolution: {integrity: sha512-aXXC6s+1w7otVF9UletFkFcDsJeO7lSZBPUQhtb5O0xJe8LtYhj/GxldoL09bBj9+ZmE2hNoHqQSFMN5fikh4Q==}
+
   pathe@1.1.2:
     resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
 
@@ -3301,6 +3313,10 @@ packages:
 
   process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
+
+  process@0.11.10:
+    resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
+    engines: {node: '>= 0.6.0'}
 
   progress-webpack-plugin@1.0.16:
     resolution: {integrity: sha512-sdiHuuKOzELcBANHfrupYo+r99iPRyOnw15qX+rNlVUqXGfjXdH4IgxriKwG1kNJwVswKQHMdj1hYZMcb9jFaA==}
@@ -3843,6 +3859,9 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+
+  util@0.10.4:
+    resolution: {integrity: sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==}
 
   utila@0.4.0:
     resolution: {integrity: sha512-Z0DbgELS9/L/75wZbro8xAnT50pBVFQZ+hUEueGDU5FN51YSCYM+jdxsfCiHjwNP/4LCDD0i/graKpeBnOXKRA==}
@@ -7039,6 +7058,16 @@ snapshots:
       cli-cursor: 2.1.0
       wrap-ansi: 3.0.1
 
+  lottie-web-vue@2.0.7:
+    dependencies:
+      lottie-web: 5.12.2
+      path: 0.12.7
+      vue: 3.5.13
+    transitivePeerDependencies:
+      - typescript
+
+  lottie-web@5.12.2: {}
+
   lower-case@2.0.2:
     dependencies:
       tslib: 2.8.1
@@ -7373,6 +7402,11 @@ snapshots:
 
   path-type@5.0.0: {}
 
+  path@0.12.7:
+    dependencies:
+      process: 0.11.10
+      util: 0.10.4
+
   pathe@1.1.2: {}
 
   pathe@2.0.1: {}
@@ -7637,6 +7671,8 @@ snapshots:
       renderkid: 3.0.0
 
   process-nextick-args@2.0.1: {}
+
+  process@0.11.10: {}
 
   progress-webpack-plugin@1.0.16(webpack@5.97.1):
     dependencies:
@@ -8238,6 +8274,10 @@ snapshots:
       punycode: 2.3.1
 
   util-deprecate@1.0.2: {}
+
+  util@0.10.4:
+    dependencies:
+      inherits: 2.0.3
 
   utila@0.4.0: {}
 

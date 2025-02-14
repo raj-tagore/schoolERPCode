@@ -18,12 +18,15 @@
 						</v-row>
 						<v-row>
 							<v-col 
-								cols="12" 
-								md="6" 
+								cols="6" 
+								md="3" 
 								lg="3"
 								v-for="app in filteredApps" :key="app.id">
 								<v-card :to="{name: app.defaultRoute}">
-									<v-card-title>{{ app.getDisplayName() }}</v-card-title>
+									<v-card-title>
+										<v-icon :icon="app.icon" class="me-2" />
+										{{ app.getDisplayName() }}
+									</v-card-title>
 									<v-card-text>{{ app.description }}</v-card-text>
 								</v-card>
 							</v-col>

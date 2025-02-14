@@ -13,8 +13,10 @@ import * as directives from 'vuetify/directives'
 // If you want to use mdi icons:
 import '@mdi/font/css/materialdesignicons.css'
 
+import { VDateInput } from 'vuetify/labs/VDateInput'
+
 const vuetify = createVuetify({
-  components,
+  components: {...components, VDateInput },
   directives,
   theme: {
     defaultTheme: 'light', // Set 'light' as the default theme, or 'dark' if preferred

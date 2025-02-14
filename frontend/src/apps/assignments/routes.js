@@ -24,9 +24,10 @@ export default [
                     to: { name: "CreateAssignment" },
                 },
             ],
+            icon: 'mdi-clipboard-text',
         },
         children: [
-            {
+            { 
                 path: "",
                 component: AssignmentsPage,
                 name: "Assignments",
@@ -53,6 +54,7 @@ export default [
                             to: { name: "EditAssignment", props },
                         },
                     ],
+                    icon: 'mdi-clipboard-text',
                 },
 				children: [
 					{

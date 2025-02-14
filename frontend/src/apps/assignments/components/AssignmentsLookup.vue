@@ -1,42 +1,36 @@
 <template>
 	<v-card variant="flat">
 		<v-card-title>
-			<FilterCard :filtersInfo="filtersInfo" @update:filters="filtersChanged" :onFilterChange="filtersChanged" />
+			<FilterCard 
+				v-model="filters"
+				:filtersInfo="filtersInfo" 
+			/>
 		</v-card-title>
 		<ResponsiveDataTable 
-			:getToFunction="(item) => ( { name : 'Assignment', params: {assignmentId: item.id}} )" 
+			:getToFunction="(item) => ({name: 'Assignment', params: {assignmentId: item.id}})" 
 			:headers="headers" 
 			:fetch="getAssignments" 
-			:filters="filters"
+			v-model="filters"
       		:forceMobile="forceMobile"
     	/>
 	</v-card>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { getAssignments } from "@/apps/assignments/api.js";
-import {
-	getClassroomInfoFromObj,
-	getClassrooms,
-} from "@/apps/classrooms/api.js";
-import { getSubjectInfoFromObj, getSubjects } from "@/apps/subjects/api.js";
-import { onMounted, ref } from "vue";
 import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
 import FilterCard from "@/components/FilterCard.vue";
 
-const filters = ref({
+const defaultFilters = {
 	title: "",
 	description: "",
 	classroom: null,
 	subject: null,
 	is_active: null,
-});
-
-const filtersChanged = (newFilters) => {
-	Object.assign(filters.value, newFilters);
 };
 
-const filtersInfo = ref([
+const defaultFiltersInfo = [
 	{
 		label: "Search by title",
 		type: "string",
@@ -49,19 +43,13 @@ const filtersInfo = ref([
 	},
 	{
 		label: "Filter by classroom",
-		type: "number",
+		type: "classroom",
 		key: "classroom",
-		fetchOptions: getClassrooms,
-		fetchOptionsInfo: getClassroomInfoFromObj,
-		searchField: "name",
 	},
 	{
 		label: "Filter by subject",
-		type: "number",
+		type: "subject",
 		key: "subject",
-		fetchOptions: getSubjects,
-		fetchOptionsInfo: getSubjectInfoFromObj,
-		searchField: "name",
 	},
 	{
 		label: "Filter by active",
@@ -73,14 +61,30 @@ const filtersInfo = ref([
 			{ title: "All", value: null },
 		],
 	},
-]);
+];
 
 const props = defineProps({
 	forceMobile: {
 		type: Boolean,
 		default: false,
 	},
+	initialFilters: {
+		type: Object,
+		default: () => ({}),
+	},
+	initialFiltersInfo: {
+		type: Array,
+		default: () => ([]),
+	},
 });
+
+const filters = ref({ ...defaultFilters, ...props.initialFilters });
+console.log(filters.value);
+
+const filtersInfo = ref(defaultFiltersInfo.map(defaultFilter => {
+	const override = props.initialFiltersInfo.find(f => f.key === defaultFilter.key);
+	return override ? { ...defaultFilter, ...override } : defaultFilter;
+}));
 
 // Properly parses the date string, Date() constructor doesn't work well with ISO strings
 const formatDate = (dateString) =>
@@ -97,16 +101,4 @@ const headers = [
 	{ title: "Subject", key: "subject_details", formatFunc: (item) => item.name },
 	{ title: "Actions", key: "actions", sortable: false },
 ];
-
-const assignments = ref([]);
-
-const classrooms = ref([]);
-const subjects = ref([]);
-
-onMounted(async () => {
-	classrooms.value = (await getClassrooms()).results;
-	subjects.value = (await getSubjects()).results;
-	// Don't fetch assignments on mount, start with empty table
-	assignments.value = [];
-});
 </script>

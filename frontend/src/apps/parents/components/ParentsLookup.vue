@@ -2,21 +2,15 @@
 	<v-container>
 		<v-card variant="flat">
 			<v-card-title>
-				<v-row>
-					<v-col cols="12" md="6">
-						<v-text-field
-							v-model="filters.name"
-							label="Search by name"
-							density="compact"
-							hide-details
-						></v-text-field>
-					</v-col>
-				</v-row>
+				<FilterCard 
+					v-model="filters"
+					:filtersInfo="filtersInfo" 
+				/>
 			</v-card-title>
 			<ResponsiveDataTable
 				:headers="headers"
 				:fetch="getParents"
-				:filters="filters"
+				v-model="filters"
 				:getToFunction="(item) => ({name: 'Parent', params: {parentId: item.id}})"
 			/>
 		</v-card>
@@ -27,11 +21,19 @@
 import { ref } from "vue";
 import { getParents } from "@/apps/parents/api";
 import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
-
+import FilterCard from "@/components/FilterCard.vue";
 
 const filters = ref({
 	name: "",
 });
+
+const filtersInfo = ref([
+	{
+		label: "Search by name",
+		type: "string",
+		key: "name",
+	},
+]);
 
 const headers = [
 	{ title: "Name", key: "user_details", formatFunc: (ud) => ud.full_name },

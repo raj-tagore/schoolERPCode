@@ -6,15 +6,17 @@ const getAnnouncements = async (filter) =>
 const getAnnouncement = async (id) =>
     (await api.get(`api/announcements/${id}`)).data;
 
-const updateAnnouncement = async (id, data) =>
-    await api.put(`api/announcements/${id}/`, data);
+const updateAnnouncement = async (announcement) =>
+    await api.put(`api/announcements/${announcement.id}/`, announcement);
 
-const createAnnouncement = async (data) =>
-	await api.post("api/announcements/create/", data);
+const createAnnouncement = async (data) => {
+    console.log(data);
+    return await api.post("api/announcements/create/", data);
+};
 
 export {
     getAnnouncements,
     getAnnouncement,
     updateAnnouncement,
-	createAnnouncement,
+    createAnnouncement,
 };

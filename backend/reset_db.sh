@@ -2,10 +2,9 @@
 
 cd "$(dirname "$0")"
 
-. ../venv/bin/activate
 
 
-find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/migrations/*.py" -not -name "*__init__*.py" -delete
 
 touch {tenants,attachments,assessments,assignments,attendance,accounts,users,announcements,allocation}/migrations/__init__.py
 
@@ -15,32 +14,42 @@ else
     SUPER="sudo"
 fi
 
+if command -v uv &> /dev/null; then
+    PYTHON_RUNNER="uv run"
+else
+	. ../venv/bin/activate
+    PYTHON_RUNNER="python"
+fi
+
 echo "Using: $SUPER"
+echo "Using: $PYTHON_RUNNER"
 
 $SUPER -u postgres psql -c "DROP DATABASE \"schoolERPDB\";"
 
 $SUPER -u postgres psql -c "CREATE DATABASE \"schoolERPDB\";"
 
-python manage.py makemigrations
+$PYTHON_RUNNER manage.py makemigrations
 
-python manage.py migrate
+$PYTHON_RUNNER manage.py migrate
 
-printf "public\nlocalhost\nlocalhost\n\n" | python manage.py create_tenant
+printf "public\nlocalhost\nlocalhost\n\n" | $PYTHON_RUNNER manage.py create_tenant
 
-printf "school1\nschool1\nschool1.localhost\n\n" | python manage.py create_tenant
+printf "school1\nschool1\nschool1.localhost\n\n" | $PYTHON_RUNNER manage.py create_tenant
 
 export DJANGO_SETTINGS_MODULE=schoolERPCode.settings
 
 
-$SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (1, 'Admin')" "schoolERPDB"
-$SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (2, 'Teacher')" "schoolERPDB"
-$SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (3, 'Student')" "schoolERPDB"
-$SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (4, 'Parent')" "schoolERPDB"
+# $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (1, 'Admin')" "schoolERPDB"
+# $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (2, 'Teacher')" "schoolERPDB"
+# $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (3, 'Student')" "schoolERPDB"
+# $SUPER -u postgres psql -c "INSERT INTO auth_group VALUES (4, 'Parent')" "schoolERPDB"
 
-python import_dummy_data.py 2> /dev/null
+$PYTHON_RUNNER import_dummy_data.py
 
 export DJANGO_SUPERUSER_USERNAME=sandy
 export DJANGO_SUPERUSER_PASSWORD=san
 export DJANGO_SUPERUSER_EMAIL=san@san.com
+export DJANGO_SUPERUSER_FIRST_NAME=Sandy
+export DJANGO_SUPERUSER_LAST_NAME=San
 
-python manage.py createsuperuser --noinput
+$PYTHON_RUNNER manage.py createsuperuser --noinput 

@@ -2,7 +2,7 @@ import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import ParentsPage from "./views/ParentsPage.vue";
 import { api } from "@/services/api";
 import AppSideBarBreadcrumbsLayout from "@/layouts/AppSideBarBreadcrumbsLayout.vue";
-
+import ParentPage from "./views/ParentPage.vue";
 
 export default [
     {
@@ -19,6 +19,7 @@ export default [
                     to: { name: "Parents", params: props },
                 },
             ],
+            icon: 'mdi-account-child',
         },
         children: [
             {
@@ -29,7 +30,7 @@ export default [
             {
                 path: ":parentId",
                 props: true,
-                component: EmptyLayout,
+                component: ParentPage,
                 meta: {
                     defaultRoute: "Parent",
                     getDisplayName: async (params) =>
@@ -45,6 +46,7 @@ export default [
                             to: { name: "EditParent", params: props },
                         },
                     ],
+                    icon: 'mdi-account-child',
                 },
                 children: [
                     {

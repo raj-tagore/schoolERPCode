@@ -1,97 +1,36 @@
 <template>
   <v-card variant="flat">
     <v-card-title>
-			<FilterCard :filtersInfo="filtersInfo" @update:filters="filtersChanged" />
-      <!-- Search filters -->
-      <v-row>
-        <v-col cols="12" md="4" lg="3">
-          <v-text-field
-            v-model="filters.title"
-            label="Search by title"
-            density="comfortable"
-            hide-details
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4" lg="2">
-          <v-autocomplete
-            v-model="filters.classroom"
-            :items="classrooms"
-            label="Filter by classroom"
-            :item-props="getClassroomInfoFromObj"
-            clearable
-            hide-details
-            density="comfortable"
-          ></v-autocomplete>
-        </v-col>
-        <v-col cols="12" md="4" lg="2">
-          <v-autocomplete
-            v-model="filters.subject"
-            :items="subjects"
-            label="Filter by subject"
-            :item-props="getSubjectInfoFromObj"
-            clearable
-            hide-details
-            density="comfortable"
-          ></v-autocomplete>
-        </v-col>
-        <v-col cols="12" md="4" lg="3">
-          <v-autocomplete
-            v-model="filters.signed_by"
-            :items="teachers"
-            label="Filter by signer"
-            :item-props="getTeacherInfoFromObj"
-            clearable
-            hide-details
-            density="comfortable"
-          ></v-autocomplete>
-        </v-col>
-        <v-col cols="12" md="4" lg="2">
-          <v-select
-            v-model="filters.is_school_wide"
-            :items="[
-            { title: 'All Announcements', value: null },
-            { title: 'School Wide Only', value: 'True' },
-            { title: 'Non-School Wide Only', value: 'False' }
-            ]"
-            label="School Wide Filter"
-            hide-details
-            density="comfortable"
-          ></v-select>
-        </v-col>
-      </v-row>
+      <FilterCard 
+        v-model="filters"
+        :filtersInfo="filtersInfo" 
+      /> 
     </v-card-title>
-
-		<ResponsiveDataTable 
-			:getToFunction="(item) => ({name: 'Announcement', params: {announcementId: item.id}})" 
-			:headers="headers" 
-			:fetch="getAnnouncements" 
-			:filters="filters"
+    <ResponsiveDataTable 
+      :getToFunction="(item) => ({name: 'Announcement', params: {announcementId: item.id}})" 
+      :headers="headers" 
+      :fetch="getAnnouncements" 
+      v-model="filters"
       :forceMobile="forceMobile"
-    ></ResponsiveDataTable>
-
+    />
   </v-card>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { getAnnouncements } from "../api";
-import { getClassrooms, getClassroomInfoFromObj } from "@/apps/classrooms/api";
-import { getSubjects, getSubjectInfoFromObj } from "@/apps/subjects/api";
-import { getTeachers, getTeacherInfoFromObj } from "@/apps/teachers/api";
 import ResponsiveDataTable from "@/components/ResponsiveDataTable.vue";
+import FilterCard from "@/components/FilterCard.vue";
 
-const classrooms = ref([]);
-const subjects = ref([]);
-const teachers = ref([]);
+const defaultFilters = {
+	title: "",
+	classroom: null,
+	subject: null,
+	signed_by: null,
+	is_school_wide: null,
+};
 
-const props = defineProps({
-	forceMobile: {
-		type: Boolean,
-		default: false,
-	},
-});
-
-const filtersInfo = ref([
+const defaultFiltersInfo = [
 	{
 		label: "Search by title",
 		type: "string",
@@ -99,27 +38,18 @@ const filtersInfo = ref([
 	},
 	{
 		label: "Filter by classroom",
-		type: "number",
+		type: "classroom",
 		key: "classroom",
-		fetchOptions: getClassrooms,
-		fetchOptionsInfo: getClassroomInfoFromObj,
-		searchField: "name",
 	},
 	{
 		label: "Filter by subject",
-		type: "number",
+		type: "subject",
 		key: "subject",
-		fetchOptions: getSubjects,
-		fetchOptionsInfo: getSubjectInfoFromObj,
-		searchField: "name",
 	},
 	{
 		label: "Filter by signer",
-		type: "number",
-		key: "title",
-		fetchOptions: getTeachers,
-		fetchOptionsInfo: getTeacherInfoFromObj,
-		searchField: "name",
+		type: "teacher",
+		key: "signed_by",
 	},
 	{
 		label: "Is School Wide",
@@ -131,27 +61,56 @@ const filtersInfo = ref([
 			{ title: "Non-School Wide Only", value: "False" },
 		],
 	},
-]);
+	{
+		label: "Is Released",
+		type: "boolean",
+		key: "is_released",
+	},
+	{
+		label: "Is Expired",
+		type: "boolean",
+		key: "is_expired",
+	},
+	{
+		label: "Release Date Range",
+		type: "dates",
+		key: ["released_start", "released_end"],
+	},
+	{
+		label: "Expiry Date Range",
+		type: "dates",
+		key: ["expired_start", "expired_end"],
+	}
+];
 
-const filters = ref({
-	title: "",
-	classroom: null,
-	subject: null,
-	signed_by: null,
-	is_school_wide: null,
+const props = defineProps({
+	forceMobile: {
+		type: Boolean,
+		default: false,
+	},
+	initialFilters: {
+		type: Object,
+		default: () => ({}),
+	},
+	initialFiltersInfo: {
+		type: Array,
+		default: () => ([]),
+	},
 });
 
-const filtersChanged = (newFilters) => {
-	Object.assign(filters.value, newFilters);
-};
+const filters = ref({ ...defaultFilters, ...props.initialFilters });
 
-const formatDate = (dateString) => {
-	return new Date(dateString).toLocaleString("en-US", {
+const filtersInfo = ref(defaultFiltersInfo.map(defaultFilter => {
+  const override = props.initialFiltersInfo.find(f => f.key === defaultFilter.key);
+  return override ? { ...defaultFilter, ...override } : defaultFilter;
+}));
+
+const formatDate = (dateString) =>
+	Intl.DateTimeFormat("en-US", {
 		year: "numeric",
 		month: "short",
 		day: "numeric",
-	});
-};
+	}).format(Date.parse(dateString));
 
 const headers = [
 	{ title: "Title", key: "title" },
@@ -164,11 +123,4 @@ const headers = [
 	},
 	{ title: "Actions", key: "actions", sortable: false },
 ];
-
-onMounted(async () => {
-	classrooms.value = (await getClassrooms()).results;
-	subjects.value = (await getSubjects()).results;
-	teachers.value = (await getTeachers()).results;
-	// Don't fetch announcements on mount, start with empty table
-});
 </script>

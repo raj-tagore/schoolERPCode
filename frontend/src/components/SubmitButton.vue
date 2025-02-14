@@ -57,29 +57,34 @@ const formatErrorMessage = (error) => {
 
 const objToString = (data) => {
 	if (Array.isArray(data)) {
-		return data.join(", ")
+		return data.join(", ");
 	}
 	if (typeof data === "string") {
-		return data
+		return data;
 	}
 	if (typeof data === "object") {
-		return Object.entries(data).map(([field, message]) => `${field}: ${objToString(message)}`)
+		return Object.entries(data).map(
+			([field, message]) => `${field}: ${objToString(message)}`,
+		);
 	}
-	return data
-
-}
+	return data;
+};
 
 const handleSubmit = async () => {
 	isSubmitting.value = true;
 	isSuccess.value = false;
 	error.value = null;
 
-	const result = await props.onSubmit();
-	if (result.success) {
-		isSuccess.value = true;
-	} else {
-		error.value = formatErrorMessage(result.error);
+	try {
+		const result = await props.onSubmit();
+		if (result.success) {
+			isSuccess.value = true;
+		} else {
+			error.value = formatErrorMessage(result.error);
+		}
+		isSubmitting.value = false;
+	} catch (err) {
+		error.value = formatErrorMessage({ success: false, err });
 	}
-	isSubmitting.value = false;
 };
 </script>

@@ -1,23 +1,43 @@
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from tenants.models import School
 
+class UserManager(BaseUserManager):
+    def create_user(self, username, email, password=None, **extra_fields):
+        if not username:
+            raise ValueError('The Username field must be set')
+        if not email:
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email)
+        user = self.model(username=username, email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
-class User(AbstractUser):
+    def create_superuser(self, username, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+        return self.create_user(username, email, password, **extra_fields)
+
+class User(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(max_length=150, unique=True)
+    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
-
-    groups = models.ManyToManyField(Group, related_name="users", blank=True)
-    user_permissions = models.ManyToManyField(
-        Permission, related_name="users", blank=True
-    )
-
+    
     school = models.ForeignKey(
         School, on_delete=models.CASCADE, related_name="users", null=True
     )
 
-    @property
-    def permissions(self):
-        return list(self.get_all_permissions())
+    objects = UserManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
 
     @property
     def account(self):

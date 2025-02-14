@@ -1,19 +1,24 @@
 <template>
     <v-card>
-        <v-card-title>{{ title || 'Announcements' }}</v-card-title>
+        <v-card-title v-if="title">{{ title }}</v-card-title>
         <v-card-subtitle v-if="subtitle">{{ subtitle }}</v-card-subtitle>
         <v-card-text>
             <v-list lines="two" density="default">
                 <v-list-item 
-                    v-for="(announcement, index) in AnnouncementsData" 
+                    v-for="(announcement, index) in AnnouncementsData.slice(0, 3)" 
                     :key="index"
-                    class="ma-2 pa-2 border"
+                    class="ma-1 pa-2 border"
                 >
                     <v-list-item-content>
                         <v-list-item-title>{{ announcement?.title || 'Untitled' }}</v-list-item-title>
                         <v-list-item-subtitle class="mb-2">{{ announcement?.description || 'No description available' }}</v-list-item-subtitle>
                         <v-list-item-text class="text-end">
-                            <p>Signed by: {{ announcement?.signed_by_details?.user_details?.full_name || 'Unknown' }}</p>
+                            <v-chip
+                                size="small"
+                                color="primary"
+                            >
+                                Signed by: {{ announcement?.signed_by_details?.user_details?.full_name || 'Unknown' }}
+                            </v-chip>
                         </v-list-item-text>
                     </v-list-item-content>
                     <template v-slot:append>
@@ -32,6 +37,15 @@
                 No announcements available
             </div>
         </v-card-text>
+        <v-card-actions class="justify-center">
+            <v-btn 
+                :to="{ name: to || 'Announcements' }"
+                variant="outlined"
+                density="comfortable"
+            >
+                View All
+            </v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 
@@ -46,6 +60,7 @@ const props = defineProps({
 	},
 	title: String,
 	subtitle: String,
+    to: String,
 });
 
 const AnnouncementsData = ref([]);

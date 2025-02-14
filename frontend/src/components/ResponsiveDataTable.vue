@@ -5,7 +5,7 @@
 		:headers="[]"
 		:items="items"
 		@update:options="fetchData"
-		:search="search"
+		:search="JSON.stringify(filters)"
 		:loading="loading"
 	>
 		<template #headers={}></template>
@@ -42,7 +42,7 @@
 		:headers="headers"
 		:items="items"
 		@update:options="fetchData"
-		:search="search"
+		:search="JSON.stringify(filters)"
 		:loading="loading"
 	>
 		<template #item="{ item }">
@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import { useDisplay } from "vuetify";
 const { mobile } = useDisplay();
 
@@ -81,10 +81,6 @@ const props = defineProps({
 		type: Function,
 		required: true,
 	},
-	filters: {
-		type: Object,
-		required: true,
-	},
 	getToFunction: {
 		type: Function,
 	},
@@ -93,53 +89,50 @@ const props = defineProps({
 	},
 });
 
-const search = ref({});
+const filters = defineModel();
+
+
 const title = ref(props.headers[0]);
 const data_headers = ref(props.headers.slice(1, props.headers.length - 1));
-
-watch(props.filters, (f) => {
-	console.log("Responsive Data Table", f);
-	search.value = structuredClone(f);
-}, {deep: true});
 
 const loading = ref(false);
 const itemsLen = ref(10);
 const items = ref([]);
 
-const fetchData = async ({ page, itemsPerPage, search }) => {
-	loading.value = true;
-	try {
-		// Filter out falsy values
-		const filterParams = Object.fromEntries(
-			Object.entries(search)
-				.filter(([_, value]) => (typeof value === "boolean" ? true : value))
-				.map(([key, value]) => {
-					// I blame python and django
-					if (typeof value === "boolean") {
-						if (value) {
-							return [key, "True"];
-						}
-						return [key, "False"];
-					}
-					return [key, value];
-				}),
-		);
+const convertFiltersForBackend = (filters) => {
+	return Object.fromEntries(
+		Object.entries(filters)
+			.filter(([_, value]) => (typeof value === "boolean" ? true : value))
+			.map(([key, value]) => {
+				if (typeof value === "boolean") {
+					return [key, value ? "True" : "False"];
+				}
+				return [key, value];
+			}),
+	);
+};
 
-		filterParams.page_size = itemsPerPage || 10;
-		filterParams.page = page || 1;
-		const listing = await props.fetch(filterParams);
-		items.value = listing.results;
-		itemsLen.value = listing.total_records;
+const fetchData = async ({page, itemsPerPage, search}) => {
+	loading.value = true;
+	
+	try {
+		const filterParams = {
+			...convertFiltersForBackend(JSON.parse(search)),
+			page_size: itemsPerPage || 10,
+			page: page || 1,
+		};
+
+		const { results, total_records } = await props.fetch(filterParams);
+		items.value = results;
+		itemsLen.value = total_records;
 	} catch (error) {
 		console.error("Error fetching items:", error);
+		items.value = [];
+		itemsLen.value = 0;
 	} finally {
 		loading.value = false;
 	}
 };
 
-onMounted(async () => {
-	const listing = await props.fetch({ page_size: 10, page: 1 });
-	items.value = listing.results;
-	itemsLen.value = listing.total_records;
-});
+onMounted(() => fetchData({ search: filters }));
 </script>

@@ -11,7 +11,7 @@ export default [
         path: "announcements/",
         component: AppSideBarBreadcrumbsLayout,
         meta: {
-            getDisplayName: () => "Annnouncements",
+            getDisplayName: () => "Announcements",
             defaultRoute: "Announcements",
             description: "View and manage announcements",
             getMenu: () => [
@@ -24,6 +24,7 @@ export default [
                     to: { name: "CreateAnnouncement" },
                 },
             ],
+            icon: 'mdi-bullhorn'
         },
         children: [
             {
@@ -53,6 +54,7 @@ export default [
                             to: { name: "EditAnnouncement", params },
                         },
                     ],
+                    icon: 'mdi-bullhorn'
                 },
                 children: [
                     {
@@ -67,6 +69,7 @@ export default [
                         name: "EditAnnouncement",
                         props: true,
                     },
+                    
                 ],
             },
         ],

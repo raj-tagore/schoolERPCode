@@ -1,16 +1,27 @@
 <template>
   <v-container>
     <v-row align="center" justify="center" v-if="subject">
-    <v-col>
+      <v-col>
         <v-row class="ma-2">
           <v-col cols="12" lg="4">
             <SubjectCard :subject="subject"></SubjectCard>
           </v-col>
-          <v-col cols="12" lg="4" v-if="subject">
-            <AnnouncementsList :filter="{ subject: subject.id }" />
+          <v-col cols="12" lg="4">
+            <AnnouncementsList 
+              :filter="{ subject: subject.id }" 
+              :to="`SubjectAnnouncements`" 
+              :title="`Announcements`" 
+            />
+          </v-col>
+          <v-col cols="12" lg="4">
+            <AssignmentsList 
+              :filter="{ subject: subject.id }" 
+              :title="`Assignments`" 
+              :to="`SubjectAssignments`"
+            />
           </v-col>
         </v-row>
-    </v-col>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -20,6 +31,7 @@ import { ref, onMounted } from "vue";
 import { api } from "@/services/api";
 import SubjectCard from "@/apps/subjects/components/SubjectCard.vue";
 import AnnouncementsList from "@/apps/announcements/components/AnnouncementsList.vue";
+import AssignmentsList from "@/apps/assignments/components/AssignmentsList.vue";
 import { getTeachers } from "@/apps/teachers/api";
 
 const props = defineProps({

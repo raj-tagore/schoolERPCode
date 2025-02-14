@@ -7,13 +7,22 @@
 					<v-list-item>
 						<v-card class="ma-2 mb-4" 
 							:title="user.first_name + ' ' + user.last_name"
-							:subtitle="user.account?.type || 'No linked account'">
+							:subtitle="account?.group_details?.name || 'No linked account'">
 							<template v-slot:append>
 								<v-btn icon="mdi-logout" @click="logoutHandler" size="small" variant="text"/>
 							</template>
+							<!-- <v-card-text>
+								<v-chip label>
+									{{ account?.group_details?.name || 'No access level' }}
+								</v-chip>
+							</v-card-text> -->
 						</v-card>
 					</v-list-item>
 
+					<v-list-item :to="{ name: 'Dashboard' }">
+						<v-list-item-title>Dashboard</v-list-item-title>
+					</v-list-item>
+					<v-divider class="mb-4"></v-divider>
 					<RecursiveList v-for="item in appsMenu" :item="item" />
 
 				</v-list>
@@ -46,6 +55,7 @@ import { useRouter } from "vue-router";
 import RecursiveList from "@/components/RecursiveList.vue";
 
 import appRoutes from "@/router/app";
+import { getAppsMeta } from "@/router/menu";
 
 const { mdAndUp } = useDisplay();
 const leftDrawer = ref(mdAndUp.value);
@@ -55,23 +65,22 @@ const authStore = useAuthStore();
 const appsMenu = ref();
 
 const user = computed(() => authStore.user);
+const account = computed(() => authStore.account);
 
 function logoutHandler() {
-	router.push({ name: "Login" });
-	authStore.logout();
+	router.push({ name: "Login" })
+		.then(() => {
+			authStore.logout();
+		})
+		.catch((error) => {
+			console.error('Navigation failed:', error);
+			authStore.logout();  // Still logout even if navigation fails
+		});
 }
 
-const getRouteMeta = async (route) =>
-	Promise.all(
-		route
-			.filter((route) => route?.meta?.getDisplayName && !route.props)
-			.map(async (route) => ({
-				title: await route.meta.getDisplayName(),
-				to: { name: route.meta.defaultRoute },
-			})),
-	);
-
-getRouteMeta(appRoutes).then((menu) => {
+// Equivalent to awaiting the funciton and then assigning to appsMenu.value
+// Couldn't await because there was no gaurantee there would be a Suspense component at the root
+getAppsMeta(appRoutes).then((menu) => {
 	appsMenu.value = menu;
 });
 </script>

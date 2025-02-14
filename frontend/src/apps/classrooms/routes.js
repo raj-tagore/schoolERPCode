@@ -5,6 +5,7 @@ import ClassroomsPage from "@/apps/classrooms/views/ClassroomsPage.vue";
 import AppSideBarBreadcrumbsLayout from "@/layouts/AppSideBarBreadcrumbsLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import { api } from "@/services/api";
+import ClassroomAnnouncementsPage from "@/apps/classrooms/views/ClassroomAnnouncementsPage.vue";
 
 export default [
     {
@@ -25,6 +26,7 @@ export default [
                     to: { name: "CreateClassroom" },
                 },
             ],
+            icon: 'mdi-google-classroom',
         },
         children: [
             {
@@ -64,6 +66,10 @@ export default [
                             title: "Edit Classroom",
                             to: { name: "EditClassroom", props },
                         },
+                        {
+                            title: "Announcements",
+                            to: { name: "ClassroomAnnouncements", props },
+                        },
                     ],
                 },
                 children: [
@@ -78,6 +84,16 @@ export default [
                         props: true,
                         name: "EditClassroom",
                         component: EditClassroomPage,
+                    },
+                    {
+                        path: "announcements/",
+                        props: true,
+                        name: "ClassroomAnnouncements",
+                        component: ClassroomAnnouncementsPage,
+                        meta: {
+                            getDisplayName: () => "Announcements",
+                            defaultRoute: "ClassroomAnnouncements",
+                        },
                     },
                 ],
             },

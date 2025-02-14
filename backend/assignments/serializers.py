@@ -24,6 +24,7 @@ class BasicAssignmentSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "title",
+            "description",
             "is_active",
             "release_at",
             "due_at",

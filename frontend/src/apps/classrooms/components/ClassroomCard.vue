@@ -9,8 +9,17 @@
         </v-card-title>
         <v-card-subtitle>
             <p class="text-body-2 pb-4">
-                Standard: {{classroom.standard}} <br>
-                Class Teacher: {{ classroom.class_teacher?.user?.full_name || "Loading..." }}
+                <v-chip
+                    link
+                    :to="{ 
+                        name: 'Teacher', 
+                        params: { 
+                            teacherId: classroom.class_teacher_details?.id 
+                        }
+                    }"
+                >
+                Class Teacher: {{ classroom.class_teacher_details?.user_details?.full_name || "Loading..." }}
+                </v-chip>
             </p>
         </v-card-subtitle>
     </v-card>
