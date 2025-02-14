@@ -1,5 +1,5 @@
-import EventsPage from "@/apps/calendar/views/EventsPage.vue";
-import EventPage from "@/apps/calendar/views/EventPage.vue";
+import EventsPage from "./views/EventsPage.vue";
+import EventPage from "./views/EventPage.vue";
 import AppSideBarBreadcrumbsLayout from "@/layouts/AppSideBarBreadcrumbsLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
 
