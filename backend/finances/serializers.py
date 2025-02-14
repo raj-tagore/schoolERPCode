@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Purpose, Payee, Record
+from accounts.serializers import StudentSerializer
 
 
 class PurposeSerializer(serializers.ModelSerializer):
@@ -23,12 +24,9 @@ class BasicPayeeSerializer(serializers.ModelSerializer):
 class RecordSerializer(serializers.ModelSerializer):
     purpose_details = PurposeSerializer(source="purpose")
     payee_details = BasicPayeeSerializer(source="payee")
+    student_details = StudentSerializer(source="student")
 
     class Meta:
         model = Record
         fields = "__all__"
 
-class BasicRecordSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Record
-        fields = "__all__"

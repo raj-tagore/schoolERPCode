@@ -4,16 +4,11 @@ from .serializers import (
     PayeeSerializer,
     BasicPayeeSerializer,
     RecordSerializer,
-    BasicRecordSerializer,
 )
 from schoolERPCode.viewsets import get_standard_model_viewset
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from types import SimpleNamespace
-from tenants.models import School
-from django_tenants.utils import tenant_context
-import json
 from django.db.models import Sum
 # Create your views here.
 
@@ -76,7 +71,7 @@ def record_filter(self, queryset, **kwargs):
 record_views = get_standard_model_viewset(
     queryset=Record.objects.all(),
     serializer_class=RecordSerializer,
-    basic_serializer_class=BasicRecordSerializer,
+    basic_serializer_class=RecordSerializer,
     filter_queryset=record_filter,
 )
 
