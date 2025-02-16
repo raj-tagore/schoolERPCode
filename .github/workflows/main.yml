@@ -2,9 +2,9 @@ name: Node
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "staging" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "staging" ]
 env: 
   CI: false
   
