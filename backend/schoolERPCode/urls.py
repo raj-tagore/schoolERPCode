@@ -22,17 +22,17 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
-    path('users/', include('users.urls')),
-    path('allocation/', include('allocation.urls')),
-    path('announcements/', include('announcements.urls')),
-    path('assignments/', include('assignments.urls')),
-    path('attachments/', include('attachments.urls')),
-    path('timetable/', include('timetable.urls')),
-    path('events/', include('events.urls')),
-    path('finances/', include('finances.urls')),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/accounts/', include('accounts.urls')),
+    path('api/users/', include('users.urls')),
+    path('api/allocation/', include('allocation.urls')),
+    path('api/announcements/', include('announcements.urls')),
+    path('api/assignments/', include('assignments.urls')),
+    path('api/attachments/', include('attachments.urls')),
+    path('api/timetable/', include('timetable.urls')),
+    path('api/events/', include('events.urls')),
+    path('api/finances/', include('finances.urls')),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 if settings.DEBUG:
