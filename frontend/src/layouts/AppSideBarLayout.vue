@@ -25,7 +25,6 @@
 			</v-navigation-drawer>
 				<v-fab 
 				app
-					absolute
 					location="right top"
 					@click="rightDrawer = !rightDrawer"
 					icon>
