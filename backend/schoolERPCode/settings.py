@@ -111,7 +111,7 @@ db = env.db()
 db['ENGINE'] = 'django_tenants.postgresql_backend'
 
 DATABASES = {
-    'default': env.db() 
+    'default': db 
 }
 
 # Password validation
