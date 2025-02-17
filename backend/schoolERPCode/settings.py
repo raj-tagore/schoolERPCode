@@ -103,7 +103,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'schoolERPCode.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -112,7 +111,7 @@ db = env.db()
 db['ENGINE'] = 'tenant_schemas.postgresql_backend'
 
 DATABASES = {
-    'default': db
+    'default': env.db() 
 }
 
 # Password validation
