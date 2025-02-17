@@ -108,7 +108,7 @@ WSGI_APPLICATION = 'schoolERPCode.wsgi.application'
 
 db = env.db()
 
-db['ENGINE'] = 'tenant_schemas.postgresql_backend'
+db['ENGINE'] = 'django_tenants.postgresql_backend'
 
 DATABASES = {
     'default': env.db() 
