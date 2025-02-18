@@ -1,6 +1,6 @@
 from events.models import Event
 from events.permissions import EventPermissions
-from events.serializers import EventSerializer
+from events.serializers import EventSerializer, EventBaseSerializer
 from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
     ListAPIView,
