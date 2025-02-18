@@ -66,7 +66,7 @@
 				density="comfortable"
 				clearable
 				:disabled="field.disabled"
-				@update:modelValue="(value) => [...value].sort((a,b) => a - b).forEach((e, i) => {console.log(i, e);filters[field.key[i]] = e})"
+				@update:modelValue="(value) => [...value].sort((a,b) => a - b).forEach((e, i) => {filters[field.key[i]] = e})"
 			></v-date-input>
 				<!--- The above one-liner does the following
 				- Gets the dates in an array from datepicker

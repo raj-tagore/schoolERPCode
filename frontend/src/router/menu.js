@@ -15,7 +15,7 @@ const currentRouteMeta = async (route) => {
 
     const routeMeta = {};
     const app = routes.shift();
-    const current = routes.pop();
+    const current = routes.pop(); 
 
     if (app?.meta) {
         // Populate the menu and display name

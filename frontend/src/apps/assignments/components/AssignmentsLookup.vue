@@ -79,7 +79,6 @@ const props = defineProps({
 });
 
 const filters = ref({ ...defaultFilters, ...props.initialFilters });
-console.log(filters.value);
 
 const filtersInfo = ref(defaultFiltersInfo.map(defaultFilter => {
 	const override = props.initialFiltersInfo.find(f => f.key === defaultFilter.key);
