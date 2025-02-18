@@ -199,6 +199,8 @@ SIMPLE_JWT = {
 # To allow vue frontend to make api requests
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8069",
+    "http://lariv.in",
+    "https://lariv.in",
     "http://127.0.0.1:8069",
 ]
 CORS_ALLOW_CREDENTIALS = True
