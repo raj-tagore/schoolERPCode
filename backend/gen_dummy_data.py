@@ -40,6 +40,9 @@ class DataStore:
             "announcement": [],
             "assignment": [],
             "event": [],
+            "purpose": [],
+            "payee": [],
+            "record": [],
         }
         self.hasher = BCryptSHA256PasswordHasher()
         self.password = self.hasher.encode("Pass1234#", self.hasher.salt())
@@ -337,6 +340,96 @@ class EventGenerator:
         for _ in range(10):  # Generate 10 school-wide events
             self.add_event(is_school_wide=True)
 
+class FinanceGenerator:
+    def __init__(self, data_store, config):
+        self.data_store = data_store
+        self.config = config
+        self.data_store.data["purpose"] = []
+        self.data_store.data["payee"] = []
+        self.data_store.data["record"] = []
+
+    def generate_purposes(self):
+        purposes = [
+            ("Tuition Fee", "Regular tuition fee payment"),
+            ("Library Fee", "Annual library membership fee"),
+            ("Lab Fee", "Science and computer lab fee"),
+            ("Sports Fee", "Sports equipment and facilities"),
+            ("Transportation", "School bus transportation fee"),
+        ]
+        
+        for name, description in purposes:
+            self.data_store.data["purpose"].append({
+                "name": name,
+                "description": description,
+            })
+
+    def generate_payees(self):
+        for _ in range(20):  # Generate 20 payees
+            payee = {
+                "account_id": str(uuid.uuid4()),
+                "name": self.config.faker.name(),
+                "email": self.config.faker.email(),
+                "phone": self.config.faker.numerify("+91##########"),
+                "card_id": uuid.uuid4().hex if random.choice([True, False]) else None,
+                "wallet_id": uuid.uuid4().hex if random.choice([True, False]) else None,
+                "bank_id": uuid.uuid4().hex if random.choice([True, False]) else None,
+                "upi_id": f"{self.config.faker.user_name()}@upi" if random.choice([True, False]) else None,
+            }
+            self.data_store.data["payee"].append(payee)
+
+    def generate_records(self):
+        payment_types = ["netbanking", "card", "wallet", "upi"]
+        payment_statuses = ["S", "P", "F"]
+        
+        for _ in range(1000):
+            record = {
+                "student": random.randrange(len(self.data_store.data["student"])) + 1,
+                "amount": random.randint(1000, 50000),
+                "datetime": self.config.faker.date_time_between(start_date="-1y"),
+                "payment_type": random.choice(payment_types),
+                "order_id": f"ORDER_{uuid.uuid4().hex[:8]}",
+                "payment_status": random.choice(payment_statuses),
+                "purpose": random.randrange(len(self.data_store.data["purpose"])) + 1,
+                "payee": random.randrange(len(self.data_store.data["payee"])) + 1,
+            }
+            self.data_store.data["record"].append(record)
+
+class ReportGenerator:
+    def __init__(self, data_store, config):
+        self.data_store = data_store
+        self.config = config
+        self.data_store.data["report_meta"] = []
+        self.data_store.data["attendance_report"] = []
+
+    def generate_reports(self):
+        report_types = ["FE", "AT"]
+        
+        for _ in range(200):
+            report_type = random.choice(report_types)
+            submitted_by = random.choice(self.data_store.data["teacher"])["user"]
+            is_approved = random.choice([True, False])
+            
+            report_meta = {
+                "report_type": report_type,
+                "submitted_by": submitted_by,
+                "submitted_at": self.config.faker.date_time_between(start_date="-6m"),
+                "attachment": None,
+                "is_approved": is_approved,
+                "approved_by": random.choice(self.data_store.data["teacher"])["user"] if is_approved else None,
+                "approved_at": self.config.faker.date_time_between(start_date="-6m") if is_approved else None,
+            }
+            
+            self.data_store.data["report_meta"].append(report_meta)
+            
+            if report_type == "AT":
+                attendance_report = {
+                    "metadata": len(self.data_store.data["report_meta"]),
+                    "date": self.config.faker.date_between(start_date="-6m"),
+                    "classroom": random.choice(self.data_store.data["classroom"])["name"],
+                    "remarks": self.config.faker.text(max_nb_chars=200),
+                }
+                self.data_store.data["attendance_report"].append(attendance_report)
+
 def main():
     config = Config()
     data_store = DataStore()
@@ -350,6 +443,8 @@ def main():
     assignment_generator = AssignmentGenerator(data_store, config)
     announcement_generator = AnnouncementGenerator(data_store, config)
     event_generator = EventGenerator(data_store, config)
+    finance_generator = FinanceGenerator(data_store, config)
+    report_generator = ReportGenerator(data_store, config)
 
     # Generate all data
     teacher_generator.generate_all_teachers()
@@ -357,6 +452,14 @@ def main():
     assignment_generator.generate_assignments()
     announcement_generator.generate_all_announcements()
     event_generator.generate_events()
+    
+    # Generate finance data
+    finance_generator.generate_purposes()
+    finance_generator.generate_payees()
+    finance_generator.generate_records()
+    
+    # Generate reports
+    report_generator.generate_reports()
 
     # Save to CSV
     data_store.save_to_csv(config)

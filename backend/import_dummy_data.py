@@ -11,6 +11,7 @@ from allocation.models import Classroom, Subject
 from announcements.models import Announcement
 from assignments.models import Assignment
 from events.models import Event
+from finances.models import Payee, Purpose, Record
 
 
 tenant = School.objects.filter(name="school1")[0]
@@ -51,6 +52,9 @@ dummy_files = [
 	("dummy_data/Announcement.csv", Announcement),
 	("dummy_data/Assignment.csv", Assignment),
 	("dummy_data/Event.csv", Event),
+	("dummy_data/Payee.csv", Payee),
+	("dummy_data/Purpose.csv", Purpose),
+	("dummy_data/Record.csv", Record)
 ]
 
 
