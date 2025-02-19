@@ -13,12 +13,9 @@
 
         <v-dialog v-model="selectedOpen" max-width="600">
             <v-card v-if="selectedEvent">
-                <v-card-title class="text-h5 pb-2">{{ selectedEvent.title }}</v-card-title>
-                
                 <v-card-text>
                     <EventDialogCard :event="selectedEvent" />
                 </v-card-text>
-
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn 
