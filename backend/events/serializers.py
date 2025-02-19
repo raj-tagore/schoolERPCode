@@ -13,5 +13,5 @@ class EventSerializer(serializers.ModelSerializer):
 class EventBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ["id", "title", "start", "end"]
+        fields = ["id", "title", "start", "end", "is_school_wide", "created_by", "created_by_details", "classrooms", "subjects"]
 

@@ -1,4 +1,5 @@
 import EventsPage from "./views/EventsPage.vue";
+import EventPage from "./views/EventPage.vue";
 import AppSideBarBreadcrumbsLayout from "@/layouts/AppSideBarBreadcrumbsLayout.vue";
 import EmptyLayout from "@/layouts/EmptyLayout.vue";
 import CalendarPage from "./views/CalendarPage.vue";
@@ -53,8 +54,9 @@ export default [
                         children: [
                             {
                                 path: "",
-                                component: EmptyLayout,
+                                component: EventPage,
                                 name: "Event",
+                                props: true,
                             }
                         ]
                     }
