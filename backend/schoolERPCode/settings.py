@@ -205,6 +205,13 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ALLOW_CREDENTIALS = True
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8069",
+    "http://lariv.in",
+    "https://lariv.in",
+    "http://127.0.0.1:8069",
+]
+
 # # Redirect HTTP to HTTPS
 # SECURE_SSL_REDIRECT = True
 

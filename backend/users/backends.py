@@ -6,7 +6,6 @@ from rest_framework.exceptions import AuthenticationFailed
 
 class TenantAwareAuthBackend(BaseBackend):
     def authenticate(self, request, username = ..., password = ..., **kwargs):
-
         tenant = getattr(request, 'tenant', None)
         if not tenant:
             raise Http404('tenant not given')
