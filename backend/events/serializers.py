@@ -10,4 +10,8 @@ class EventSerializer(serializers.ModelSerializer):
         fields = ["id", "title", "start", "end", "description", "classrooms", 
                   "subjects", "is_school_wide", "attachment", "created_by", "created_by_details"]
 
+class EventBaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ["id", "title", "start", "end", "is_school_wide", "created_by", "created_by_details", "classrooms", "subjects"]
 

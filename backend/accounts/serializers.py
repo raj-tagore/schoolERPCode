@@ -1,5 +1,4 @@
 # accounts/serializers.py
- 
 from rest_framework import serializers
 from timetable.serializers import TimeTableSerializer
 from .models import Student, Teacher, Parent

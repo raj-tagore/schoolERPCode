@@ -16,9 +16,13 @@ const updateEvent = async (event) =>
 const createEvent = async (data) =>
     await api.post("api/events/create/", data);
 
+const getCalendar = async (filter) =>
+    (await api.get("api/events/calendar/", { params: { ...filter } })).data;
+
 export {
     getEvents,
     getEvent,
     updateEvent,
     createEvent,
+    getCalendar,
 };

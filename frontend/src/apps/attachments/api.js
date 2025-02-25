@@ -5,7 +5,6 @@ const createAttachment = async (formObj) => {
     for (const [key, value] of Object.entries(formObj)) {
         data.append(key, value);
     }
-    console.log(data);
     return (
         await api.post("api/attachments/create/", data, {
             headers: { "Content-Type": "multipart/form-data" },

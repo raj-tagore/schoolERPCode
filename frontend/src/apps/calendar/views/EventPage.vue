@@ -9,6 +9,7 @@
               <v-card-text>{{ event?.description }}</v-card-text>
               <v-card-actions>
                 <v-btn 
+                  to="#"
                   variant="outlined"
                   prepend-icon="mdi-pencil"
                 >Edit</v-btn>
@@ -28,15 +29,15 @@
                   <v-list-item 
                     :title="event?.created_by_details?.user_details?.full_name"
                     :subtitle="event?.created_by_details?.user_details?.email"
-                    :variant="'flat'"
+                    variant="flat"
                     rounded="lg"
                     :to="'#'"
                   />
                 </v-list>
 
                 <h4 class="text-subtitle-1 mt-4">Event Time:</h4>
-                <v-chip color="primary">Start: {{ formatDate(event.start) }}</v-chip>
-                <v-chip color="red">End: {{ formatDate(event.end) }}</v-chip>
+                <v-chip color="primary">Start: {{ formatDate(event?.start) }}</v-chip>
+                <v-chip color="red">End: {{ formatDate(event?.end) }}</v-chip>
 
                 <h4 class="text-subtitle-1 mt-4">Assigned to:</h4>
                 <div v-if="event?.is_school_wide">
@@ -92,6 +93,7 @@ import { getSubject } from "@/apps/subjects/api";
 const event = ref({});
 const classroomDetails = ref([]);
 const subjectDetails = ref([]);
+
 const props = defineProps({
   eventId: Number,
 });
